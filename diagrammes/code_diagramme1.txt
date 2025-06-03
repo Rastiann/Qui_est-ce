@@ -1,0 +1,43 @@
+@startuml
+hide footbox
+
+participant "Joueur A"
+participant "Joueur B"
+
+== Initialisation ==
+"Joueur A" -> "Joueur A" : Choisir équipe
+"Joueur B" -> "Joueur B" : Choisir équipe
+
+"Joueur A" -> "Joueur A" : Choisir personnage secret
+"Joueur B" -> "Joueur B" : Choisir personnage secret
+
+== Tour par tour ==
+loop Tour par tour
+    "Joueur A" -> "Joueur B" : Poser une question (oui/non)
+    "Joueur B" --> "Joueur A" : Répond (oui/non)
+
+    "Joueur A" -> "Joueur B" : Supposition : "Es-tu [Personnage] ?"
+    "Joueur B" -> "Joueur B" : Vérifie la réponse
+    alt Supposition correcte
+        "Joueur A" -> "Joueur B" : Oui, tu as gagné !
+        break
+    else
+        "Joueur A" -> "Joueur B" : Poser une question (oui/non)
+    end
+    end
+    
+    
+
+    "Joueur A" -> "Joueur B" : Répond (oui/non)
+
+    "Joueur B" -> "Joueur A" : Supposition : "Es-tu [Personnage] ?"
+    "Joueur A" -> "Joueur A" : Vérifie la réponse
+    alt Supposition correcte
+        "Joueur A" -> "Joueur B" : Oui, tu as gagné !
+        break
+    else
+        "Joueur A" -> "Joueur B" : Poser une question (oui/non)
+    end
+end
+@enduml
+
