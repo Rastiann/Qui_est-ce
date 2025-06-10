@@ -7,10 +7,6 @@ group = "iut.info.sa201.2025"
 version = "1.0"
 
 repositories {
-    maven {
-        url = uri("http://nexus.dep-info.iut-nantes.univ-nantes.prive/repository/public/")
-        isAllowInsecureProtocol = true
-    }
     mavenCentral()
 }
 

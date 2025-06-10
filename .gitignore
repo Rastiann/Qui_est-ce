@@ -1,0 +1,27 @@
+# Fichiers de configuration IntelliJ IDEA pour le projet racine
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+
+# Fichiers macOS
+.DS_Store
+/code/.gradle/         
+/code/build/          
+/code/.gradle-tasks/   
+
+
+/code/*.class          
+/code/*.log            
+/code/*.log.*
+/code/*.jar            
+/code/*.war
+/code/*.ear
+/code/*.zip
+/code/*.tar.gz
+/code/*.rar
+/code/local.properties
+
+# Kotlin-specific
+# /code/*.kotlin_module
