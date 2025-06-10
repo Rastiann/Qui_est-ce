@@ -1,0 +1,60 @@
+$dokka.format:html-v1
+$dokka.linkExtension:html
+$dokka.location:info.but1.sae2025.data////PointingToDeclaration/sae-qui-est-ce-client/info.but1.sae2025.data/index.html
+$dokka.location:info.but1.sae2025.data/ETAPE.ATTENTE_QUESTION///PointingToDeclaration/{"org.jetbrains.dokka.links.EnumEntryDRIExtra":{"key":"org.jetbrains.dokka.links.EnumEntryDRIExtra"}}sae-qui-est-ce-client/info.but1.sae2025.data/-e-t-a-p-e/-a-t-t-e-n-t-e_-q-u-e-s-t-i-o-n/index.html
+$dokka.location:info.but1.sae2025.data/ETAPE.ATTENTE_REFLEXION///PointingToDeclaration/{"org.jetbrains.dokka.links.EnumEntryDRIExtra":{"key":"org.jetbrains.dokka.links.EnumEntryDRIExtra"}}sae-qui-est-ce-client/info.but1.sae2025.data/-e-t-a-p-e/-a-t-t-e-n-t-e_-r-e-f-l-e-x-i-o-n/index.html
+$dokka.location:info.but1.sae2025.data/ETAPE.ATTENTE_REPONSE///PointingToDeclaration/{"org.jetbrains.dokka.links.EnumEntryDRIExtra":{"key":"org.jetbrains.dokka.links.EnumEntryDRIExtra"}}sae-qui-est-ce-client/info.but1.sae2025.data/-e-t-a-p-e/-a-t-t-e-n-t-e_-r-e-p-o-n-s-e/index.html
+$dokka.location:info.but1.sae2025.data/ETAPE.CREEE///PointingToDeclaration/{"org.jetbrains.dokka.links.EnumEntryDRIExtra":{"key":"org.jetbrains.dokka.links.EnumEntryDRIExtra"}}sae-qui-est-ce-client/info.but1.sae2025.data/-e-t-a-p-e/-c-r-e-e-e/index.html
+$dokka.location:info.but1.sae2025.data/ETAPE.INITIALISATION///PointingToDeclaration/{"org.jetbrains.dokka.links.EnumEntryDRIExtra":{"key":"org.jetbrains.dokka.links.EnumEntryDRIExtra"}}sae-qui-est-ce-client/info.but1.sae2025.data/-e-t-a-p-e/-i-n-i-t-i-a-l-i-s-a-t-i-o-n/index.html
+$dokka.location:info.but1.sae2025.data/ETAPE.TERMINEE///PointingToDeclaration/{"org.jetbrains.dokka.links.EnumEntryDRIExtra":{"key":"org.jetbrains.dokka.links.EnumEntryDRIExtra"}}sae-qui-est-ce-client/info.but1.sae2025.data/-e-t-a-p-e/-t-e-r-m-i-n-e-e/index.html
+$dokka.location:info.but1.sae2025.data/ETAPE///PointingToDeclaration/sae-qui-est-ce-client/info.but1.sae2025.data/-e-t-a-p-e/index.html
+$dokka.location:info.but1.sae2025.data/ETAPE/entries/#/PointingToDeclaration/sae-qui-est-ce-client/info.but1.sae2025.data/-e-t-a-p-e/entries.html
+$dokka.location:info.but1.sae2025.data/ETAPE/valueOf/#kotlin.String/PointingToDeclaration/sae-qui-est-ce-client/info.but1.sae2025.data/-e-t-a-p-e/value-of.html
+$dokka.location:info.but1.sae2025.data/ETAPE/values/#/PointingToDeclaration/sae-qui-est-ce-client/info.but1.sae2025.data/-e-t-a-p-e/values.html
+$dokka.location:info.but1.sae2025.data/EtatPartie///PointingToDeclaration/sae-qui-est-ce-client/info.but1.sae2025.data/-etat-partie/index.html
+$dokka.location:info.but1.sae2025.data/EtatPartie/EtatPartie/#kotlin.Int#kotlin.Int#info.but1.sae2025.data.ETAPE#kotlin.Int#kotlin.String#kotlin.Int#kotlin.String/PointingToDeclaration/sae-qui-est-ce-client/info.but1.sae2025.data/-etat-partie/-etat-partie.html
+$dokka.location:info.but1.sae2025.data/EtatPartie/etape/#/PointingToDeclaration/sae-qui-est-ce-client/info.but1.sae2025.data/-etat-partie/etape.html
+$dokka.location:info.but1.sae2025.data/EtatPartie/idJoueur1/#/PointingToDeclaration/sae-qui-est-ce-client/info.but1.sae2025.data/-etat-partie/id-joueur1.html
+$dokka.location:info.but1.sae2025.data/EtatPartie/idJoueur2/#/PointingToDeclaration/sae-qui-est-ce-client/info.but1.sae2025.data/-etat-partie/id-joueur2.html
+$dokka.location:info.but1.sae2025.data/EtatPartie/idJoueurQuestionCourante/#/PointingToDeclaration/sae-qui-est-ce-client/info.but1.sae2025.data/-etat-partie/id-joueur-question-courante.html
+$dokka.location:info.but1.sae2025.data/EtatPartie/idJoueurReponseCourante/#/PointingToDeclaration/sae-qui-est-ce-client/info.but1.sae2025.data/-etat-partie/id-joueur-reponse-courante.html
+$dokka.location:info.but1.sae2025.data/EtatPartie/questionCourante/#/PointingToDeclaration/sae-qui-est-ce-client/info.but1.sae2025.data/-etat-partie/question-courante.html
+$dokka.location:info.but1.sae2025.data/EtatPartie/reponseCourante/#/PointingToDeclaration/sae-qui-est-ce-client/info.but1.sae2025.data/-etat-partie/reponse-courante.html
+$dokka.location:info.but1.sae2025.data/IdentificationJoueur///PointingToDeclaration/sae-qui-est-ce-client/info.but1.sae2025.data/-identification-joueur/index.html
+$dokka.location:info.but1.sae2025.data/IdentificationJoueur/IdentificationJoueur/#kotlin.Int#kotlin.String/PointingToDeclaration/sae-qui-est-ce-client/info.but1.sae2025.data/-identification-joueur/-identification-joueur.html
+$dokka.location:info.but1.sae2025.data/IdentificationJoueur/cle/#/PointingToDeclaration/sae-qui-est-ce-client/info.but1.sae2025.data/-identification-joueur/cle.html
+$dokka.location:info.but1.sae2025.data/IdentificationJoueur/id/#/PointingToDeclaration/sae-qui-est-ce-client/info.but1.sae2025.data/-identification-joueur/id.html
+$dokka.location:info.but1.sae2025.data/Joueur///PointingToDeclaration/sae-qui-est-ce-client/info.but1.sae2025.data/-joueur/index.html
+$dokka.location:info.but1.sae2025.data/Joueur/Joueur/#kotlin.String#kotlin.String/PointingToDeclaration/sae-qui-est-ce-client/info.but1.sae2025.data/-joueur/-joueur.html
+$dokka.location:info.but1.sae2025.data/Joueur/nom/#/PointingToDeclaration/sae-qui-est-ce-client/info.but1.sae2025.data/-joueur/nom.html
+$dokka.location:info.but1.sae2025.data/Joueur/prenom/#/PointingToDeclaration/sae-qui-est-ce-client/info.but1.sae2025.data/-joueur/prenom.html
+$dokka.location:info.but1.sae2025.data/Personnage///PointingToDeclaration/sae-qui-est-ce-client/info.but1.sae2025.data/-personnage/index.html
+$dokka.location:info.but1.sae2025.data/Personnage/Personnage/#kotlin.String#kotlin.String#kotlin.String/PointingToDeclaration/sae-qui-est-ce-client/info.but1.sae2025.data/-personnage/-personnage.html
+$dokka.location:info.but1.sae2025.data/Personnage/nom/#/PointingToDeclaration/sae-qui-est-ce-client/info.but1.sae2025.data/-personnage/nom.html
+$dokka.location:info.but1.sae2025.data/Personnage/prenom/#/PointingToDeclaration/sae-qui-est-ce-client/info.but1.sae2025.data/-personnage/prenom.html
+$dokka.location:info.but1.sae2025.data/Personnage/url/#/PointingToDeclaration/sae-qui-est-ce-client/info.but1.sae2025.data/-personnage/url.html
+$dokka.location:info.but1.sae2025.exceptions////PointingToDeclaration/sae-qui-est-ce-client/info.but1.sae2025.exceptions/index.html
+$dokka.location:info.but1.sae2025.exceptions/QuiEstCeException///PointingToDeclaration/sae-qui-est-ce-client/info.but1.sae2025.exceptions/-qui-est-ce-exception/index.html
+$dokka.location:info.but1.sae2025.exceptions/QuiEstCeException/QuiEstCeException/#kotlin.String/PointingToDeclaration/sae-qui-est-ce-client/info.but1.sae2025.exceptions/-qui-est-ce-exception/-qui-est-ce-exception.html
+$dokka.location:info.but1.sae2025////PointingToDeclaration/sae-qui-est-ce-client/info.but1.sae2025/index.html
+$dokka.location:info.but1.sae2025/QuiEstCeClient///PointingToDeclaration/sae-qui-est-ce-client/info.but1.sae2025/-qui-est-ce-client/index.html
+$dokka.location:info.but1.sae2025/QuiEstCeClient/QuiEstCeClient/#kotlin.String#kotlin.Int/PointingToDeclaration/sae-qui-est-ce-client/info.but1.sae2025/-qui-est-ce-client/-qui-est-ce-client.html
+$dokka.location:info.but1.sae2025/QuiEstCeClient/requeteChercherEncore/#kotlin.Int#kotlin.Int#kotlin.String/PointingToDeclaration/sae-qui-est-ce-client/info.but1.sae2025/-qui-est-ce-client/requete-chercher-encore.html
+$dokka.location:info.but1.sae2025/QuiEstCeClient/requeteChoixPersonnage/#kotlin.Int#kotlin.Int#kotlin.String#kotlin.Int#kotlin.Int/PointingToDeclaration/sae-qui-est-ce-client/info.but1.sae2025/-qui-est-ce-client/requete-choix-personnage.html
+$dokka.location:info.but1.sae2025/QuiEstCeClient/requeteCreationJoueur/#kotlin.String#kotlin.String/PointingToDeclaration/sae-qui-est-ce-client/info.but1.sae2025/-qui-est-ce-client/requete-creation-joueur.html
+$dokka.location:info.but1.sae2025/QuiEstCeClient/requeteCreationPartie/#kotlin.Int#kotlin.String/PointingToDeclaration/sae-qui-est-ce-client/info.but1.sae2025/-qui-est-ce-client/requete-creation-partie.html
+$dokka.location:info.but1.sae2025/QuiEstCeClient/requeteDonnerReponse/#kotlin.Int#kotlin.Int#kotlin.String#kotlin.String/PointingToDeclaration/sae-qui-est-ce-client/info.but1.sae2025/-qui-est-ce-client/requete-donner-reponse.html
+$dokka.location:info.but1.sae2025/QuiEstCeClient/requeteEssai/#/PointingToDeclaration/sae-qui-est-ce-client/info.but1.sae2025/-qui-est-ce-client/requete-essai.html
+$dokka.location:info.but1.sae2025/QuiEstCeClient/requeteEtatPartie/#kotlin.Int/PointingToDeclaration/sae-qui-est-ce-client/info.but1.sae2025/-qui-est-ce-client/requete-etat-partie.html
+$dokka.location:info.but1.sae2025/QuiEstCeClient/requeteGrilleJoueur/#kotlin.Int#kotlin.Int/PointingToDeclaration/sae-qui-est-ce-client/info.but1.sae2025/-qui-est-ce-client/requete-grille-joueur.html
+$dokka.location:info.but1.sae2025/QuiEstCeClient/requeteJoueur/#kotlin.Int/PointingToDeclaration/sae-qui-est-ce-client/info.but1.sae2025/-qui-est-ce-client/requete-joueur.html
+$dokka.location:info.but1.sae2025/QuiEstCeClient/requeteJoueurs/#/PointingToDeclaration/sae-qui-est-ce-client/info.but1.sae2025/-qui-est-ce-client/requete-joueurs.html
+$dokka.location:info.but1.sae2025/QuiEstCeClient/requeteListeParties/#/PointingToDeclaration/sae-qui-est-ce-client/info.but1.sae2025/-qui-est-ce-client/requete-liste-parties.html
+$dokka.location:info.but1.sae2025/QuiEstCeClient/requeteListePartiesCreees/#/PointingToDeclaration/sae-qui-est-ce-client/info.but1.sae2025/-qui-est-ce-client/requete-liste-parties-creees.html
+$dokka.location:info.but1.sae2025/QuiEstCeClient/requeteListePartiesTerminees/#/PointingToDeclaration/sae-qui-est-ce-client/info.but1.sae2025/-qui-est-ce-client/requete-liste-parties-terminees.html
+$dokka.location:info.but1.sae2025/QuiEstCeClient/requetePoserQuestion/#kotlin.Int#kotlin.Int#kotlin.String#kotlin.String/PointingToDeclaration/sae-qui-est-ce-client/info.but1.sae2025/-qui-est-ce-client/requete-poser-question.html
+$dokka.location:info.but1.sae2025/QuiEstCeClient/requeteRejoindrePartie/#kotlin.Int#kotlin.Int#kotlin.String/PointingToDeclaration/sae-qui-est-ce-client/info.but1.sae2025/-qui-est-ce-client/requete-rejoindre-partie.html
+$dokka.location:info.but1.sae2025/QuiEstCeClient/requeteTrouve/#kotlin.Int#kotlin.Int#kotlin.String#kotlin.Int#kotlin.Int/PointingToDeclaration/sae-qui-est-ce-client/info.but1.sae2025/-qui-est-ce-client/requete-trouve.html
+info.but1.sae2025
+info.but1.sae2025.data
+info.but1.sae2025.exceptions
