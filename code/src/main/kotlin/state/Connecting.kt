@@ -9,16 +9,31 @@ class Connecting(
 ): AppState(QuiEstCeClient(host, port), ApiThread(), stateChangeHandler) {
 
     init {
+
+        // start thread
         this.apiThread.start()
 
         this.apiThread.executeImmediately {
 
-
             // try contacting server
-            this.apiClient.requeteEssai()
+            try {
 
+                apiClient.requeteEssai()
 
+                stateChangeHandler.handle(
+                    PlayerCreation(
+                        apiClient,
+                        apiThread,
+                        stateChangeHandler
+                    )
+                )
 
+            }catch (e: Error) {
+
+                // connection went wrong, send error
+                stateChangeHandler.handle(this, e)
+
+            }
         }
     }
 

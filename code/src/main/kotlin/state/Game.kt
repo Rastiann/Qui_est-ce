@@ -3,8 +3,8 @@ package state
 import info.but1.sae2025.QuiEstCeClient
 
 class Game(
-    host: String,
-    port: Int,
+    apiClient: QuiEstCeClient,
+    apiThread: ApiThread,
     stateChangeHandler: StateChangeHandler
-): AppState(QuiEstCeClient(host, port), ApiThread(), stateChangeHandler) {
+): AppState(apiClient, apiThread, stateChangeHandler) {
 }

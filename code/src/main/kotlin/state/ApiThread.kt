@@ -51,9 +51,11 @@ class ApiThread {
         try {
             while (isRunning) {
 
-                // if there is no periodic task,
+                // if there is an immediate task or if there is no periodic task,
                 // listen for task and execute them directly
-                val task = if (currentPeriodicTask == null) {
+                // If an immediate task is available it's crucial to execute it directly,
+                // it can change periodic task and so, not update state to an old version
+                val task = if (currentPeriodicTask == null || !taskQueue.isEmpty()) {
 
                     taskQueue.take()
 
@@ -62,6 +64,7 @@ class ApiThread {
                     // compute how much time left to listen to new tasks
                     val currentTime = System.currentTimeMillis()
                     val remainingTimeMillis = lastPeriodicExecutionTime + currentPeriodicTask.delay - currentTime
+
 
                     if (remainingTimeMillis < 0) {
 
