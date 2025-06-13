@@ -256,4 +256,29 @@ class TestLibrairie {
         }
     }
 
+    @Test
+    fun testRequeteChoixPersonnage() {
+
+
+        val etat2 = client.requeteChoixPersonnage(partie_id, joueur1.id, joueur1.cle, 1, 1)
+
+        assert(etat2.etape == ETAPE.INITIALISATION) {
+            "L'étape de la partie devrait être 'INITIALISATION', trouvée: ${etat.etape}"
+        }
+
+        assert(etat2.idJoueurReponseCourante == joueur1.id) {
+            "l'idJoueurReponseCourante devrait etre celle correspondant au joueur1 (${joueur1.id}) à la place c'était : ${etat.idJoueurReponseCourante}"
+        }
+
+        etat = client.requeteChoixPersonnage(partie_id, joueur2.id, joueur2.cle, 3, 4)
+
+        assert(etat.etape == ETAPE.ATTENTE_QUESTION) {
+            "L'étape de la partie devrait être 'ATTENTE_QUESTION', trouvée: ${etat.etape}"
+        }
+
+        assert(etat.idJoueurQuestionCourante == joueur2.id) {
+            "l'idJoueurReponseCourante devrait etre celle correspondant au joueur2 (${joueur2.id}) à la place c'était : ${etat.idJoueurQuestionCourante}"
+        }
+    }
+
 }
