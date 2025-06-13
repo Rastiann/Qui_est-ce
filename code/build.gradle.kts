@@ -1,6 +1,8 @@
 plugins {
     kotlin("jvm") version "2.1.21"
     kotlin("plugin.serialization") version "2.1.21"
+    id("org.openjfx.javafxplugin") version "0.1.0"
+    application
 }
 
 group = "iut.info.sa201.2025"
@@ -23,7 +25,10 @@ dependencies {
     implementation(files("libs/sae-qui-est-ce-client-1.0.jar"))
 
 }
-
+javafx {
+    version="21"
+    modules("javafx.controls", "javafx.fxml")
+}
 
 tasks.test {
     useJUnitPlatform()
