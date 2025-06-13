@@ -3,12 +3,13 @@ package state
 import ConnectedPlayer
 import Player
 import info.but1.sae2025.QuiEstCeClient
+import state.gameinit.WaitingForOtherPlayer
 
 class Home(
     apiClient: QuiEstCeClient,
     apiThread: ApiThread,
     stateChangeHandler: StateChangeHandler,
-    selfPlayer: ConnectedPlayer
+    val selfPlayer: ConnectedPlayer
 ): AppState(apiClient, apiThread, stateChangeHandler) {
 
     private var playersLock = Any()
@@ -91,11 +92,34 @@ class Home(
     fun createNewGame() {
         apiThread.executeImmediately {
 
+            try {
 
+                // fetch new game
+                val newGameId = apiClient.requeteCreationPartie(
+                    selfPlayer.id,
+                    selfPlayer.key
+                )
 
-            // safety : remove all periodic task to be sure
-            // they don't change state after this change
-            apiThread.setPeriodicTask(null)
+                // safety : remove all periodic task to be sure
+                // they don't change state after this change
+                apiThread.setPeriodicTask(null)
+
+                // send new state
+                stateChangeHandler.handle(
+                    GameInit(
+                        apiClient,
+                        apiThread,
+                        stateChangeHandler,
+                        selfPlayer,
+                        selfIsPlayer1 = true,
+                        newGameId,
+                        WaitingForOtherPlayer()
+                    )
+                )
+
+            }catch(e: Error) {
+                stateChangeHandler.handle(this, e)
+            }
         }
     }
 
