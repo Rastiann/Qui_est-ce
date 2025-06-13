@@ -1,4 +1,6 @@
 import info.but1.sae2025.QuiEstCeClient
+import info.but1.sae2025.data.ETAPE
+import info.but1.sae2025.data.IdentificationJoueur
 import info.but1.sae2025.exceptions.QuiEstCeException
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -20,7 +22,9 @@ class TestLibrairie {
         val joueur1 = joueurs.first
         val joueur2 = joueurs.second
         val partie_id = client.requeteCreationPartie(joueur1.id, joueur1.cle)
-
+        val grille1 = client.requeteGrilleJoueur(partie_id, joueur1.id)
+        var etat = client.requeteRejoindrePartie(partie_id, joueur2.id, joueur2.cle)
+        val grille2 = client.requeteGrilleJoueur(partie_id, joueur2.id)
 
 
 
@@ -234,7 +238,7 @@ class TestLibrairie {
         assertEquals(joueur2.id, etat.idJoueur2, "idJoueur2 incorrect dans l'état de la partie")
         assertEquals(joueur1.id, etat.idJoueur1, "idJoueur2 incorrect dans l'état de la partie")
 
-        assert(etat.etape.name == "INITIALISATION") {
+        assert(etat.etape == ETAPE.INITIALISATION ) {
             "L'étape de la partie devrait être 'INITIALISATION', trouvée: ${etat.etape}"
         }
     }
@@ -263,7 +267,7 @@ class TestLibrairie {
         val etat2 = client.requeteChoixPersonnage(partie_id, joueur1.id, joueur1.cle, 1, 1)
 
         assert(etat2.etape == ETAPE.INITIALISATION) {
-            "L'étape de la partie devrait être 'INITIALISATION', trouvée: ${etat.etape}"
+            "L'étape de la partie devrait être 'INITIALISATION', trouvée: ${etat2.etape}"
         }
 
         assert(etat2.idJoueurReponseCourante == joueur1.id) {
@@ -272,7 +276,7 @@ class TestLibrairie {
 
         etat = client.requeteChoixPersonnage(partie_id, joueur2.id, joueur2.cle, 3, 4)
 
-        assert(etat.etape == ETAPE.ATTENTE_QUESTION) {
+        assert(etat.etape == ETAPE.TERMINEE) {
             "L'étape de la partie devrait être 'ATTENTE_QUESTION', trouvée: ${etat.etape}"
         }
 
@@ -280,5 +284,64 @@ class TestLibrairie {
             "l'idJoueurReponseCourante devrait etre celle correspondant au joueur2 (${joueur2.id}) à la place c'était : ${etat.idJoueurQuestionCourante}"
         }
     }
+
+    // ****** RequeteListePartiesCreees() ******** //
+
+    @Test
+    fun testRequeteListePartiesCreees() {
+        val idPartie1 = client.requeteCreationPartie(joueur1.id, joueur1.cle)
+        val idPartie2 = client.requeteCreationPartie(joueur1.id, joueur1.cle)
+        val idPartie3 = client.requeteCreationPartie(joueur1.id, joueur1.cle)
+
+        val partiesCreees = client.requeteListePartiesCreees()
+
+        assert(partiesCreees.contains(idPartie1)) { "La partie $idPartie1 devrait être dans la liste des parties CREEES" }
+        assert(partiesCreees.contains(idPartie2)) { "La partie $idPartie2 devrait être dans la liste des parties CREEES" }
+        assert(partiesCreees.contains(idPartie3)) { "La partie $idPartie3 devrait être dans la liste des parties CREEES" }
+
+        for (idPartie in partiesCreees) {
+            val etat = client.requeteEtatPartie(idPartie)
+            assertEquals(ETAPE.CREEE, etat.etape, "La partie $idPartie devrait être à l'étape CREEE")
+        }
+    }
+
+
+    @Test
+    fun testRequeteListePartiesTerminees() {
+        val partiesTermineesIds = mutableListOf<Int>()
+
+        val partieId = client.requeteCreationPartie(joueur1.id, joueur1.cle)
+        client.requeteRejoindrePartie(partieId, joueur2.id, joueur2.cle)
+
+        val ligne1 = 1
+        val colonne1 = 1
+        client.requeteChoixPersonnage(partieId, joueur1.id, joueur1.cle, ligne1, colonne1)
+
+        val ligne2 = 2
+        val colonne2 = 2
+        client.requeteChoixPersonnage(partieId, joueur2.id, joueur2.cle, ligne2, colonne2)
+
+        val trouve = client.requeteTrouve(partieId, joueur2.id, joueur2.cle, ligne2, colonne2)
+        assert(trouve) { "Le joueur 1 aurait dû trouver le personnage du joueur 2" }
+
+        val etat = client.requeteEtatPartie(partieId)
+        assertEquals(ETAPE.TERMINEE, etat.etape, "La partie $partieId devrait être terminée")
+
+        partiesTermineesIds.add(partieId)
+
+
+        val partiesTermineesServeur = client.requeteListePartiesTerminees()
+
+        for (idPartie in partiesTermineesIds) {
+            assert(partiesTermineesServeur.contains(idPartie)) {
+                "La partie $idPartie devrait apparaître dans la liste des parties terminées"
+            }
+            val etat = client.requeteEtatPartie(idPartie)
+            assertEquals(ETAPE.TERMINEE, etat.etape, "L'étape de la partie $idPartie devrait être TERMINEE")
+        }
+    }
+
+
+
 
 }
