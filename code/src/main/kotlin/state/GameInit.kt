@@ -1,4 +1,10 @@
 package state
 
-class GameInit: AppState() {
+import info.but1.sae2025.QuiEstCeClient
+
+class GameInit(
+    host: String,
+    port: Int,
+    stateChangeHandler: StateChangeHandler
+): AppState(QuiEstCeClient(host, port), ApiThread(), stateChangeHandler) {
 }
