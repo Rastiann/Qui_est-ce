@@ -5,10 +5,9 @@ import jdk.jfr.internal.handlers.EventHandler.timestamp
 class PlayerProvider(client : QuiEstCeClient) {
 
     val timestamp = System.currentTimeMillis()
-    private var joueur1: IdentificationJoueur? = client.requeteCreationJoueur("sdf$timestamp", "sdf")
-    private var joueur2: IdentificationJoueur? = client.requeteCreationJoueur("sdf$timestamp", "sdff")
+    private var joueur: IdentificationJoueur = client.requeteCreationJoueur("sdf$timestamp", "sdf")
 
-    fun get(client: QuiEstCeClient): Pair<IdentificationJoueur, IdentificationJoueur> {
-        return Pair(joueur1!!, joueur2!!)
+    fun get() : IdentificationJoueur {
+        return joueur
     }
 }

@@ -17,10 +17,10 @@ class TestLibrairie {
 
         val client: QuiEstCeClient = QuiEstCeClient("localhost", 8080)
         val playerProvider = PlayerProvider(client)
+        val gameTestHelper = GameTestHelper(client)
 
-        val joueurs = playerProvider.get(client)
-        val joueur1 = joueurs.first
-        val joueur2 = joueurs.second
+        val joueur1 = playerProvider.get()
+        val joueur2 = playerProvider.get()
         val partie_id = client.requeteCreationPartie(joueur1.id, joueur1.cle)
         val grille1 = client.requeteGrilleJoueur(partie_id, joueur1.id)
         var etat = client.requeteRejoindrePartie(partie_id, joueur2.id, joueur2.cle)
@@ -179,14 +179,14 @@ class TestLibrairie {
         val grille1 = client.requeteGrilleJoueur(partieId, joueur1.id)
         val grille2 = client.requeteGrilleJoueur(partieId, joueur2.id)
 
-        assertEquals(4, grille1.size, "La grille du joueur 1 doit contenir 3 lignes")
-        assertEquals(4, grille2.size, "La grille du joueur 2 doit contenir 3 lignes")
+        assertEquals(4, grille1.size, "La grille du joueur 1 doit contenir 4 lignes")
+        assertEquals(4, grille2.size, "La grille du joueur 2 doit contenir 4 lignes")
 
         grille1.forEachIndexed { index, ligne ->
-            assertEquals(6, ligne.size, "Ligne ${index + 1} de la grille 1 doit contenir 8 personnages")
+            assertEquals(6, ligne.size, "Ligne ${index + 1} de la grille 1 doit contenir 6 personnages")
         }
         grille2.forEachIndexed { index, ligne ->
-            assertEquals(6, ligne.size, "Ligne ${index + 1} de la grille 2 doit contenir 8 personnages")
+            assertEquals(6, ligne.size, "Ligne ${index + 1} de la grille 2 doit contenir 6 personnages")
         }
     }
 
@@ -289,19 +289,43 @@ class TestLibrairie {
 
     @Test
     fun testRequeteListePartiesCreees() {
-        val idPartie1 = client.requeteCreationPartie(joueur1.id, joueur1.cle)
-        val idPartie2 = client.requeteCreationPartie(joueur1.id, joueur1.cle)
-        val idPartie3 = client.requeteCreationPartie(joueur1.id, joueur1.cle)
+        val partiesCreeesIds = mutableListOf<Int>()
 
-        val partiesCreees = client.requeteListePartiesCreees()
+        // Game 1
 
-        assert(partiesCreees.contains(idPartie1)) { "La partie $idPartie1 devrait être dans la liste des parties CREEES" }
-        assert(partiesCreees.contains(idPartie2)) { "La partie $idPartie2 devrait être dans la liste des parties CREEES" }
-        assert(partiesCreees.contains(idPartie3)) { "La partie $idPartie3 devrait être dans la liste des parties CREEES" }
+        var partieId = client.requeteCreationPartie(joueur1.id, joueur1.cle)
+        var etat = client.requeteEtatPartie(partieId)
+        assertEquals(ETAPE.CREEE, etat.etape, "La partie $partieId devrait être terminée")
 
-        for (idPartie in partiesCreees) {
+        partiesCreeesIds.add(partieId)
+
+        // Game 2
+
+        partieId = client.requeteCreationPartie(joueur1.id, joueur1.cle)
+        etat = client.requeteEtatPartie(partieId)
+        assertEquals(ETAPE.CREEE, etat.etape, "La partie $partieId devrait être terminée")
+
+        partiesCreeesIds.add(partieId)
+
+        // Game 3
+
+        partieId = client.requeteCreationPartie(joueur1.id, joueur1.cle)
+        etat = client.requeteEtatPartie(partieId)
+        assertEquals(ETAPE.CREEE, etat.etape, "La partie $partieId devrait être terminée")
+
+        partiesCreeesIds.add(partieId)
+
+        val partiesCreeesIdsServer = client.requeteListePartiesCreees()
+
+        for (idPartie in partiesCreeesIdsServer) {
             val etat = client.requeteEtatPartie(idPartie)
             assertEquals(ETAPE.CREEE, etat.etape, "La partie $idPartie devrait être à l'étape CREEE")
+        }
+
+        for (idPartie in partiesCreeesIds) {
+            assert(partiesCreeesIdsServer.contains(idPartie)) {
+                "La partie $idPartie devrait apparaître dans la liste des parties terminées"
+            }
         }
     }
 
@@ -310,32 +334,43 @@ class TestLibrairie {
     fun testRequeteListePartiesTerminees() {
         val partiesTermineesIds = mutableListOf<Int>()
 
-        val partieId = client.requeteCreationPartie(joueur1.id, joueur1.cle)
-        client.requeteRejoindrePartie(partieId, joueur2.id, joueur2.cle)
+        // Game 1
 
-        val ligne1 = 1
-        val colonne1 = 1
-        client.requeteChoixPersonnage(partieId, joueur1.id, joueur1.cle, ligne1, colonne1)
-
-        val ligne2 = 2
-        val colonne2 = 2
-        client.requeteChoixPersonnage(partieId, joueur2.id, joueur2.cle, ligne2, colonne2)
-
-        val trouve = client.requeteTrouve(partieId, joueur2.id, joueur2.cle, ligne2, colonne2)
-        assert(trouve) { "Le joueur 1 aurait dû trouver le personnage du joueur 2" }
-
-        val etat = client.requeteEtatPartie(partieId)
-        assertEquals(ETAPE.TERMINEE, etat.etape, "La partie $partieId devrait être terminée")
+        var partieId = client.requeteCreationPartie(TestLibrairie.Companion.joueur1.id, TestLibrairie.Companion.joueur1.cle)
+        var gameState = gameTestHelper.gameEnder(joueur1, joueur2, partieId)
+        assertEquals(ETAPE.TERMINEE, gameState.etape, "La partie $partieId devrait être terminée")
 
         partiesTermineesIds.add(partieId)
 
+        // Game 2
+
+        partieId = client.requeteCreationPartie(TestLibrairie.Companion.joueur1.id, TestLibrairie.Companion.joueur1.cle)
+        gameState = gameTestHelper.gameEnder(joueur1, joueur2, partieId)
+        assertEquals(ETAPE.TERMINEE, gameState.etape, "La partie $partieId devrait être terminée")
+
+        partiesTermineesIds.add(partieId)
+
+        // Game 3
+
+        partieId = client.requeteCreationPartie(TestLibrairie.Companion.joueur1.id, TestLibrairie.Companion.joueur1.cle)
+        gameState = gameTestHelper.gameEnder(joueur1, joueur2, partieId)
+        assertEquals(ETAPE.TERMINEE, gameState.etape, "La partie $partieId devrait être terminée")
+
+        partiesTermineesIds.add(partieId)
 
         val partiesTermineesServeur = client.requeteListePartiesTerminees()
+
+        // Je vérifie que les parties que j'ai terminées sont bien présent dans la liste
 
         for (idPartie in partiesTermineesIds) {
             assert(partiesTermineesServeur.contains(idPartie)) {
                 "La partie $idPartie devrait apparaître dans la liste des parties terminées"
             }
+        }
+
+        // Je vérifie que la liste de parties renvoyées par le serveur sont tous terminés.
+
+        for (idPartie in partiesTermineesServeur) {
             val etat = client.requeteEtatPartie(idPartie)
             assertEquals(ETAPE.TERMINEE, etat.etape, "L'étape de la partie $idPartie devrait être TERMINEE")
         }
