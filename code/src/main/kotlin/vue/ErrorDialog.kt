@@ -1,5 +1,6 @@
 package vue
 
+import javafx.application.Platform
 import javafx.scene.control.Alert
 import javafx.scene.control.ButtonType
 
@@ -45,5 +46,6 @@ class ErrorDialog(
 
     fun show() {
         alert.showAndWait()
+        Platform.exit()
     }
 }

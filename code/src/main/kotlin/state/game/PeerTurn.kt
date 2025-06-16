@@ -42,8 +42,9 @@ class PeerTurn(
                 // set state
                 stateChangeHandler.handle(Game(game, Answering(question)))
 
-            }catch (e: Error) {
+            }catch (e: Throwable) {
                 stateChangeHandler.handle(game, e)
+                apiThread.stop()
             }
 
         }, 500)

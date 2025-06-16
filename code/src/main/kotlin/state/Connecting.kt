@@ -28,10 +28,11 @@ class Connecting(
                     )
                 )
 
-            }catch (e: Error) {
+            }catch (e: Throwable) {
 
                 // connection went wrong, send error
                 stateChangeHandler.handle(this, e)
+                apiThread.stop()
 
             }
         }

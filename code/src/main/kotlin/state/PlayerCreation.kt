@@ -36,8 +36,9 @@ class PlayerCreation(
                 // send new state
                 stateChangeHandler.handle(homeState)
 
-            }catch(e: Error) {
+            }catch(e: Throwable) {
                 stateChangeHandler.handle(this, e)
+                apiThread.stop()
             }
         }
     }

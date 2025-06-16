@@ -21,8 +21,9 @@ class Answering(
 
                 stateChangeHandler.handle(Game(game, UserTurn()))
 
-            }catch(e: Error) {
+            }catch(e: Throwable) {
                 stateChangeHandler.handle(game, e)
+                apiThread.stop()
             }
         }
     }

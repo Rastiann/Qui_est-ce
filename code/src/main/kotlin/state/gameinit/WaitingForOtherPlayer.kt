@@ -56,8 +56,9 @@ class WaitingForOtherPlayer: GameInitState() {
                     )
                 )
 
-            }catch(e: Error) {
+            }catch(e: Throwable) {
                 stateChangeHandler.handle(gameInit, e)
+                apiThread.stop()
             }
         }, 500)
     }

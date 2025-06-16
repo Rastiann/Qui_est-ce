@@ -27,8 +27,9 @@ class WaitingForResponse: GameState() {
                 // set state
                 stateChangeHandler.handle(Game(game, PeerTurn(response)))
 
-            }catch (e: Error) {
+            }catch (e: Throwable) {
                 stateChangeHandler.handle(game, e)
+                apiThread.stop()
             }
 
         }, 500)

@@ -22,8 +22,9 @@ class UserTurn: GameState() {
                 // send new state
                 stateChangeHandler.handle(Game(game, WaitingForResponse()))
 
-            }catch(e: Error) {
+            }catch(e: Throwable) {
                 stateChangeHandler.handle(game, e)
+                apiThread.stop()
             }
         }
     }
@@ -41,8 +42,9 @@ class UserTurn: GameState() {
                 // send new state
                 stateChangeHandler.handle(Game(game, PeerTurn(null)))
 
-            }catch(e: Error) {
+            }catch(e: Throwable) {
                 stateChangeHandler.handle(game, e)
+                apiThread.stop()
             }
         }
     }
@@ -85,8 +87,9 @@ class UserTurn: GameState() {
 
                 stateChangeHandler.handle(nextState, null)
 
-            }catch(e: Error) {
+            }catch(e: Throwable) {
                 stateChangeHandler.handle(game, e)
+                apiThread.stop()
             }
         }
     }

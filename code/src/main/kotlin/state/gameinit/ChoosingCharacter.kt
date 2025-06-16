@@ -85,8 +85,9 @@ class ChoosingCharacter(
                 // send new state
                 stateChangeHandler.handle(newGameState)
 
-            }catch(e: Error) {
+            }catch(e: Throwable) {
                 stateChangeHandler.handle(gameInit, e)
+                apiThread.stop()
             }
         }
     }

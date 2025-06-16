@@ -75,7 +75,8 @@ class AppController(
         }
     }
 
-    override fun handle(newState: AppState, error: Error?) {
+    override fun handle(newState: AppState, error: Throwable?) {
+
         Platform.runLater {
 
             if (error != null) {

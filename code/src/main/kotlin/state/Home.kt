@@ -87,8 +87,9 @@ class Home(
 
                 stateChangeHandler.handle(this)
 
-            }catch(e: Error) {
+            }catch(e: Throwable) {
                 stateChangeHandler.handle(this, e)
+                apiThread.stop()
             }
         }, 1000)
     }
@@ -121,8 +122,9 @@ class Home(
                     )
                 )
 
-            }catch(e: Error) {
+            }catch(e: Throwable) {
                 stateChangeHandler.handle(this, e)
+                apiThread.stop()
             }
         }
     }
@@ -176,8 +178,9 @@ class Home(
                     )
                 )
 
-            }catch(e: Error) {
+            }catch(e: Throwable) {
                 stateChangeHandler.handle(this, e)
+                apiThread.stop()
             }
         }
     }
