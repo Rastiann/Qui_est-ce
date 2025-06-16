@@ -263,24 +263,25 @@ class TestLibrairieOld {
     fun testRequeteChoixPersonnage() {
 
 
-        val etat1 = client.requeteChoixPersonnage(partie_id, joueur1.id, joueur1.cle, 1, 1)
+        var etat = client.requeteChoixPersonnage(partie_id, joueur1.id, joueur1.cle, 1, 1)
 
-        assert(etat1.etape == ETAPE.INITIALISATION) {
-            "L'étape de la partie devrait être 'INITIALISATION', trouvée: ${etat1.etape}"
+        assert(etat.etape == ETAPE.INITIALISATION) {
+            "L'étape de la partie devrait être 'INITIALISATION', trouvée: ${etat.etape}"
         }
 
-        assert(etat1.idJoueurReponseCourante == joueur1.id) {
-            "l'idJoueurReponseCourante devrait etre celle correspondant au joueur1 (${joueur1.id}) à la place c'était : ${etat1.idJoueurReponseCourante}"
+
+        etat = client.requeteChoixPersonnage(partie_id, joueur2.id, joueur2.cle, 3, 4)
+
+        assert(etat.idJoueurQuestionCourante == joueur1.id) {
+            "l'idJoueurReponseCourante devrait etre celle correspondant au joueur1 (${joueur1.id}) à la place c'était : ${etat.idJoueurReponseCourante}"
         }
 
-        val etat2 = client.requeteChoixPersonnage(partie_id, joueur2.id, joueur2.cle, 3, 4)
-
-        assert(etat2.etape == ETAPE.ATTENTE_QUESTION) {
-            "L'étape de la partie devrait être 'ATTENTE_QUESTION', trouvée: ${etat2.etape}"
+        assert(etat.etape == ETAPE.ATTENTE_QUESTION) {
+            "L'étape de la partie devrait être 'ATTENTE_QUESTION', trouvée: ${etat.etape}"
         }
 
-        assert(etat2.idJoueurQuestionCourante == joueur2.id) {
-            "l'idJoueurReponseCourante devrait etre celle correspondant au joueur2 (${joueur2.id}) à la place c'était : ${etat2.idJoueurQuestionCourante}"
+        assert(etat.idJoueurReponseCourante == joueur2.id) {
+            "l'idJoueurReponseCourante devrait etre celle correspondant au joueur2 (${joueur2.id}) à la place c'était : ${etat.idJoueurQuestionCourante}"
         }
     }
 

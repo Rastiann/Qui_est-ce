@@ -1,6 +1,6 @@
 package controleur
 
-import vue.GameVue
+import Vue.GameVue
 import javafx.scene.Parent
 import state.Game
 

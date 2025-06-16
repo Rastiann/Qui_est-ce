@@ -21,34 +21,35 @@ class GameStateHelper(val client : QuiEstCeClient) {
             step: GameStep
         ): EtatPartie {
             // On rejoint la partie à chaque étape sauf pour INITIALISATION (selon ton code)
-            client.requeteRejoindrePartie(partieId, joueur2.id, joueur2.cle)
+            var etat = client.requeteRejoindrePartie(partieId, joueur2.id, joueur2.cle)
 
             if (step == GameStep.INITIALISATION) {
-                return client.requeteRejoindrePartie(partieId, joueur2.id, joueur2.cle)
+                return etat
             }
 
-            // Choix personnages
+            // Joueur 1 choisit personnages
             client.requeteChoixPersonnage(partieId, joueur1.id, joueur1.cle, 1, 1)
 
+            // Joueur 2 choisit personnage
+            etat = client.requeteChoixPersonnage(partieId, joueur2.id, joueur2.cle, 2, 2)
+
             if (step == GameStep.WAIT_QUESTION) {
-                return client.requeteChoixPersonnage(partieId, joueur2.id, joueur2.cle, 2, 2)
+                return etat
             }
 
-            // Joueur 2 choisit personnage
-            client.requeteChoixPersonnage(partieId, joueur2.id, joueur2.cle, 2, 2)
+            etat = client.requetePoserQuestion(partieId, joueur1.id, joueur1.cle, "Est ce qu'il est roux")
 
             if (step == GameStep.WAIT_RESPONSE) {
-                return client.requetePoserQuestion(partieId, joueur1.id, joueur1.cle, "Est ce qu'il est roux")
+                return etat
             }
 
+            etat = client.requeteDonnerReponse(partieId, joueur1.id, joueur1.cle, "non")
+
             if (step == GameStep.WAIT_REFLEXION) {
-                client.requetePoserQuestion(partieId, joueur1.id, joueur1.cle, "Est ce qu'il est roux")
-                return client.requeteDonnerReponse(partieId, joueur2.id, joueur2.cle, "non")
+                return etat
             }
 
             if (step == GameStep.END) {
-                client.requetePoserQuestion(partieId, joueur1.id, joueur1.cle, "Est ce qu'il est roux")
-                client.requeteDonnerReponse(partieId, joueur2.id, joueur2.cle, "non")
                 client.requeteTrouve(partieId, joueur1.id, joueur1.cle, 2, 2)
                 return client.requeteEtatPartie(partieId)
             }
