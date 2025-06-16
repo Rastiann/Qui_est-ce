@@ -1,11 +1,11 @@
 import java.io.File
 
 class ConnectedPlayer(
-    firstName: String,
     name: String,
+    firstName: String,
     val id: Int,
     val key: String
-): Player(firstName, name) {
+): Player(name, firstName) {
 
 
     companion object Saver {
@@ -14,10 +14,10 @@ class ConnectedPlayer(
 
             val file = File(filePath)
             file.writeText(
-                   "${player.firstName}\n" +
-                        "${player.name}\n" +
+                   "${player.name}\n" +
+                        "${player.firstName}\n" +
                         "${player.id}\n" +
-                           player.key,
+                           "${player.key}\n",
                 Charsets.UTF_8
             )
         }
@@ -46,4 +46,23 @@ class ConnectedPlayer(
         }
     }
 
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+        if (!super.equals(other)) return false
+
+        other as ConnectedPlayer
+
+        if (id != other.id) return false
+        if (key != other.key) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = super.hashCode()
+        result = 31 * result + id
+        result = 31 * result + key.hashCode()
+        return result
+    }
 }

@@ -123,4 +123,37 @@ class Home(
         }
     }
 
+    fun joinGame(id: Int) {
+        apiThread.executeImmediately {
+
+            try {
+
+                // join game
+                apiClient.requeteRejoindrePartie(
+                    id, selfPlayer.id, selfPlayer.key
+                )
+
+                // safety : remove all periodic task to be sure
+                // they don't change state after this change
+                apiThread.setPeriodicTask(null)
+
+                // send new state
+                stateChangeHandler.handle(
+                    GameInit(
+                        apiClient,
+                        apiThread,
+                        stateChangeHandler,
+                        selfPlayer,
+                        selfIsPlayer1 = false,
+                        id,
+                        WaitingForOtherPlayer()
+                    )
+                )
+
+            }catch(e: Error) {
+                stateChangeHandler.handle(this, e)
+            }
+        }
+    }
+
 }
