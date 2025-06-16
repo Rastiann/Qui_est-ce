@@ -43,7 +43,7 @@ class GameStateHelper(val client : QuiEstCeClient) {
                 return etat
             }
 
-            etat = client.requeteDonnerReponse(partieId, joueur1.id, joueur1.cle, "non")
+            etat = client.requeteDonnerReponse(partieId, joueur2.id, joueur2.cle, "non")
 
             if (step == GameStep.WAIT_REFLEXION) {
                 return etat

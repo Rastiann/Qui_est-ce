@@ -58,17 +58,17 @@ class TestRequeteChoixPersonnage {
             "L'étape de la partie devrait être 'INITIALISATION', trouvée: ${etat.etape}"
         }
 
-        assert(etat.idJoueurReponseCourante == joueur1.id) {
+        etat = client.requeteChoixPersonnage(partieId, joueur2.id, joueur2.cle, 3, 4)
+
+        assert(etat.idJoueurReponseCourante == joueur2.id) {
             "l'idJoueurReponseCourante devrait etre celle correspondant au joueur1 (${joueur1.id}) à la place c'était : ${etat.idJoueurReponseCourante}"
         }
-
-        etat = client.requeteChoixPersonnage(partieId, joueur2.id, joueur2.cle, 3, 4)
 
         assert(etat.etape == ETAPE.ATTENTE_QUESTION) {
             "L'étape de la partie devrait être 'ATTENTE_QUESTION', trouvée: ${etat.etape}"
         }
 
-        assert(etat.idJoueurQuestionCourante == joueur2.id) {
+        assert(etat.idJoueurQuestionCourante == joueur1.id) {
             "l'idJoueurReponseCourante devrait etre celle correspondant au joueur2 (${joueur2.id}) à la place c'était : ${etat.idJoueurQuestionCourante}"
         }
     }
