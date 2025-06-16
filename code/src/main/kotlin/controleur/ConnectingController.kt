@@ -9,7 +9,7 @@ class ConnectingController: StateController<Connecting> {
     private val vue = ConnectingVue()
 
     override fun getVue(): Parent {
-        TODO("return vue")
+        return vue
     }
 
     override fun update(state: Connecting) {

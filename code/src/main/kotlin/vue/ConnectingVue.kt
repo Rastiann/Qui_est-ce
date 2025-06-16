@@ -1,4 +1,6 @@
 package vue
 
-class ConnectingVue {
+import javafx.scene.layout.HBox
+
+class ConnectingVue: HBox() {
 }

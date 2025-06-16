@@ -1,10 +1,13 @@
 package controleur
 
+import ConnectedPlayer
 import vue.PlayerCreationVue
 import javafx.scene.Parent
 import state.PlayerCreation
 
-class PlayerCreationController: StateController<PlayerCreation> {
+class PlayerCreationController(
+    storedPlayer: ConnectedPlayer? = null
+): StateController<PlayerCreation> {
 
     private val vue = PlayerCreationVue()
 

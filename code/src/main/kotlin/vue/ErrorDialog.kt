@@ -1,17 +1,20 @@
-package Controleur
+package vue
 
-import javafx.event.ActionEvent
-import javafx.event.EventHandler
 import javafx.scene.control.Alert
 import javafx.scene.control.ButtonType
 
-class ControleErreurConnexion() : EventHandler<ActionEvent> {
+class ErrorDialog(
+    title: String,
+    header: String,
+    message: String
+) {
 
-    override fun handle(event: ActionEvent) {
-        val alert = Alert(Alert.AlertType.INFORMATION)
-        alert.title = "Error"
-        alert.headerText = "Connection Error"
-        alert.contentText = "Serveur injoignable, vérifier votre connexion"
+    private val alert = Alert(Alert.AlertType.INFORMATION)
+
+    init {
+        alert.title = title
+        alert.headerText = header
+        alert.contentText = message
 
         val dialogPane = alert.dialogPane
 
@@ -38,11 +41,9 @@ class ControleErreurConnexion() : EventHandler<ActionEvent> {
 
         // Texte du contenu en blanc
         dialogPane.lookup(".content.label").style = "-fx-text-fill: black; -fx-font-size: 14px;"
-
-
-        alert.showAndWait()
     }
 
-
-
+    fun show() {
+        alert.showAndWait()
+    }
 }

@@ -1,16 +1,23 @@
 package controleur
 
+import ConnectedPlayer
 import javafx.application.Platform
 import javafx.scene.Scene
+import javafx.stage.Stage
 import state.*
+import vue.ErrorDialog
+import java.nio.file.Paths
 
 class AppController(
     host: String,
     port: Int,
-    var scene: Scene
+    stage: Stage
 ): StateChangeHandler {
 
+    private val scene: Scene
+
     private var appState: AppState? = null
+    private var storedPlayer: ConnectedPlayer? = null
 
     private var connectingController = ConnectingController()
     private var playerCreationController: PlayerCreationController? = null
@@ -20,7 +27,11 @@ class AppController(
 
     init {
 
-        scene.root = connectingController.getVue()
+        // init windows
+        scene = Scene(connectingController.getVue(), 900.0, 600.0)
+        stage.isResizable = true
+        stage.title = "Qui est-ce ?"
+        stage.scene = scene
 
         // Unfortunately, the connection is made in the constructor,
         // which makes the creation of a state concurrent.
@@ -33,17 +44,34 @@ class AppController(
                 // which makes this assignment safe
                 appState = Connecting(host, port, this)
 
-            }catch (e: Error) {
+            }catch (_: Throwable) {
                 showConnectionError()
             }
 
-        }.start()
+            try {
 
+                val configPath = Paths.get(System.getProperty("user.home"), ".config", "quiestce")
+                val playerFilePath =  configPath.resolve("player")
+
+                // playerStored is not read until the handle function is called
+                // which makes this assignment safe
+                storedPlayer = ConnectedPlayer.readFrom(playerFilePath.toString())
+
+            }catch(_: Throwable) {
+                // do nothing is cache, if we cannot read player from file,
+                // functionality will just not be display
+            }
+
+        }.start()
     }
 
     private fun showConnectionError() {
         Platform.runLater {
-            TODO("show error dialog")
+            ErrorDialog(
+                "Erreur de connection",
+                "Serveur injoignable",
+                "Impossible de se connecter au serveur"
+            ).show()
         }
     }
 
@@ -51,7 +79,11 @@ class AppController(
         Platform.runLater {
 
             if (error != null) {
-                // TODO: show dialog
+                ErrorDialog(
+                    "Erreur",
+                    "Un erreur est survenu, veuillez réessayer plutard",
+                    error.toString()
+                ).show()
             }
 
             when (newState) {
@@ -71,7 +103,10 @@ class AppController(
                 is PlayerCreation -> {
 
                     // lazy creation of vue
-                    if (playerCreationController == null) { playerCreationController = PlayerCreationController() }
+                    if (playerCreationController == null) { playerCreationController = PlayerCreationController(
+                        storedPlayer
+                    )}
+
                     val controller = playerCreationController!!
 
                     // update vue (pass it to controller)
