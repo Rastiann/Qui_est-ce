@@ -6,7 +6,7 @@ import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
 import javafx.scene.text.Font
 
-class SpinnerVue(val text: String, val direction: Direction) : VBox() {
+open class SpinnerVue(val text: String, val direction: Direction) : VBox() {
 
     enum class Direction {
         VERTICAL, HORIZONTAL

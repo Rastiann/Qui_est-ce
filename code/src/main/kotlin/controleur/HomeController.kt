@@ -1,18 +1,26 @@
 package controleur
 
+import handlers.GameClickedHandler
 import vue.GameVue
 import javafx.scene.Parent
 import state.Home
+import vue.HomeVue
 
 class HomeController: StateController<Home> {
 
-    private val vue = GameVue()
+    private val vue = HomeVue()
 
     override fun getVue(): Parent {
-        TODO("Not yet implemented")
+        return vue.root
     }
 
     override fun update(state: Home) {
-        TODO("Not yet implemented")
+        vue.updateParties(state.registeredGames) { gameId ->
+            state.joinGame(gameId)
+        }
+
+        vue.joinBtn.setOnAction {
+            state.joinGame(vue.codeField.text.toInt())
+        }
     }
 }

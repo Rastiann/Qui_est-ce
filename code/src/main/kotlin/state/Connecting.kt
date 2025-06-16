@@ -1,7 +1,6 @@
 package state
 
 import info.but1.sae2025.QuiEstCeClient
-import state.game.ConnectionError
 
 class Connecting(
     host: String,

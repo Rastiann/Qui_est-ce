@@ -13,7 +13,7 @@ class ConnectingController: StateController<Connecting> {
     }
 
     override fun update(state: Connecting) {
-        TODO("Not yet implemented")
+        // nothing to do ...
     }
 
 }

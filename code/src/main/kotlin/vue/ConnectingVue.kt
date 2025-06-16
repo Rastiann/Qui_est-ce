@@ -1,6 +1,5 @@
 package vue
 
-import javafx.scene.layout.HBox
+import SpinnerVue
 
-class ConnectingVue: HBox() {
-}
+class ConnectingVue: SpinnerVue("Connection au serveur ...", Direction.VERTICAL)
