@@ -10,7 +10,7 @@ import java.util.stream.Stream
 import kotlin.test.assertEquals
 
 
-class TestLibrairie {
+class TestLibrairieOld {
 
     companion object {
 
@@ -263,24 +263,24 @@ class TestLibrairie {
     fun testRequeteChoixPersonnage() {
 
 
-        val etat2 = client.requeteChoixPersonnage(partie_id, joueur1.id, joueur1.cle, 1, 1)
+        val etat1 = client.requeteChoixPersonnage(partie_id, joueur1.id, joueur1.cle, 1, 1)
 
-        assert(etat2.etape == ETAPE.INITIALISATION) {
-            "L'étape de la partie devrait être 'INITIALISATION', trouvée: ${etat2.etape}"
+        assert(etat1.etape == ETAPE.INITIALISATION) {
+            "L'étape de la partie devrait être 'INITIALISATION', trouvée: ${etat1.etape}"
         }
 
-        assert(etat2.idJoueurReponseCourante == joueur1.id) {
-            "l'idJoueurReponseCourante devrait etre celle correspondant au joueur1 (${joueur1.id}) à la place c'était : ${etat.idJoueurReponseCourante}"
+        assert(etat1.idJoueurReponseCourante == joueur1.id) {
+            "l'idJoueurReponseCourante devrait etre celle correspondant au joueur1 (${joueur1.id}) à la place c'était : ${etat1.idJoueurReponseCourante}"
         }
 
-        etat = client.requeteChoixPersonnage(partie_id, joueur2.id, joueur2.cle, 3, 4)
+        val etat2 = client.requeteChoixPersonnage(partie_id, joueur2.id, joueur2.cle, 3, 4)
 
-        assert(etat.etape == ETAPE.TERMINEE) {
-            "L'étape de la partie devrait être 'ATTENTE_QUESTION', trouvée: ${etat.etape}"
+        assert(etat2.etape == ETAPE.ATTENTE_QUESTION) {
+            "L'étape de la partie devrait être 'ATTENTE_QUESTION', trouvée: ${etat2.etape}"
         }
 
-        assert(etat.idJoueurQuestionCourante == joueur2.id) {
-            "l'idJoueurReponseCourante devrait etre celle correspondant au joueur2 (${joueur2.id}) à la place c'était : ${etat.idJoueurQuestionCourante}"
+        assert(etat2.idJoueurQuestionCourante == joueur2.id) {
+            "l'idJoueurReponseCourante devrait etre celle correspondant au joueur2 (${joueur2.id}) à la place c'était : ${etat2.idJoueurQuestionCourante}"
         }
     }
 

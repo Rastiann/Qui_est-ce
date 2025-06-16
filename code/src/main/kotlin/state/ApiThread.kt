@@ -13,6 +13,7 @@ class ApiThread {
     private val workerThread: Thread = Thread { runLoop() }
 
     fun start() {
+        isRunning = true
         workerThread.start()
     }
 

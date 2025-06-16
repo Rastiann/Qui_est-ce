@@ -33,10 +33,6 @@ class PlayerCreation(
                     connectedPlayer
                 )
 
-                // safety : remove all periodic task to be sure
-                // they don't change state after this change
-                apiThread.setPeriodicTask(null)
-
                 // send new state
                 stateChangeHandler.handle(homeState)
 
