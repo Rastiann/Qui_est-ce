@@ -1,7 +1,10 @@
+import TestLibrairieOld.Companion.partie_id
 import info.but1.sae2025.QuiEstCeClient
 import info.but1.sae2025.data.ETAPE
 import info.but1.sae2025.data.IdentificationJoueur
+import info.but1.sae2025.exceptions.QuiEstCeException
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import kotlin.test.assertEquals
 
 class TestRequeteEtatPartie {
@@ -12,25 +15,57 @@ class TestRequeteEtatPartie {
     val joueur2 : IdentificationJoueur = playerProvider.get()
 
     @Test
-    fun testRequeteListePartiesCreees() {
-        val partiesCreeesIds = mutableListOf<Int>()
+    fun testRequeteEtatPartie() {
 
-        repeat(3) {
-            val partieId = client.requeteCreationPartie(joueur1.id, joueur1.cle)
+        // Création + état initial
+        var partieId = client.requeteCreationPartie(joueur1.id, joueur1.cle)
+        var etat = client.requeteEtatPartie(partieId)
+        assertEquals(ETAPE.CREEE, etat.etape)
+        assertEquals(-1, etat.idJoueurQuestionCourante)
+        assertEquals("", etat.questionCourante)
+        assertEquals(-1, etat.idJoueurReponseCourante)
+        assertEquals("", etat.reponseCourante)
+
+        // Initialisation
+        partieId = client.requeteCreationPartie(joueur1.id, joueur1.cle)
+        gameTestHelper.advanceGameTo(joueur1, joueur2, partieId, GameStateHelper.GameStep.INITIALISATION)
+        etat = client.requeteEtatPartie(partieId)
+        assertEquals(ETAPE.INITIALISATION, etat.etape)
+        assertEquals(-1, etat.idJoueurQuestionCourante)
+        assertEquals("", etat.questionCourante)
+        assertEquals(-1, etat.idJoueurReponseCourante)
+        assertEquals("", etat.reponseCourante)
+
+        // Attente question
+        partieId = client.requeteCreationPartie(joueur1.id, joueur1.cle)
+        gameTestHelper.advanceGameTo(joueur1, joueur2, partieId, GameStateHelper.GameStep.WAIT_QUESTION)
+        etat = client.requeteEtatPartie(partieId)
+        assertEquals(ETAPE.ATTENTE_QUESTION, etat.etape)
+        assertEquals(joueur1.id, etat.idJoueurQuestionCourante)
+        assertEquals("", etat.questionCourante)
+        assertEquals(joueur2.id, etat.idJoueurReponseCourante)
+        assertEquals("", etat.reponseCourante)
+
+        // Attente réponse
+        partieId = client.requeteCreationPartie(joueur1.id, joueur1.cle)
+        gameTestHelper.advanceGameTo(joueur1, joueur2, partieId, GameStateHelper.GameStep.WAIT_RESPONSE)
+        etat = client.requeteEtatPartie(partieId)
+        assertEquals(ETAPE.ATTENTE_REPONSE, etat.etape)
+        assertEquals(joueur1.id, etat.idJoueurQuestionCourante)
+        assertEquals("Est ce qu'il est roux", etat.questionCourante)
+        assertEquals(joueur2.id, etat.idJoueurReponseCourante)
+        assertEquals("", etat.reponseCourante)
+
+
+        // id néga
+        assertThrows<IllegalArgumentException> {
+            client.requeteEtatPartie(-partie_id)
         }
 
-
-        val partiesCreeesIdsServer = client.requeteListePartiesCreees()
-
-        for (idPartie in partiesCreeesIdsServer) {
-            val etat = client.requeteEtatPartie(idPartie)
-            assertEquals(ETAPE.CREEE, etat.etape, "La partie $idPartie devrait être à l'étape CREEE")
-        }
-
-        for (idPartie in partiesCreeesIds) {
-            assert(partiesCreeesIdsServer.contains(idPartie)) {
-                "La partie $idPartie devrait apparaître dans la liste des parties CREEE"
-            }
+        // id conforme mais inexistant
+        assertThrows<QuiEstCeException> {
+            client.requeteEtatPartie(1234)
         }
     }
+
 }

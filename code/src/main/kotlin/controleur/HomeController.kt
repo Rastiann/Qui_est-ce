@@ -1,7 +1,5 @@
 package controleur
 
-import handlers.GameClickedHandler
-import vue.GameVue
 import javafx.scene.Parent
 import state.Home
 import vue.HomeVue
@@ -27,4 +25,5 @@ class HomeController: StateController<Home> {
             state.createNewGame()
         }
     }
+
 }
