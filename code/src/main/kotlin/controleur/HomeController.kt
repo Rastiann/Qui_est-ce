@@ -21,7 +21,9 @@ class HomeController: StateController<Home> {
             state.joinGame(vue.codeField.text.toInt())
         }
 
-        vue.createBtn.onAction = AskQuestionDialogController()
+        vue.createBtn.setOnAction {
+            state.createNewGame()
+        }
     }
 
 }
