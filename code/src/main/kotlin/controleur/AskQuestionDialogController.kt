@@ -7,12 +7,11 @@ import javafx.scene.control.TextInputDialog
 
 class AskQuestionDialogController() : EventHandler<ActionEvent> {
 
-    override fun handle(p0: ActionEvent?) {
+    override fun  handle(p0: ActionEvent?) {
         val dialog = TextInputDialog("Poser une Question")
         dialog.headerText = "Poser votre question"
         dialog.contentText = "Question :"
 
-        // Appliquer le style orange sur les boutons OK et Cancel
         val dialogPane = dialog.dialogPane
         val okButton = dialogPane.lookupButton(ButtonType.OK)
         val cancelButton = dialogPane.lookupButton(ButtonType.CANCEL)

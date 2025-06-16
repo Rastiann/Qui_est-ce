@@ -2,11 +2,14 @@ import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.control.Label
 import javafx.scene.control.ProgressIndicator
+import javafx.scene.layout.BorderPane
 import javafx.scene.layout.HBox
+import javafx.scene.layout.Priority
 import javafx.scene.layout.VBox
 import javafx.scene.text.Font
+import javafx.stage.Screen
 
-open class SpinnerVue(val text: String, val direction: Direction) : VBox() {
+open class SpinnerVue(val text: String, val direction: Direction) : BorderPane() {
 
     enum class Direction {
         VERTICAL, HORIZONTAL
@@ -14,12 +17,12 @@ open class SpinnerVue(val text: String, val direction: Direction) : VBox() {
 
     private val container = when (direction) {
         Direction.VERTICAL -> {
-            val pane = VBox(10.0)
+            val pane = VBox()
             pane.alignment = Pos.CENTER
             pane
         }
         Direction.HORIZONTAL -> {
-            val pane = HBox(10.0)
+            val pane = HBox()
             pane.alignment = Pos.CENTER
             pane
         }
@@ -27,6 +30,9 @@ open class SpinnerVue(val text: String, val direction: Direction) : VBox() {
 
     init {
         container.style = "-fx-background-color: #1e1e1e;"
+
+        this.maxWidth = Double.MAX_VALUE
+        this.maxHeight = Double.MAX_VALUE
 
         val title = Label(text)
         title.font = Font.font(30.0)
@@ -42,9 +48,7 @@ open class SpinnerVue(val text: String, val direction: Direction) : VBox() {
         """.trimIndent()
 
         container.children.addAll(title, spinner)
-
         this.children.clear()
-        this.alignment = Pos.CENTER
-        this.children.add(container)
+        this.center = container
     }
 }
