@@ -2,7 +2,11 @@ package state
 
 import ConnectedPlayer
 import Player
+import grid.Grid
+import grid.Person
+import grid.PersonItem
 import info.but1.sae2025.QuiEstCeClient
+import state.gameinit.ChoosingCharacter
 import state.gameinit.WaitingForOtherPlayer
 
 class Home(
@@ -129,9 +133,27 @@ class Home(
             try {
 
                 // join game
-                apiClient.requeteRejoindrePartie(
+                val apiState = apiClient.requeteRejoindrePartie(
                     id, selfPlayer.id, selfPlayer.key
                 )
+
+                // fetch grids
+                val apiSelfGrid = apiClient.requeteGrilleJoueur(id, selfPlayer.id)
+                val apiOtherGrid = apiClient.requeteGrilleJoueur(id, apiState.idJoueur1)
+
+                // parse grid
+                val selfGrid = Grid(apiSelfGrid.map { array ->
+                    array.map { apiPers ->
+                        PersonItem(false, Person(apiPers.prenom, apiPers.nom, apiPers.url))
+                    }
+                })
+
+                // parse grid
+                val otherGrid = Grid(apiOtherGrid.map { array ->
+                    array.map { apiPers ->
+                        PersonItem(false, Person(apiPers.prenom, apiPers.nom, apiPers.url))
+                    }
+                })
 
                 // safety : remove all periodic task to be sure
                 // they don't change state after this change
@@ -146,7 +168,11 @@ class Home(
                         selfPlayer,
                         selfIsPlayer1 = false,
                         id,
-                        WaitingForOtherPlayer()
+                        ChoosingCharacter(
+                            apiState.idJoueur1,
+                            selfGrid,
+                            otherGrid
+                        )
                     )
                 )
 

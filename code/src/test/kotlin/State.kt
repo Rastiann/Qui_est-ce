@@ -1,8 +1,8 @@
+import grid.Grid
+import grid.Person
+import grid.PersonItem
 import info.but1.sae2025.QuiEstCeClient
-import info.but1.sae2025.data.ETAPE
-import info.but1.sae2025.data.EtatPartie
-import info.but1.sae2025.data.IdentificationJoueur
-import info.but1.sae2025.data.Joueur
+import info.but1.sae2025.data.*
 import io.ktor.client.network.sockets.*
 import io.ktor.util.network.*
 import org.junit.jupiter.api.Test
@@ -11,6 +11,10 @@ import io.mockk.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.assertThrows
 import state.*
+import state.game.WaitingForResponse
+import state.gameinit.ChoosingCharacter
+import state.gameinit.OtherPlayerChoosingCharacter
+import state.gameinit.WaitingForOtherPlayer
 import java.util.concurrent.TimeUnit
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
@@ -170,12 +174,30 @@ class State {
             2, -1, ETAPE.CREEE, 2, "", -1, ""
         )
 
+        // join game
         every { apiClient.requeteRejoindrePartie(10, 1, "cle") } returns EtatPartie(
             2, 1, ETAPE.CREEE, 2, "", 1, ""
         )
 
+        every { apiClient.requeteEtatPartie(11) } returns EtatPartie(
+            2, -1, ETAPE.CREEE, 2, "", -1, ""
+        )
+
+        val pers = Personnage("nom", "prenom", "url")
+        val grid = listOf(
+            listOf(pers, pers, pers, pers, pers, pers),
+            listOf(pers, pers, pers, pers, pers, pers),
+            listOf(pers, pers, pers, pers, pers, pers),
+            listOf(pers, pers, pers, pers, pers, pers),
+        )
+
+        every { apiClient.requeteGrilleJoueur(10, 1) } returns grid
+        every { apiClient.requeteGrilleJoueur(10, 2) } returns grid
+
+
+
         // create state
-        val prevState = Home(
+        Home(
             apiClient,
             apiThread,
             stateChangeHandler,
@@ -192,12 +214,93 @@ class State {
         // wait for new state to arrive (new game)
         newState = newStateQueue.poll(10, TimeUnit.SECONDS)
 
-        println("$newState")
-
         assertNotNull(newState) { "newsState must not be null" }
         assert(newState.state is GameInit) { "after creating home, newState must be of type GameInit" }
         assertNull(newState.error, "after creating Home, error must not be null (${newState.error})")
 
         assert(!(newState.state as GameInit).selfIsPlayer1) { "self player must not be player 1" }
+    }
+
+    @Test
+    fun waitingForOtherPlayer() {
+
+        every { apiClient.requeteEtatPartie(11) } returns EtatPartie(
+            2, 1, ETAPE.INITIALISATION, 2, "", 1, ""
+        )
+
+        val pers = Personnage("nom", "prenom", "url")
+        val grid = listOf(
+            listOf(pers, pers, pers, pers, pers, pers),
+            listOf(pers, pers, pers, pers, pers, pers),
+            listOf(pers, pers, pers, pers, pers, pers),
+            listOf(pers, pers, pers, pers, pers, pers),
+        )
+
+        every { apiClient.requeteGrilleJoueur(11, 1) } returns grid
+        every { apiClient.requeteGrilleJoueur(11, 2) } returns grid
+
+        // create state
+        GameInit(
+            apiClient,
+            apiThread,
+            stateChangeHandler,
+            ConnectedPlayer("Dujardin", "Jean", 1, "cle"),
+            true,
+            11,
+            WaitingForOtherPlayer()
+        )
+
+        // wait for new state to arrive (periodic tasks)
+        val newState = newStateQueue.poll(10, TimeUnit.SECONDS)
+
+        assertNotNull(newState, "newState must not be null")
+        assert(newState.state is GameInit) { "new state must be GameInit" }
+
+        val actualState = newState.state as GameInit
+        assert(actualState.gameInitState is ChoosingCharacter) { "GameInit state must be ChoosingCharacter" }
+    }
+
+    @Test
+    fun choosingCharacter() {
+        every { apiClient.requeteChoixPersonnage(11, 1, "cle", 0, 0) } returns EtatPartie(
+            2, 1, ETAPE.INITIALISATION, 2, "", 1, ""
+        )
+
+        val otherPlayerId = 2
+
+        val pers = Personnage("nom", "prenom", "url")
+        val grid = listOf(
+            listOf(pers, pers, pers, pers, pers, pers),
+            listOf(pers, pers, pers, pers, pers, pers),
+            listOf(pers, pers, pers, pers, pers, pers),
+            listOf(pers, pers, pers, pers, pers, pers),
+        )
+
+        // create state
+        val prevState = GameInit(
+            apiClient,
+            apiThread,
+            stateChangeHandler,
+            ConnectedPlayer("Dujardin", "Jean", 1, "cle"),
+            true,
+            11,
+            ChoosingCharacter(
+                otherPlayerId,
+                Grid(grid.map { array -> array.map { pers -> PersonItem(false, Person(pers.nom, pers.prenom, pers.url)) } }),
+                Grid(grid.map { array -> array.map { pers -> PersonItem(false, Person(pers.nom, pers.prenom, pers.url)) } }),
+            )
+        )
+
+        // choosing
+        (prevState.gameInitState as ChoosingCharacter).choose(Person(pers.nom, pers.prenom, pers.url))
+
+        // wait for new state to arrive
+        val newState = newStateQueue.poll(10, TimeUnit.SECONDS)
+
+        assertNotNull(newState, "newState must not be null")
+        assert(newState.state is GameInit) { "new state must be GameInit" }
+
+        val actualState = newState.state as GameInit
+        assert(actualState.gameInitState is OtherPlayerChoosingCharacter) { "GameInit state must be OtherPlayerChoosingCharacter" }
     }
 }
