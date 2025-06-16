@@ -1,7 +1,5 @@
 package controleur
 
-import handlers.GameClickedHandler
-import vue.GameVue
 import javafx.scene.Parent
 import state.Home
 import vue.HomeVue
@@ -22,5 +20,8 @@ class HomeController: StateController<Home> {
         vue.joinBtn.setOnAction {
             state.joinGame(vue.codeField.text.toInt())
         }
+
+        vue.createBtn.onAction = AskQuestionDialogController()
     }
+
 }
