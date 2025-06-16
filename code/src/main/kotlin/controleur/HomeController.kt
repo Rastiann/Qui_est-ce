@@ -22,5 +22,9 @@ class HomeController: StateController<Home> {
         vue.joinBtn.setOnAction {
             state.joinGame(vue.codeField.text.toInt())
         }
+
+        vue.createBtn.setOnAction {
+            state.createNewGame()
+        }
     }
 }
