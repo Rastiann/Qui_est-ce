@@ -50,10 +50,15 @@ class TestRequeteCreationJoueur {
 
     @ParameterizedTest
     @MethodSource("joueurProvider")
-    fun testRequeteCreationJoueur(nom : String, prenom : String) {
-        var joueurCree = client.requeteCreationJoueur(nom, prenom)
-        var joueurRecupere = client.requeteJoueur(joueurCree.id)
+    fun testRequeteCreationJoueur(nom: String, prenom: String) {
+        val joueurCree = client.requeteCreationJoueur(nom, prenom)
+
+        assert(joueurCree.id > 0) { "L'id du joueur doit être positif" }
+        assert(joueurCree.cle.length == 32) { "La clé doit faire 32 caractères" }
+
+        val joueurRecupere = client.requeteJoueur(joueurCree.id)
         assertEquals(nom, joueurRecupere.nom, "Le nom n'est pas le bon")
         assertEquals(prenom, joueurRecupere.prenom, "Le prénom n'est pas le meme")
     }
+
 }

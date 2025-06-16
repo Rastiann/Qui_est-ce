@@ -13,7 +13,6 @@ class TestRequeteGrilleJoueur {
     val joueur1 : IdentificationJoueur = playerProvider.get()
     val joueur2 : IdentificationJoueur = playerProvider.get()
     val partieId = client.requeteCreationPartie(joueur1.id, joueur1.cle)
-    val gameState : EtatPartie = client.requeteRejoindrePartie(partieId, joueur2.id, joueur2.cle)
 
 
     @Test

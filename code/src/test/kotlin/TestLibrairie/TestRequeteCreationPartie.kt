@@ -1,4 +1,5 @@
 import info.but1.sae2025.QuiEstCeClient
+import info.but1.sae2025.data.ETAPE
 import info.but1.sae2025.data.IdentificationJoueur
 import info.but1.sae2025.exceptions.QuiEstCeException
 import org.junit.jupiter.api.Test
@@ -44,8 +45,38 @@ class TestRequeteCreationPartie {
 
     @Test
     fun testRequeteCreationPartie_Success() {
-        val partieId = client.requeteCreationPartie(joueur.id, joueur.cle)
-        val etat = client.requeteEtatPartie(partieId)
+
+        // Game 1
+
+        var partieId = client.requeteCreationPartie(joueur.id, joueur.cle)
+        var etat = client.requeteEtatPartie(partieId)
+        assertEquals(joueur.id, etat.idJoueur1)
+        assert(etat.etape.name == "CREEE") {
+            "L'étape de la partie devrait être 'CREEE', trouvée: ${etat.etape}"
+        }
+
+        // Game 2
+
+        partieId = client.requeteCreationPartie(joueur.id, joueur.cle)
+        etat = client.requeteEtatPartie(partieId)
+        assertEquals(joueur.id, etat.idJoueur1)
+        assert(etat.etape.name == "CREEE") {
+            "L'étape de la partie devrait être 'CREEE', trouvée: ${etat.etape}"
+        }
+
+        // Game 3
+
+        partieId = client.requeteCreationPartie(joueur.id, joueur.cle)
+        etat = client.requeteEtatPartie(partieId)
+        assertEquals(joueur.id, etat.idJoueur1)
+        assert(etat.etape.name == "CREEE") {
+            "L'étape de la partie devrait être 'CREEE', trouvée: ${etat.etape}"
+        }
+
+        // Game 4
+
+        partieId = client.requeteCreationPartie(joueur.id, joueur.cle)
+        etat = client.requeteEtatPartie(partieId)
         assertEquals(joueur.id, etat.idJoueur1)
         assert(etat.etape.name == "CREEE") {
             "L'étape de la partie devrait être 'CREEE', trouvée: ${etat.etape}"

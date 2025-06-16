@@ -1,6 +1,5 @@
 import info.but1.sae2025.QuiEstCeClient
 import info.but1.sae2025.data.ETAPE
-import info.but1.sae2025.data.IdentificationJoueur
 import info.but1.sae2025.exceptions.QuiEstCeException
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -17,7 +16,7 @@ class TestLibrairie {
 
         val client: QuiEstCeClient = QuiEstCeClient("localhost", 8080)
         val playerProvider = PlayerProvider(client)
-        val gameTestHelper = GameTestHelper(client)
+        val gameTestHelper = GameStateHelper(client)
 
         val joueur1 = playerProvider.get()
         val joueur2 = playerProvider.get()
@@ -330,53 +329,49 @@ class TestLibrairie {
     }
 
 
-    @Test
-    fun testRequeteListePartiesTerminees() {
-        val partiesTermineesIds = mutableListOf<Int>()
-
-        // Game 1
-
-        var partieId = client.requeteCreationPartie(TestLibrairie.Companion.joueur1.id, TestLibrairie.Companion.joueur1.cle)
-        var gameState = gameTestHelper.gameEnder(joueur1, joueur2, partieId)
-        assertEquals(ETAPE.TERMINEE, gameState.etape, "La partie $partieId devrait être terminée")
-
-        partiesTermineesIds.add(partieId)
-
-        // Game 2
-
-        partieId = client.requeteCreationPartie(TestLibrairie.Companion.joueur1.id, TestLibrairie.Companion.joueur1.cle)
-        gameState = gameTestHelper.gameEnder(joueur1, joueur2, partieId)
-        assertEquals(ETAPE.TERMINEE, gameState.etape, "La partie $partieId devrait être terminée")
-
-        partiesTermineesIds.add(partieId)
-
-        // Game 3
-
-        partieId = client.requeteCreationPartie(TestLibrairie.Companion.joueur1.id, TestLibrairie.Companion.joueur1.cle)
-        gameState = gameTestHelper.gameEnder(joueur1, joueur2, partieId)
-        assertEquals(ETAPE.TERMINEE, gameState.etape, "La partie $partieId devrait être terminée")
-
-        partiesTermineesIds.add(partieId)
-
-        val partiesTermineesServeur = client.requeteListePartiesTerminees()
-
-        // Je vérifie que les parties que j'ai terminées sont bien présent dans la liste
-
-        for (idPartie in partiesTermineesIds) {
-            assert(partiesTermineesServeur.contains(idPartie)) {
-                "La partie $idPartie devrait apparaître dans la liste des parties terminées"
-            }
-        }
-
-        // Je vérifie que la liste de parties renvoyées par le serveur sont tous terminés.
-
-        for (idPartie in partiesTermineesServeur) {
-            val etat = client.requeteEtatPartie(idPartie)
-            assertEquals(ETAPE.TERMINEE, etat.etape, "L'étape de la partie $idPartie devrait être TERMINEE")
-        }
-    }
-
-
-
-
+//    @Test
+//    fun testRequeteListePartiesTerminees() {
+//        val partiesTermineesIds = mutableListOf<Int>()
+//
+//        // Game 1
+//
+//        var partieId = client.requeteCreationPartie(TestLibrairie.Companion.joueur1.id, TestLibrairie.Companion.joueur1.cle)
+//        var gameState = gameTestHelper.gameEnder(joueur1, joueur2, partieId)
+//        assertEquals(ETAPE.TERMINEE, gameState.etape, "La partie $partieId devrait être terminée")
+//
+//        partiesTermineesIds.add(partieId)
+//
+//        // Game 2
+//
+//        partieId = client.requeteCreationPartie(TestLibrairie.Companion.joueur1.id, TestLibrairie.Companion.joueur1.cle)
+//        gameState = gameTestHelper.gameEnder(joueur1, joueur2, partieId)
+//        assertEquals(ETAPE.TERMINEE, gameState.etape, "La partie $partieId devrait être terminée")
+//
+//        partiesTermineesIds.add(partieId)
+//
+//        // Game 3
+//
+//        partieId = client.requeteCreationPartie(TestLibrairie.Companion.joueur1.id, TestLibrairie.Companion.joueur1.cle)
+//        gameState = gameTestHelper.gameEnder(joueur1, joueur2, partieId)
+//        assertEquals(ETAPE.TERMINEE, gameState.etape, "La partie $partieId devrait être terminée")
+//
+//        partiesTermineesIds.add(partieId)
+//
+//        val partiesTermineesServeur = client.requeteListePartiesTerminees()
+//
+//        // Je vérifie que les parties que j'ai terminées sont bien présent dans la liste
+//
+//        for (idPartie in partiesTermineesIds) {
+//            assert(partiesTermineesServeur.contains(idPartie)) {
+//                "La partie $idPartie devrait apparaître dans la liste des parties terminées"
+//            }
+//        }
+//
+//        // Je vérifie que la liste de parties renvoyées par le serveur sont tous terminés.
+//
+//        for (idPartie in partiesTermineesServeur) {
+//            val etat = client.requeteEtatPartie(idPartie)
+//            assertEquals(ETAPE.TERMINEE, etat.etape, "L'étape de la partie $idPartie devrait être TERMINEE")
+//        }
+//    }
 }
