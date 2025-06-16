@@ -1,5 +1,6 @@
 package vue
 
+import handlers.GameClickedHandler
 import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.control.Button
@@ -8,6 +9,7 @@ import javafx.scene.control.ScrollPane
 import javafx.scene.control.TextField
 import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
+import state.CreatedGame
 
 class HomeVue() {
     val root = VBox(20.0)
@@ -58,33 +60,40 @@ class HomeVue() {
 
         gamesBox.children.add(gamesTitle)
 
-        // Créer les 5 parties
-        for (i in 2..10) {
+        // Ajouter tout au conteneur principal
+        root.children.addAll(
+            title, subtitle, sectionTitle, createBtn, joinRow, scroll
+        )
+    }
+
+    private var games: List<CreatedGame> = listOf()
+
+    fun updateParties(games: List<CreatedGame>, handler: GameClickedHandler) {
+        this.games = games
+
+        gamesBox.children.clear()
+        for (game in games) {
             val gameRow = HBox(20.0)
             gameRow.alignment = Pos.CENTER
 
             val gameInfo = VBox(5.0)
             gameInfo.alignment = Pos.CENTER_LEFT
 
-            val gameName = Label("Partie de Félix")
+            val gameName = Label("${game.player.firstName} ${game.player.name}")
             gameName.style = "-fx-text-fill: white; -fx-font-weight: bold;"
 
-            val playerCount = Label("0/2 joueurs")
+            val playerCount = Label("En attente de joueur")
             playerCount.style = "-fx-text-fill: gray; -fx-font-size: 12px;"
 
             gameInfo.children.addAll(gameName, playerCount)
 
             val joinGameBtn = Button("Rejoindre")
+            joinGameBtn.setOnAction { handler.gameClick(game.id) }
             joinGameBtn.style = "-fx-background-color: orange; -fx-text-fill: black; -fx-font-weight: bold;"
             joinGameBtn.prefWidth = 100.0
 
             gameRow.children.addAll(gameInfo, joinGameBtn)
             gamesBox.children.add(gameRow)
         }
-
-        // Ajouter tout au conteneur principal
-        root.children.addAll(
-            title, subtitle, sectionTitle, createBtn, joinRow, scroll
-        )
     }
 }

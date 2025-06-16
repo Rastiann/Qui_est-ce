@@ -1,9 +1,12 @@
-package Vue
+package vue
 
+import grid.Grid
 import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.control.Button
 import javafx.scene.control.Label
+import javafx.scene.image.Image
+import javafx.scene.image.ImageView
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
@@ -48,23 +51,22 @@ class GameVue() {
         root.children.addAll(titleBox, grids)
     }
 
-    fun update(left: List<String>, right: List<String>) {
-        showGrid(leftGrid, left, fontSize = 80.0)
-        showGrid(rightGrid, right, fontSize = 35.0)
+
+    fun update(selfGrid: Grid, otherGrid: Grid) {
+        showGrid(leftGrid, selfGrid)
+        showGrid(rightGrid, otherGrid)
         leftGrid.isGridLinesVisible = true
         rightGrid.isGridLinesVisible = true
     }
 
-    private fun showGrid(grid: GridPane, data: List<String>, fontSize: Double) {
-        grid.children.clear()
-        data.forEachIndexed { i, emoji ->
-            val label = Label(emoji)
-            label.font = Font.font(fontSize)
-            label.prefWidth = 40.0
-            label.prefHeight = 40.0
-            label.style = "-fx-background-color: #ccc; -fx-alignment: center;"
-            grid.add(label, i % 6, i / 6)
+    private fun showGrid(gridPane: GridPane, grid: Grid) {
+        gridPane.children.clear()
 
+        grid.grid.forEachIndexed { x, array ->
+            grid.grid[x].forEachIndexed({ y, pers ->
+                val image = ImageView(Image(pers.person.url))
+                gridPane.add(image, x, y)
+            })
         }
     }
 }

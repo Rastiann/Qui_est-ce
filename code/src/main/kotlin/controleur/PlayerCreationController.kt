@@ -1,21 +1,40 @@
 package controleur
 
 import ConnectedPlayer
+import Player
 import vue.PlayerCreationVue
 import javafx.scene.Parent
 import state.PlayerCreation
 
 class PlayerCreationController(
-    storedPlayer: ConnectedPlayer? = null
+    val storedPlayer: ConnectedPlayer? = null
 ): StateController<PlayerCreation> {
 
-    private val vue = PlayerCreationVue()
+    private val vue = PlayerCreationVue(
+        if (storedPlayer != null) {
+            "${storedPlayer.firstName} ${storedPlayer.name}"
+        } else { null }
+    )
 
     override fun getVue(): Parent {
-        TODO("Not yet implemented")
+        return vue.root
     }
 
     override fun update(state: PlayerCreation) {
-        TODO("Not yet implemented")
+
+        vue.createButton.setOnAction {
+            state.tryCreate(
+                Player(
+                    vue.lastNameField.text,
+                    vue.firstNameField.text
+                )
+            )
+        }
+
+        vue.connectButton.setOnAction {
+            if (storedPlayer == null) { return@setOnAction }
+
+            state.tryUsePlayer(storedPlayer)
+        }
     }
 }
