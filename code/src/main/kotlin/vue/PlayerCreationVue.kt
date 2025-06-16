@@ -1,4 +1,4 @@
-package Vue
+package vue
 
 import javafx.geometry.Insets
 import javafx.geometry.Pos
@@ -9,7 +9,7 @@ import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
 import javafx.scene.text.Font
 
-class VueCreationJoueur() {
+class PlayerCreationVue() {
     val root = VBox(20.0)
 
     val firstNameField = TextField()

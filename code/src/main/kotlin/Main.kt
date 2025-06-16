@@ -1,14 +1,11 @@
-import Vue.VueCreationJoueur
-import Vue.VueGameInit
-import info.but1.sae2025.QuiEstCeClient
+import vue.PlayerCreationVue
 import javafx.application.Application
 import javafx.scene.Scene
 import javafx.stage.Stage
-import kotlin.random.Random
 
 class MainApp : Application() {
     override fun start(stage: Stage) {
-        val view = VueCreationJoueur()
+        val view = PlayerCreationVue()
         val left = List(24) { "👤" }
         val right = List(24) { "👤" }
 

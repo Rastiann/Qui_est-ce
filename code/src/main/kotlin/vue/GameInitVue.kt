@@ -1,4 +1,4 @@
-package Vue
+package vue
 
 import javafx.geometry.Insets
 import javafx.geometry.Pos
@@ -9,7 +9,7 @@ import javafx.scene.layout.VBox
 import javafx.scene.paint.Color
 import javafx.scene.text.Font
 
-class VueGameInit() {
+class GameInitVue() {
     val root = VBox(30.0)
     private val leftGrid = GridPane()
     private val rightGrid = GridPane()
