@@ -1,7 +1,8 @@
-import vue.PlayerCreationVue
+
 import javafx.application.Application
 import javafx.scene.Scene
 import javafx.stage.Stage
+import vue.PlayerCreationVue
 
 class MainApp : Application() {
     override fun start(stage: Stage) {
