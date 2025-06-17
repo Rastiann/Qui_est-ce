@@ -1,5 +1,6 @@
 package state.gameinit
 
+import Player
 import grid.Grid
 import grid.Person
 import info.but1.sae2025.data.ETAPE
@@ -8,7 +9,7 @@ import state.game.PeerTurn
 import state.game.UserTurn
 
 class OtherPlayerChoosingCharacter(
-    val otherPlayerId: Int,
+    val otherPlayer: Player,
     val selfGrid: Grid,
     val otherGrid: Grid,
     val persChoosen: Person
@@ -38,7 +39,7 @@ class OtherPlayerChoosingCharacter(
                         stateChangeHandler,
                         gameInit.selfPlayer,
                         gameInit.selfIsPlayer1,
-                        otherPlayerId,
+                        otherPlayer,
                         gameInit.gameId,
                         selfGrid,
                         otherGrid,

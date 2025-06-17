@@ -3,10 +3,9 @@ import java.io.File
 class ConnectedPlayer(
     name: String,
     firstName: String,
-    val id: Int,
+    id: Int,
     val key: String
-): Player(name, firstName) {
-
+): Player(name, firstName, id) {
 
     companion object Saver {
 
