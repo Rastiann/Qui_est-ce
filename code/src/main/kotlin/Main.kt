@@ -8,8 +8,8 @@ class MainApp : Application() {
     override fun start(stage: Stage) {
 
         AppController(
-            "localhost",
-            8080,
+            Config.serverAddr,
+            Config.serverHost,
             stage
         )
 
