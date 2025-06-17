@@ -14,7 +14,7 @@ class WinController: GameController<Win> {
 
     override fun update(gameInitState: Win) {
         vue.menuButton.setOnAction {
-//            gameInitState.backHome()
+            gameInitState.backHome()
         }
     }
 }
