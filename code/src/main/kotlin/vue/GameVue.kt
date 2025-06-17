@@ -15,10 +15,10 @@ import javafx.scene.text.Font
 
 class GameVue() {
     val root = VBox(30.0)
-    val rightSection: VBox
+    var rightSection: VBox
     private val leftGrid = GridPane()
     private val rightGrid = GridPane()
-    val title = Label("Votre tour")
+    var title = Label("Votre tour")
 
     init {
         root.padding = Insets(20.0)

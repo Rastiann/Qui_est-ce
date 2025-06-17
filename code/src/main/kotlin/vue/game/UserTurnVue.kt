@@ -12,6 +12,7 @@ class UserTurnVue {
     val btn = Button("Pass")
     val btn2 = Button("Guess")
     val btn3 = Button("Question")
+    var buttonBox : HBox
 
     init {
         val buttons = listOf(btn, btn2, btn3)
@@ -20,7 +21,7 @@ class UserTurnVue {
             it.prefWidth = 100.0
         }
 
-        val buttonBox = HBox(20.0, btn, btn2, btn3) // 20.0 = espacement horizontal
+        buttonBox = HBox(20.0, btn, btn2, btn3) // 20.0 = espacement horizontal
         buttonBox.alignment = Pos.CENTER
         buttonBox.padding = Insets(10.0)
 

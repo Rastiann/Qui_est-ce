@@ -3,6 +3,7 @@ package controleur
 import controleur.game.*
 import vue.GameVue
 import javafx.scene.Parent
+import javafx.scene.control.Label
 import state.Game
 import state.game.*
 
@@ -50,6 +51,7 @@ class GameController: StateController<Game> {
             is PeerTurn -> {
 
                 // make sure currentVue is gameVue 
+                vue.title = Label("Tour de l'adversaire")
                 currentVue = vue.root
                 
                 if (peerTurnController == null) { peerTurnController = PeerTurnController() }
