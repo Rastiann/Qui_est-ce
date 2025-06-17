@@ -17,6 +17,8 @@ class TestRequeteEtatPartie {
     @Test
     fun testRequeteEtatPartie() {
 
+        // ************* Rajouter des parametized test pour tester les entrées ************* //
+
         // Création + état initial
         var partieId = client.requeteCreationPartie(joueur1.id, joueur1.cle)
         var etat = client.requeteEtatPartie(partieId)

@@ -14,6 +14,9 @@ class TestRequeteListePartiesTerminees {
 
     @Test
     fun testRequeteListePartiesTerminees() {
+
+        // ************* tester les entrées ******* //
+
         val partiesTermineesIds = mutableListOf<Int>()
 
         repeat(3) {

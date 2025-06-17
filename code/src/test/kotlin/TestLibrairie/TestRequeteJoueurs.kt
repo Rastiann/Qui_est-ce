@@ -27,6 +27,8 @@ class TestRequeteJoueurs {
 
         val joueursCreeesServer = client.requeteJoueurs()
 
+        // joueursCreeesServer.forEach { println(it) }
+
         assert(joueursCreeesServer.all { it > 0 }) {
             "Tous les id des joueurs doivent être supérieurs à 0"
         }
