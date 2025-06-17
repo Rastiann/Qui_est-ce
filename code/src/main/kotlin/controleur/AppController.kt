@@ -82,8 +82,8 @@ class AppController(
             if (error != null) {
                 ErrorDialog(
                     "Erreur",
-                    "Un erreur est survenu, veuillez réessayer plutard",
-                    error.toString()
+                    "Un erreur est survenu, veuillez réessayer plus tard",
+                    error.message.toString()
                 ).show()
             }
 

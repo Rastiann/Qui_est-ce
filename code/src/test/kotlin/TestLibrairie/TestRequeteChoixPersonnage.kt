@@ -17,7 +17,6 @@ class TestRequeteChoixPersonnage {
         val joueur1 : IdentificationJoueur = playerProvider.get()
         val partieId = client.requeteCreationPartie(joueur1.id, joueur1.cle)
         val joueur2 : IdentificationJoueur = playerProvider.get()
-        val etat = client.requeteRejoindrePartie(partieId, joueur2.id, joueur2.cle)
 
         @JvmStatic
         fun argumentsInvalidesProvider_requeteChoixPersonnage(): Stream<Arguments> {
@@ -50,7 +49,7 @@ class TestRequeteChoixPersonnage {
 
     @Test
     fun testRequeteChoixPersonnage() {
-
+    // Optimiser les tests
 
         var etat = client.requeteChoixPersonnage(partieId, joueur1.id, joueur1.cle, 1, 1)
 
