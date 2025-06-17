@@ -1,7 +1,9 @@
 package controleur.game
 
+import grid.Person
 import javafx.scene.Parent
 import state.game.Guess
+import vue.dialog.Validation
 import vue.game.GuessVue
 
 class GuessController: GameController<Guess> {
@@ -23,6 +25,32 @@ class GuessController: GameController<Guess> {
 
         vue.okBtn.setOnAction {
 
+            var person: Person = gameInitState.otherGrid.grid[0][0].person
+            var numberOfNonGreyCase = 0
+
+            big_loop@ for (x in 0 until gameInitState.otherGrid.grid.size) {
+                for (y in 0 until gameInitState.otherGrid.grid[x].size) {
+
+                    if (!gameInitState.otherGrid.grid[x][y].isGray) {
+                        if (numberOfNonGreyCase > 1) { break@big_loop }
+                        numberOfNonGreyCase ++
+                        person = gameInitState.otherGrid.grid[x][y].person
+                    }
+
+                }
+            }
+
+            if (numberOfNonGreyCase == 1) {
+                val trySend = Validation().show()
+                if (trySend) {
+
+                    gameInitState.guess(person)
+                    return@setOnAction
+
+                }
+            }
+
+            gameInitState.pass()
         }
     }
 
