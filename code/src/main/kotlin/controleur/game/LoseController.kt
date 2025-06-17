@@ -6,6 +6,7 @@ import state.game.Win
 import vue.game.EndVue
 
 class LoseController: GameController<Lose> {
+
     val vue = EndVue(EndVue.EndState.LOSE)
 
     override fun getVue(): Parent {
@@ -14,7 +15,7 @@ class LoseController: GameController<Lose> {
 
     override fun update(gameInitState: Lose) {
         vue.menuButton.setOnAction {
-//            gameInitState.backHome()
+            gameInitState.backHome()
         }
     }
 }

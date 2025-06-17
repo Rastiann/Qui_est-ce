@@ -33,7 +33,7 @@ class TestRequetePoserQuestion {
 
     @ParameterizedTest
     @MethodSource("argumentsInvalidesProvider_requeteChoixPersonnage")
-    fun testRequeteChoixPersonnage_Exception(idPartie: Int, idJoueur: Int, cleJoueur: String, ligne : Int, colonne : Int, question : String) {
+    fun testRequeteChoixPersonnage_Exception(idPartie: Int, idJoueur: Int, cleJoueur: String, question : String) {
         assertThrows<IllegalArgumentException> {
             client.requetePoserQuestion(
                 idPartie,
