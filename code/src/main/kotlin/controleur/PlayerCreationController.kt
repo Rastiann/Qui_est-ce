@@ -24,10 +24,8 @@ class PlayerCreationController(
 
         vue.createButton.setOnAction {
             state.tryCreate(
-                Player(
-                    vue.lastNameField.text,
-                    vue.firstNameField.text
-                )
+                vue.lastNameField.text,
+                vue.firstNameField.text
             )
         }
 

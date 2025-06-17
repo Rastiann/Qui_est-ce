@@ -1,6 +1,7 @@
 open class Player(
     val name: String,
-    val firstName: String
+    val firstName: String,
+    val id: Int
 ) {
     init {
         require(!name.contains('\n') && !name.contains('\r')) { "name connot have break line" }
