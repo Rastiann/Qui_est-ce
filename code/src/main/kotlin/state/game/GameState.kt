@@ -1,5 +1,6 @@
 package state.game
 
+import ConnectedPlayer
 import info.but1.sae2025.QuiEstCeClient
 import state.ApiThread
 import state.Game
@@ -11,6 +12,7 @@ sealed class GameState {
     protected lateinit var apiClient: QuiEstCeClient
     protected lateinit var apiThread: ApiThread
     protected lateinit var stateChangeHandler: StateChangeHandler
+    protected lateinit var selfPlayer: ConnectedPlayer
 
     abstract fun onAttached()
 
@@ -18,12 +20,14 @@ sealed class GameState {
         game: Game,
         apiClient: QuiEstCeClient,
         apiThread: ApiThread,
-        stateChangeHandler: StateChangeHandler
+        stateChangeHandler: StateChangeHandler,
+        selfPlayer: ConnectedPlayer
     ) {
         this.game = game
         this.apiClient = apiClient
         this.apiThread = apiThread
         this.stateChangeHandler = stateChangeHandler
+        this.selfPlayer = selfPlayer
         this.onAttached()
     }
 }

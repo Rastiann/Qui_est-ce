@@ -41,7 +41,7 @@ class Game(
 
         // to simplify, fill lateinit here
         gameState.attachToGame(
-            this, apiClient, apiThread, stateChangeHandler
+            this, apiClient, apiThread, stateChangeHandler, selfPlayer
         )
     }
 
