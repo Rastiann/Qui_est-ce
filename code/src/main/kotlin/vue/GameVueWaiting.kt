@@ -13,14 +13,11 @@ import javafx.scene.layout.VBox
 import javafx.scene.paint.Color
 import javafx.scene.text.Font
 
-class GameVue() {
+class GameVueWaiting() {
     val root = VBox(30.0)
     private val leftGrid = GridPane()
     private val rightGrid = GridPane()
-    val btn = Button("Pass")
-    val btn2 = Button("Guess")
-    val btn3 = Button("Question")
-    val title = Label("Votre tour")
+    val title = Label("Tour de l'adversaire")
 
     init {
         root.padding = Insets(20.0)
@@ -30,15 +27,7 @@ class GameVue() {
         title.textFill = Color.LIGHTGRAY
         title.style = "-fx-background-color: #444; -fx-padding: 10px 20px;-fx-background-radius: 30px;"
         title.maxWidth = Double.MAX_VALUE
-        val buttons = listOf(btn, btn2, btn3)
-        buttons.forEach {
-            it.style = "-fx-background-color: orange; -fx-text-fill: black; -fx-font-weight: bold;"
-            it.prefWidth = 100.0
-        }
-        val buttonBox = HBox(20.0, btn, btn2, btn3) // 20.0 = espacement horizontal
-        buttonBox.alignment = Pos.CENTER
-        buttonBox.padding = Insets(10.0)
-        val rightSection = VBox(10.0, rightGrid,buttonBox)
+        val rightSection = VBox(10.0, rightGrid)
         rightSection.alignment = Pos.CENTER
         val titleBox = HBox(title)
         titleBox.alignment = Pos.CENTER
