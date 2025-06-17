@@ -20,7 +20,7 @@ class GameVue() {
     val rightSection: VBox
     private val leftGrid = GridPane()
     private val rightGrid = GridPane()
-    val title = Label("Votre tour")
+    var title = Label("Votre tour")
 
     init {
 
