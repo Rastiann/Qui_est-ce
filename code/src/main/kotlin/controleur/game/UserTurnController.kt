@@ -1,6 +1,6 @@
 package controleur.game
 
-import controleur.AskQuestionDialogController
+import vue.dialog.AskQuestionDialog
 import javafx.scene.Parent
 import state.game.UserTurn
 import vue.game.UserTurnVue
@@ -14,8 +14,11 @@ class UserTurnController : GameController<UserTurn> {
     }
 
     override fun update(gameInitState: UserTurn) {
-        vue.questionBtn.onAction = AskQuestionDialogController(
-            gameInitState
-        )
+        vue.questionBtn.setOnAction {
+            val question = AskQuestionDialog().show()
+            if (question != null) {
+                gameInitState.ask(question)
+            }
+        }
     }
 }

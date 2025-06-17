@@ -7,6 +7,7 @@ import javafx.scene.control.TextInputDialog
 class AskQuestionDialog() {
 
     private val dialog = TextInputDialog("Poser une Question")
+    private var question: String? = null
 
     init {
         dialog.headerText = "Poser votre question"
@@ -25,17 +26,15 @@ class AskQuestionDialog() {
         okButton.style = buttonStyle
         cancelButton.style = buttonStyle
 
-        val resultat = dialog.showAndWait()
+        val result = dialog.showAndWait()
 
-        var question: String? = null
-
-        if (resultat.isPresent) {
-            question = resultat.get()
+        if (result.isPresent) {
+            question = result.get()
         }
     }
 
-    fun show() {
+    fun show(): String? {
         dialog.showAndWait()
-        Platform.exit()
+        return question
     }
 }
