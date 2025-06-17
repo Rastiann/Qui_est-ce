@@ -38,6 +38,7 @@ class GameController: StateController<Game> {
         vue.root.topLabel.text = "Partie avec ${state.otherPlayer.firstName} ${state.otherPlayer.name}"
         vue.root.updateDiscussion(state.discussion)
         vue.root.setBottomPers(state.persChoosen)
+        currentVue = vue.root
 
         when (state.gameState){
             is UserTurn -> {
