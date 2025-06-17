@@ -43,11 +43,10 @@ class GuessController: GameController<Guess> {
             if (numberOfNonGreyCase == 1) {
                 val trySend = Validation().show()
                 if (trySend) {
-
                     gameInitState.guess(person)
-                    return@setOnAction
-
                 }
+
+                return@setOnAction
             }
 
             gameInitState.pass()
