@@ -1,14 +1,16 @@
-package controleur
+package vue.Dialog
 
+import javafx.application.Platform
 import javafx.event.ActionEvent
 import javafx.event.EventHandler
 import javafx.scene.control.ButtonType
 import javafx.scene.control.TextInputDialog
 
-class AskQuestionDialogController() : EventHandler<ActionEvent> {
+class AskQuestionDialog() {
 
-    override fun  handle(p0: ActionEvent?) {
-        val dialog = TextInputDialog("Poser une Question")
+    private val dialog = TextInputDialog("Poser une Question")
+
+    init {
         dialog.headerText = "Poser votre question"
         dialog.contentText = "Question :"
 
@@ -32,5 +34,10 @@ class AskQuestionDialogController() : EventHandler<ActionEvent> {
         if (resultat.isPresent) {
             question = resultat.get()
         }
+    }
+
+    fun show() {
+        dialog.showAndWait()
+        Platform.exit()
     }
 }
