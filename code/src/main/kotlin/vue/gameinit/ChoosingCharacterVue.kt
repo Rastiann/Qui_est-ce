@@ -1,4 +1,4 @@
-package vue
+package vue.gameinit
 
 import grid.Grid
 import handlers.ImgHandler

@@ -1,12 +1,12 @@
 package controleur.gameinit
 
-import SpinnerVue
 import javafx.scene.Parent
 import state.gameinit.WaitingForOtherPlayer
+import vue.gameinit.WaitingForOtherPlayerVue
 
 class WaitingForOtherPlayerController: GameInitController<WaitingForOtherPlayer> {
 
-    private val vue = SpinnerVue("En attente d'un joueur ...", SpinnerVue.Direction.VERTICAL)
+    private val vue = WaitingForOtherPlayerVue()
 
     override fun getVue(): Parent { return vue }
 

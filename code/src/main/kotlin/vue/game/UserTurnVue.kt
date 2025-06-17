@@ -1,4 +1,4 @@
-package vue.game_vue
+package vue.game
 
 import javafx.geometry.Insets
 import javafx.geometry.Pos

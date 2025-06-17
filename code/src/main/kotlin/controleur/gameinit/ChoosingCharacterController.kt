@@ -1,9 +1,8 @@
 package controleur.gameinit
 
-import handlers.ImgHandler
 import javafx.scene.Parent
 import state.gameinit.ChoosingCharacter
-import vue.ChoosingCharacterVue
+import vue.gameinit.ChoosingCharacterVue
 
 class ChoosingCharacterController: GameInitController<ChoosingCharacter> {
 
