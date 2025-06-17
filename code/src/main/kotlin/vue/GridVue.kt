@@ -24,7 +24,7 @@ class GridVue(
 
                 val image = ImageView(
                     Image(
-                        "http://localhost:8080/resources/but1/${
+                        "http://${Config.serverAddr}:${Config.serverHost}/resources/but1/${
                             URLEncoder.encode(pers.person.url, StandardCharsets.UTF_8.toString())
                         }"
                     )
