@@ -18,7 +18,6 @@ class UserTurnVue() {
         questionBtn.style = "-fx-background-color: orange; -fx-text-fill: black; -fx-font-weight: bold;"
         questionBtn.prefWidth = 100.0
         questionBtn.padding = Insets(0.0, 0.0, 20.0, 0.0)
-
     }
 
     fun update(
@@ -27,11 +26,8 @@ class UserTurnVue() {
     ) {
         val gridVue = GridVue(grid, sizeRatio, null)
 
-        if (root.children.size == 1) {
-            root.children.add(questionBtn)
-        }
-
-        root.children[0] = gridVue
+        root.children.clear()
+        root.children.addAll(gridVue, questionBtn)
     }
 
 }

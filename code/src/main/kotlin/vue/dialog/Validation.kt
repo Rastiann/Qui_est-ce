@@ -1,11 +1,10 @@
 package vue.dialog
 
-import javafx.application.Platform
 import javafx.scene.control.Alert
 import javafx.scene.control.ButtonBar
 import javafx.scene.control.ButtonType
 
-class Confirmation() {
+class Validation() {
 
     private val alert = Alert(Alert.AlertType.CONFIRMATION)
 
@@ -32,18 +31,10 @@ class Confirmation() {
 
         buttonOk.style = buttonStyle
         buttonCancel.style = buttonStyle
-
-        val resultat = alert.showAndWait()
-
-        var question: String? = null
-
-        if (resultat.get() == ButtonType.OK) {
-            // TODO()
-        }
     }
 
-    fun show() {
-        alert.showAndWait()
-        Platform.exit()
+    fun show(): Boolean {
+        val result = alert.showAndWait()
+        return result.get() == ButtonType.OK
     }
 }
