@@ -4,14 +4,15 @@ import grid.Grid
 import handlers.ImgHandler
 import javafx.geometry.Insets
 import javafx.geometry.Pos
+import javafx.scene.Cursor
 import javafx.scene.control.Label
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
-import javafx.scene.layout.BorderPane
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
 import javafx.scene.paint.Color
+import javafx.scene.shape.Rectangle
 import javafx.scene.text.Font
 import vue.GamePane
 import java.net.URLEncoder
@@ -60,20 +61,48 @@ class ChoosingCharacterVue() {
         grid.grid.forEachIndexed { x, array ->
             array.forEachIndexed({ y, pers ->
 
-                val image = ImageView(Image(
-                    "http://${Config.serverAddr}:${Config.serverHost}/resources/but1/${
-                        URLEncoder.encode(pers.person.url, StandardCharsets.UTF_8.toString())
-                    }"
-                ))
+                val image = ImageView(
+                    Image(
+                        "http://localhost:8080/resources/but1/${
+                            URLEncoder.encode(pers.person.url, StandardCharsets.UTF_8.toString())
+                        }"
+                    )
+                )
 
                 image.fitWidth = 100.0 * sizeRation
                 image.fitHeight = 150.0 * sizeRation
 
-                // register click handler
+
+
                 image.setOnMouseClicked { handler.handle(x, y) }
+                image.setOnMouseEntered {
+                    image.scaleX = 1.1
+                    image.scaleY = 1.1
+                    image.cursor = Cursor.HAND
+
+                    val clip = Rectangle(image.fitWidth, image.fitHeight)
+                    clip.arcWidth = 20.0
+                    clip.arcHeight = 20.0
+                    image.clip = clip
+
+                    image.toFront()
+                }
+
+                image.setOnMouseExited {
+                    image.scaleX = 1.0
+                    image.scaleY = 1.0
+                    image.cursor = Cursor.DEFAULT
+
+
+                    image.clip = null
+                }
+
+
 
                 gridPane.add(image, y, x)
-            })
+
+            }
+            )
         }
     }
 }
