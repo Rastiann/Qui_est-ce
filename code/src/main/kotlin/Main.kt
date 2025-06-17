@@ -13,9 +13,6 @@ class MainApp : Application() {
         )
 
         stage.show()
-
-
-
     }
 }
 

@@ -21,7 +21,7 @@ class PlayerCreationVue(
 
     init {
         root.padding = Insets(30.0)
-        root.alignment = Pos.TOP_CENTER
+        root.alignment = Pos.CENTER
         root.style = "-fx-background-color: #1e1e1e;"
         firstNameField.style = "-fx-background-color: #383838;-fx-text-fill: white"
         lastNameField.style = "-fx-background-color: #383838;;-fx-text-fill: white"
