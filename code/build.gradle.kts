@@ -1,16 +1,14 @@
 plugins {
     kotlin("jvm") version "2.1.21"
     kotlin("plugin.serialization") version "2.1.21"
+    id("org.openjfx.javafxplugin") version "0.1.0"
+    application
 }
 
 group = "iut.info.sa201.2025"
 version = "1.0"
 
 repositories {
-    maven {
-        url = uri("http://nexus.dep-info.iut-nantes.univ-nantes.prive/repository/public/")
-        isAllowInsecureProtocol = true
-    }
     mavenCentral()
 }
 
@@ -26,8 +24,12 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:1.5.18")
     implementation(files("libs/sae-qui-est-ce-client-1.0.jar"))
 
+    testImplementation("io.mockk:mockk:1.14.2")
 }
-
+javafx {
+    version="21"
+    modules("javafx.controls", "javafx.fxml")
+}
 
 tasks.test {
     useJUnitPlatform()

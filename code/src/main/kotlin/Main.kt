@@ -1,9 +1,25 @@
-import info.but1.sae2025.QuiEstCeClient
-import kotlin.random.Random
+
+import controleur.AppController
+import javafx.application.Application
+import javafx.stage.Stage
+
+
+class MainApp : Application() {
+    override fun start(stage: Stage) {
+
+        AppController(
+            "localhost",
+            8080,
+            stage
+        )
+
+        stage.show()
+
+
+
+    }
+}
 
 fun main() {
-    println("Hello, World!")
-    var client: QuiEstCeClient = QuiEstCeClient("localhost", 80)
-    // configuration à modifier bien entendu
-    client.requeteEssai()
+    Application.launch(MainApp::class.java)
 }
