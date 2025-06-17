@@ -14,4 +14,8 @@ class Grid(
 
         this.grid = grid
     }
+
+    fun setGrey(x: Int, y: Int, value: Boolean) {
+        grid[x][y].isGray = value
+    }
 }

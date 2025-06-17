@@ -14,6 +14,9 @@ class UserTurnController : GameController<UserTurn> {
     }
 
     override fun update(gameInitState: UserTurn) {
+
+        vue.update(gameInitState.otherGrid, 1.0 )
+
         vue.questionBtn.setOnAction {
             val question = AskQuestionDialog().show()
             if (question != null) {

@@ -59,6 +59,8 @@ class Game(
             apiThread,
             stateChangeHandler,
             selfPlayer,
+            selfGrid,
+            otherGrid,
             discussionLock,
             discussion
         )

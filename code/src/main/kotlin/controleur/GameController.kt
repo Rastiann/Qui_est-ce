@@ -1,10 +1,8 @@
 package controleur
 
 import controleur.game.*
-import handlers.ImgHandler
 import vue.GameVue
 import javafx.scene.Parent
-import javafx.scene.control.Label
 import state.Game
 import state.game.*
 
@@ -26,10 +24,10 @@ class GameController: StateController<Game> {
     }
 
     private fun setSubVue(parent: Parent) {
-        if (vue.rightSection.children.size == 1) {
-            vue.rightSection.children.add(parent)
+        if (vue.main.children.size == 1) {
+            vue.main.children.add(parent)
         }else {
-            vue.rightSection.children[1] = parent
+            vue.main.children[1] = parent
         }
     }
     
@@ -39,7 +37,7 @@ class GameController: StateController<Game> {
         // update top label
         vue.root.topLabel.text = "Partie avec ${state.otherPlayer.firstName} ${state.otherPlayer.name}"
         vue.root.updateDiscussion(state.discussion)
-        vue.update(state.selfGrid, {_, _ -> },  state.otherGrid, {_, _ -> })
+        vue.root.setBottomPers(state.persChoosen)
 
         when (state.gameState){
             is UserTurn -> {
