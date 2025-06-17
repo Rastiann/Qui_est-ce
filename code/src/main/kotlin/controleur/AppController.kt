@@ -5,7 +5,7 @@ import javafx.application.Platform
 import javafx.scene.Scene
 import javafx.stage.Stage
 import state.*
-import vue.ErrorDialog
+import vue.dialog.ErrorDialog
 import java.nio.file.Paths
 
 class AppController(

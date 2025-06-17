@@ -1,4 +1,4 @@
-package vue
+package vue.dialog
 
 import javafx.application.Platform
 import javafx.scene.control.Alert
