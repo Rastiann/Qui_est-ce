@@ -2,13 +2,19 @@ package controleur.game
 
 import javafx.scene.Parent
 import state.game.Win
+import vue.game.EndVue
 
 class WinController: GameController<Win> {
+
+    val vue = EndVue(EndVue.EndState.WIN)
+
     override fun getVue(): Parent {
-        TODO("Not yet implemented")
+        return vue
     }
 
     override fun update(gameInitState: Win) {
-        TODO("Not yet implemented")
+        vue.menuButton.setOnAction {
+//            gameInitState.backHome()
+        }
     }
 }

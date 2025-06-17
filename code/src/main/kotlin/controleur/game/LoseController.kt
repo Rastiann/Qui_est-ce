@@ -2,13 +2,19 @@ package controleur.game
 
 import javafx.scene.Parent
 import state.game.Lose
+import state.game.Win
+import vue.game.EndVue
 
 class LoseController: GameController<Lose> {
+    val vue = EndVue(EndVue.EndState.LOSE)
+
     override fun getVue(): Parent {
-        TODO("Not yet implemented")
+        return vue
     }
 
     override fun update(gameInitState: Lose) {
-        TODO("Not yet implemented")
+        vue.menuButton.setOnAction {
+//            gameInitState.backHome()
+        }
     }
 }

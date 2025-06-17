@@ -15,7 +15,6 @@ class TestRequeteListePartiesCreees {
     @Test
     fun testRequeteListePartiesCreees() {
 
-        // ************* tester les entrées ******* //
 
         val partiesCreeesIds = mutableListOf<Int>()
 

@@ -46,6 +46,8 @@ class TestRequeteCreationPartie {
     @Test
     fun testRequeteCreationPartie_Success() {
 
+        // Opti en mettant un repeat (en vrai nan jvais juste mettre des CT et DT)
+
         // Game 1
 
         var partieId = client.requeteCreationPartie(joueur.id, joueur.cle)

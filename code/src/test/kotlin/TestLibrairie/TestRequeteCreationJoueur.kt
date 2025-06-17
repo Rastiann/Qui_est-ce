@@ -28,8 +28,6 @@ class TestRequeteCreationJoueur {
     @Test
     fun testRequeteCreationJoueur_Exceptions() {
 
-        // foutre la création de perso tout le temps en lowercase
-
         assertThrows<IllegalArgumentException> {
             client.requeteCreationJoueur("", "")
         }

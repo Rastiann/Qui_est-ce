@@ -15,7 +15,6 @@ class TestRequeteListeParties {
     @Test
     fun testRequeteChoixPersonnage() {
 
-        // ************* Tester les entrées ********** //
 
         val partiesIds = mutableListOf<Int>()
 
