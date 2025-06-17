@@ -37,12 +37,14 @@ class GameController: StateController<Game> {
 
         // game vue
         // update top label
-        vue.root.topLabel.text = "Partie avec : ${state.otherPlayer.firstName} ${state.otherPlayer.name}"
+        vue.root.topLabel.text = "Partie avec ${state.otherPlayer.firstName} ${state.otherPlayer.name}"
         vue.root.updateDiscussion(state.discussion)
         vue.update(state.selfGrid, {_, _ -> },  state.otherGrid, {_, _ -> })
 
         when (state.gameState){
             is UserTurn -> {
+
+                vue.title.text = "Posez votre question ..."
 
                 if (userTurnController == null) { userTurnController = UserTurnController() }
                 val controller = userTurnController!!
@@ -55,6 +57,8 @@ class GameController: StateController<Game> {
                 
             }
             is WaitingForResponse -> {
+
+                vue.title.text = "Attends de la réponse ..."
 
                 if (waitingForResponseController == null) {
                     waitingForResponseController = WaitingForResponseController()
@@ -71,6 +75,8 @@ class GameController: StateController<Game> {
             }
             is Guess -> {
 
+                vue.title.text = "Grisez vos personnages"
+
                 if (guessController == null) { guessController = GuessController() }
                 val controller = guessController!!
 
@@ -83,7 +89,7 @@ class GameController: StateController<Game> {
             }
             is PeerTurn -> {
 
-                vue.title = Label("Tour de l'adversaire")
+                vue.title.text = "Tour de l'adversaire"
                 
                 if (peerTurnController == null) { peerTurnController = PeerTurnController() }
                 val controller = peerTurnController!!
@@ -96,6 +102,8 @@ class GameController: StateController<Game> {
                 
             }
             is Answering -> {
+
+                vue.title.text = "Répondre à la question"
 
                 if (answeringController == null) { answeringController = AnsweringController() }
                 val controller = answeringController!!

@@ -8,11 +8,12 @@ import vue.game.EndVue
 class MainApp : Application() {
     override fun start(stage: Stage) {
 
-        val root = EndVue(EndVue.EndState.WIN)
-        val scene = Scene(root, 600.0, 400.0)
+        AppController(
+            "localhost",
+            8080,
+            stage
+        )
 
-        stage.scene = scene
-        stage.title = "Fin de partie"
         stage.show()
     }
 }

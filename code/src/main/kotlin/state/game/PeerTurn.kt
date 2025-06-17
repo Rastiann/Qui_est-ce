@@ -52,7 +52,7 @@ class PeerTurn(
 
                 }
 
-                if (apiGameState.etape == ETAPE.ATTENTE_QUESTION) {
+                if (apiGameState.etape == ETAPE.ATTENTE_QUESTION && apiGameState.idJoueurQuestionCourante == selfPlayer.id) {
                     // safety : remove all periodic task to be sure
                     // they don't change state after this change
                     apiThread.setPeriodicTask(null)

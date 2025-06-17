@@ -30,7 +30,7 @@ class Answering(
                     )
                 }
 
-                stateChangeHandler.handle(Game(game, UserTurn()))
+                stateChangeHandler.handle(Game(game, PeerTurn()))
 
             }catch(e: Throwable) {
                 stateChangeHandler.handle(game, e)
