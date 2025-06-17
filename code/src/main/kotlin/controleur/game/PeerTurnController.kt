@@ -12,5 +12,5 @@ class PeerTurnController : GameController<PeerTurn> {
         return vue
     }
 
-    override fun update(gameInitState: PeerTurn) { }
+    override fun update(gameInitState: PeerTurn) {}
 }

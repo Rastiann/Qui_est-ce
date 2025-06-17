@@ -5,7 +5,7 @@ import javafx.application.Platform
 import javafx.scene.Scene
 import javafx.stage.Stage
 import state.*
-import vue.Dialog.ErrorDialog
+import vue.dialog.ErrorDialog
 import java.nio.file.Paths
 
 class AppController(
@@ -70,7 +70,7 @@ class AppController(
             ErrorDialog(
                 "Erreur de connection",
                 "Serveur injoignable",
-                "Impossible de se connecter au serveur"
+                "Impossible de se connecter au serveur",
             ).show()
         }
     }
@@ -83,7 +83,8 @@ class AppController(
                 ErrorDialog(
                     "Erreur",
                     "Un erreur est survenu, veuillez réessayer plus tard",
-                    error.message.toString()
+                    error.message.toString(),
+                    error
                 ).show()
             }
 

@@ -2,16 +2,16 @@ package state.game
 
 import info.but1.sae2025.data.ETAPE
 import state.Game
+import state.Message
 
 class PeerTurn(
-    val prevResponse: String?,
     val showWrongGuess: Boolean = false
 ): GameState() {
 
     override fun onAttached() {
 
         // check every 500ms if other player has chosen his question
-        apiThread.setPeriodicTask(Runnable {
+        apiThread.setPeriodicTask({
 
             try {
 
@@ -29,18 +29,37 @@ class PeerTurn(
                     stateChangeHandler.handle(Game(game, Lose()))
                 }
 
-                if (apiGameState.etape != ETAPE.ATTENTE_REPONSE) {
-                    return@Runnable
+                if (apiGameState.etape == ETAPE.ATTENTE_REPONSE) {
+
+                    val question = apiGameState.questionCourante
+
+                    // add message to discussion
+                    synchronized(discussionLock) {
+                        discussion.add(
+                            Message(
+                                question,
+                                false
+                            )
+                        )
+                    }
+
+                    // safety : remove all periodic task to be sure
+                    // they don't change state after this change
+                    apiThread.setPeriodicTask(null)
+
+                    // set state
+                    stateChangeHandler.handle(Game(game, Answering(question)))
+
                 }
 
-                val question = apiGameState.questionCourante
+                if (apiGameState.etape == ETAPE.ATTENTE_QUESTION) {
+                    // safety : remove all periodic task to be sure
+                    // they don't change state after this change
+                    apiThread.setPeriodicTask(null)
 
-                // safety : remove all periodic task to be sure
-                // they don't change state after this change
-                apiThread.setPeriodicTask(null)
-
-                // set state
-                stateChangeHandler.handle(Game(game, Answering(question)))
+                    // set state
+                    stateChangeHandler.handle(Game(game, UserTurn()))
+                }
 
             }catch (e: Throwable) {
                 stateChangeHandler.handle(game, e)

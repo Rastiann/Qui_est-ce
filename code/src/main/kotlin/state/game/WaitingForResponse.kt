@@ -2,6 +2,7 @@ package state.game
 
 import info.but1.sae2025.data.ETAPE
 import state.Game
+import state.Message
 
 class WaitingForResponse: GameState() {
 
@@ -14,18 +15,28 @@ class WaitingForResponse: GameState() {
 
                 // check if peer has chosen his question
                 val apiGameState = apiClient.requeteEtatPartie(game.gameId)
-                if (apiGameState.etape != ETAPE.ATTENTE_QUESTION) {
+                if (apiGameState.etape != ETAPE.ATTENTE_REFLEXION) {
                     return@Runnable
                 }
 
                 val response = apiGameState.reponseCourante
+
+                // add message to discussion
+                synchronized(discussionLock) {
+                    discussion.add(
+                        Message(
+                            response,
+                            true
+                        )
+                    )
+                }
 
                 // safety : remove all periodic task to be sure
                 // they don't change state after this change
                 apiThread.setPeriodicTask(null)
 
                 // set state
-                stateChangeHandler.handle(Game(game, PeerTurn(response)))
+                stateChangeHandler.handle(Game(game, Guess()))
 
             }catch (e: Throwable) {
                 stateChangeHandler.handle(game, e)

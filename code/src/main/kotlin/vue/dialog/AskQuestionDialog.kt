@@ -1,8 +1,6 @@
-package vue.Dialog
+package vue.dialog
 
 import javafx.application.Platform
-import javafx.event.ActionEvent
-import javafx.event.EventHandler
 import javafx.scene.control.ButtonType
 import javafx.scene.control.TextInputDialog
 

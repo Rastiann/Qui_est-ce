@@ -1,6 +1,7 @@
 package controleur
 
 import controleur.game.*
+import handlers.ImgHandler
 import vue.GameVue
 import javafx.scene.Parent
 import javafx.scene.control.Label
@@ -11,6 +12,7 @@ class GameController: StateController<Game> {
     
     private var userTurnController: UserTurnController? = null
     private var waitingForResponseController: WaitingForResponseController? = null
+    private var guessController: GuessController? = null
     private var peerTurnController: PeerTurnController? = null
     private var answeringController: AnsweringController? = null
     private var loseController: LoseController? = null
@@ -32,15 +34,16 @@ class GameController: StateController<Game> {
     }
     
     override fun update(state: Game) {
+
+        // game vue
+        // update top label
+        vue.root.topLabel.text = "Partie avec : ${state.otherPlayer.firstName} ${state.otherPlayer.name}"
+        vue.root.updateDiscussion(state.discussion)
+        vue.update(state.selfGrid, {_, _ -> },  state.otherGrid, {_, _ -> })
+
         when (state.gameState){
             is UserTurn -> {
 
-                // update top label
-                vue.root.topLabel.text = "Partie avec : ${state.otherPlayer.firstName} ${state.otherPlayer.name}"
-
-                // make sure currentVue is gameVue 
-                currentVue = vue.root
-                
                 if (userTurnController == null) { userTurnController = UserTurnController() }
                 val controller = userTurnController!!
 
@@ -51,14 +54,36 @@ class GameController: StateController<Game> {
                 setSubVue(controller.getVue())
                 
             }
+            is WaitingForResponse -> {
+
+                if (waitingForResponseController == null) {
+                    waitingForResponseController = WaitingForResponseController()
+                }
+
+                val controller = waitingForResponseController!!
+
+                // controller update
+                controller.update(state.gameState)
+
+                // vue update
+                setSubVue(controller.getVue())
+
+            }
+            is Guess -> {
+
+                if (guessController == null) { guessController = GuessController() }
+                val controller = guessController!!
+
+                // controller update
+                controller.update(state.gameState)
+
+                // vue update
+                setSubVue(controller.getVue())
+
+            }
             is PeerTurn -> {
 
-                // update top label
-                vue.root.topLabel.text = "Partie avec : ${state.otherPlayer.firstName} ${state.otherPlayer.name}"
-
-                // make sure currentVue is gameVue 
                 vue.title = Label("Tour de l'adversaire")
-                currentVue = vue.root
                 
                 if (peerTurnController == null) { peerTurnController = PeerTurnController() }
                 val controller = peerTurnController!!
@@ -72,12 +97,6 @@ class GameController: StateController<Game> {
             }
             is Answering -> {
 
-                // update top label
-                vue.root.topLabel.text = "Partie avec : ${state.otherPlayer.firstName} ${state.otherPlayer.name}"
-
-                // make sure currentVue is gameVue 
-                currentVue = vue.root
-
                 if (answeringController == null) { answeringController = AnsweringController() }
                 val controller = answeringController!!
 
@@ -88,33 +107,9 @@ class GameController: StateController<Game> {
                 setSubVue(controller.getVue())
                 
             }
-            is WaitingForResponse -> {
-
-                // update top label
-                vue.root.topLabel.text = "Partie avec : ${state.otherPlayer.firstName} ${state.otherPlayer.name}"
-
-                // make sure currentVue is gameVue 
-                currentVue = vue.root
-
-                if (waitingForResponseController == null) { 
-                    waitingForResponseController = WaitingForResponseController() 
-                }
-                
-                val controller = waitingForResponseController!!
-
-                // controller update
-                controller.update(state.gameState)
-
-                // vue update
-                setSubVue(controller.getVue())
-                
-            }
             is Win -> {
 
-                if (winController == null) {
-                    winController = WinController()
-                }
-                
+                if (winController == null) { winController = WinController() }
                 val controller = winController!!
 
                 // controller update
@@ -126,10 +121,7 @@ class GameController: StateController<Game> {
             }
             is Lose -> {
 
-                if (loseController == null) {
-                    loseController = LoseController()
-                }
-
+                if (loseController == null) { loseController = LoseController() }
                 val controller = loseController!!
 
                 // controller update

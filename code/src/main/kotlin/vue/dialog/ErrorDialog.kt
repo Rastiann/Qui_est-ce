@@ -1,4 +1,4 @@
-package vue.Dialog
+package vue.dialog
 
 import javafx.application.Platform
 import javafx.scene.control.Alert
@@ -7,7 +7,8 @@ import javafx.scene.control.ButtonType
 class ErrorDialog(
     title: String,
     header: String,
-    message: String
+    message: String,
+    val error: Throwable? = null
 ) {
 
     private val alert = Alert(Alert.AlertType.INFORMATION)
@@ -47,5 +48,8 @@ class ErrorDialog(
     fun show() {
         alert.showAndWait()
         Platform.exit()
+        if (error != null) {
+            throw error
+        }
     }
 }

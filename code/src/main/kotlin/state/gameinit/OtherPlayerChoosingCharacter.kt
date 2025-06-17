@@ -47,7 +47,7 @@ class OtherPlayerChoosingCharacter(
                         if (gameInit.selfIsPlayer1) {
                             UserTurn()
                         }else {
-                            PeerTurn(null)
+                            PeerTurn()
                         }
                     )
                 )
