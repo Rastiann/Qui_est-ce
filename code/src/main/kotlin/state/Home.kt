@@ -47,7 +47,7 @@ class Home(
             val player = apiClient.requeteJoueur(apiGameState.idJoueur1)
             createdGames.add(CreatedGame(
                 id,
-                Player(player.prenom, player.nom, apiGameState.idJoueur1)
+                Player(player.nom, player.prenom, apiGameState.idJoueur1)
             ))
         }
 
@@ -140,7 +140,7 @@ class Home(
                 )
 
                 // fetch other player
-                val otherPlayerApi = apiClient.requeteJoueur(apiState.idJoueur2)
+                val otherPlayerApi = apiClient.requeteJoueur(apiState.idJoueur1)
                 val otherPlayer = Player(
                     otherPlayerApi.nom,
                     otherPlayerApi.prenom,

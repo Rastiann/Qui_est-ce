@@ -33,7 +33,10 @@ class GameController: StateController<Game> {
     override fun update(state: Game) {
         when (state.gameState){
             is UserTurn -> {
-                
+
+                // update top label
+                vue.root.topLabel.text = "Partie avec : ${state.otherPlayer.firstName} ${state.otherPlayer.name}"
+
                 // make sure currentVue is gameVue 
                 currentVue = vue.root
                 
@@ -48,6 +51,9 @@ class GameController: StateController<Game> {
                 
             }
             is PeerTurn -> {
+
+                // update top label
+                vue.root.topLabel.text = "Partie avec : ${state.otherPlayer.firstName} ${state.otherPlayer.name}"
 
                 // make sure currentVue is gameVue 
                 currentVue = vue.root
@@ -64,6 +70,9 @@ class GameController: StateController<Game> {
             }
             is Answering -> {
 
+                // update top label
+                vue.root.topLabel.text = "Partie avec : ${state.otherPlayer.firstName} ${state.otherPlayer.name}"
+
                 // make sure currentVue is gameVue 
                 currentVue = vue.root
 
@@ -78,7 +87,10 @@ class GameController: StateController<Game> {
                 
             }
             is WaitingForResponse -> {
-                
+
+                // update top label
+                vue.root.topLabel.text = "Partie avec : ${state.otherPlayer.firstName} ${state.otherPlayer.name}"
+
                 // make sure currentVue is gameVue 
                 currentVue = vue.root
 

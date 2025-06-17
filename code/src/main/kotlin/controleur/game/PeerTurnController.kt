@@ -5,7 +5,6 @@ import state.game.PeerTurn
 
 class PeerTurnController : GameController<PeerTurn> {
 
-
     override fun getVue(): Parent {
         TODO("")
     }

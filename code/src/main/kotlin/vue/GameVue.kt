@@ -14,15 +14,15 @@ import javafx.scene.paint.Color
 import javafx.scene.text.Font
 
 class GameVue() {
-    val root = VBox(30.0)
+    val main = VBox(30.0)
+    val root = GamePane("", main)
+
     val rightSection: VBox
     private val leftGrid = GridPane()
     private val rightGrid = GridPane()
     val title = Label("Votre tour")
 
     init {
-        root.padding = Insets(20.0)
-        root.style = "-fx-background-color: #1e1e1e;"
 
         title.font = Font.font(50.0)
         title.textFill = Color.LIGHTGRAY
@@ -41,7 +41,7 @@ class GameVue() {
         grids.maxWidth = Double.MAX_VALUE
         rightGrid.padding = Insets(0.0,0.0,0.0,35.0)
 
-        root.children.addAll(titleBox, grids)
+        main.children.addAll(titleBox, grids)
     }
 
 

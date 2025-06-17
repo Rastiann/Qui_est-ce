@@ -11,6 +11,8 @@ import javafx.stage.Screen
 
 open class SpinnerVue(val text: String, val direction: Direction) : BorderPane() {
 
+    var title: Label
+
     enum class Direction {
         VERTICAL, HORIZONTAL
     }
@@ -34,7 +36,7 @@ open class SpinnerVue(val text: String, val direction: Direction) : BorderPane()
         this.maxWidth = Double.MAX_VALUE
         this.maxHeight = Double.MAX_VALUE
 
-        val title = Label(text)
+        title = Label(text)
         title.font = Font.font(30.0)
         title.alignment = Pos.CENTER
         title.style = "-fx-text-fill: white"
