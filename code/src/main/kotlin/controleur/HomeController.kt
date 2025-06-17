@@ -25,5 +25,4 @@ class HomeController: StateController<Home> {
             state.createNewGame()
         }
     }
-
 }
