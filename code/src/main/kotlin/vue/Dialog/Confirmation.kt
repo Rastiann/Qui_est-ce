@@ -2,6 +2,7 @@ package vue.Dialog
 
 import javafx.application.Platform
 import javafx.scene.control.Alert
+import javafx.scene.control.ButtonBar
 import javafx.scene.control.ButtonType
 import javafx.scene.control.TextInputDialog
 
@@ -15,8 +16,14 @@ class Confirmation() {
         alert.title = "CONFIRMATION"
 
         val dialogPane = alert.dialogPane
-        val okButton = dialogPane.lookupButton(ButtonType.OK)
-        val cancelButton = dialogPane.lookupButton(ButtonType.CANCEL)
+        val okButton = ButtonType("Guess", ButtonBar.ButtonData.OK_DONE)
+        val cancelButton = ButtonType("Annuler", ButtonBar.ButtonData.CANCEL_CLOSE)
+
+        alert.buttonTypes.setAll(okButton, cancelButton)
+
+        val buttonOk = dialogPane.lookupButton(okButton)
+        val buttonCancel = dialogPane.lookupButton(cancelButton)
+
 
         val buttonStyle = """
             -fx-background-color: orange;
@@ -24,8 +31,8 @@ class Confirmation() {
             -fx-font-weight: bold;
         """.trimIndent()
 
-        okButton.style = buttonStyle
-        cancelButton.style = buttonStyle
+        buttonOk.style = buttonStyle
+        buttonCancel.style = buttonStyle
 
         val resultat = alert.showAndWait()
 
