@@ -21,7 +21,7 @@ open class GamePane(
 ): BorderPane() {
 
     val topLabel = Label(topLabelTxt)
-    private val discussionHBox = HBox()
+    private val discussionVBox = VBox()
 
     init {
         topLabel.font = Font.font(20.0)
@@ -35,16 +35,16 @@ open class GamePane(
         this.center = centerNode
 
         //  discussion
-        this.right = discussionHBox
+        this.right = discussionVBox
     }
 
     fun updateDiscussion(discussion: List<Message>) {
 
-        discussionHBox.children.clear()
+        discussionVBox.children.clear()
 
         for (message in discussion) {
             val vue = MessageVue(message)
-            discussionHBox.children.add(vue)
+            discussionVBox.children.add(vue)
         }
     }
 

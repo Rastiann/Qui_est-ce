@@ -9,7 +9,7 @@ class MessageVue(message: Message): Label(message.message) {
 
     init {
         prefWidth = 200.0
-        style = "-fx-border-radius: 8px; -fx-background-color: #333232"
+        style = "-fx-border-radius: 8px; -fx-background-color: #333232; -fx-text-fill: white"
         padding = Insets(8.0)
         alignment = if (message.isSelf) {
             Pos.CENTER_LEFT
