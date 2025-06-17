@@ -15,7 +15,7 @@ class WaitingForResponse: GameState() {
 
                 // check if peer has chosen his question
                 val apiGameState = apiClient.requeteEtatPartie(game.gameId)
-                if (apiGameState.etape != ETAPE.ATTENTE_QUESTION) {
+                if (apiGameState.etape != ETAPE.ATTENTE_REFLEXION) {
                     return@Runnable
                 }
 
@@ -36,7 +36,7 @@ class WaitingForResponse: GameState() {
                 apiThread.setPeriodicTask(null)
 
                 // set state
-                stateChangeHandler.handle(Game(game, PeerTurn()))
+                stateChangeHandler.handle(Game(game, Guess()))
 
             }catch (e: Throwable) {
                 stateChangeHandler.handle(game, e)

@@ -2,13 +2,15 @@ package controleur.game
 
 import javafx.scene.Parent
 import state.game.WaitingForResponse
+import vue.game.WaitingForResponseVue
 
 class WaitingForResponseController: GameController<WaitingForResponse> {
+
+    private val vue = WaitingForResponseVue()
+
     override fun getVue(): Parent {
-        TODO("Not yet implemented")
+        return vue
     }
 
-    override fun update(gameInitState: WaitingForResponse) {
-        TODO("Not yet implemented")
-    }
+    override fun update(gameInitState: WaitingForResponse) {}
 }

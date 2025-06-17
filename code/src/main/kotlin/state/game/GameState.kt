@@ -33,6 +33,7 @@ sealed class GameState {
         this.apiThread = apiThread
         this.stateChangeHandler = stateChangeHandler
         this.selfPlayer = selfPlayer
+        this.discussionLock = discussionLock
         this.discussion = discussion
         this.onAttached()
     }

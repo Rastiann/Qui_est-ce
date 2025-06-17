@@ -4,7 +4,7 @@ import state.Game
 import state.Message
 
 class Answering(
-    question: String
+    val question: String
 ): GameState() {
 
     override fun onAttached() { }

@@ -11,7 +11,7 @@ class PeerTurn(
     override fun onAttached() {
 
         // check every 500ms if other player has chosen his question
-        apiThread.setPeriodicTask(Runnable {
+        apiThread.setPeriodicTask({
 
             try {
 
@@ -29,28 +29,37 @@ class PeerTurn(
                     stateChangeHandler.handle(Game(game, Lose()))
                 }
 
-                if (apiGameState.etape != ETAPE.ATTENTE_REPONSE) {
-                    return@Runnable
-                }
+                if (apiGameState.etape == ETAPE.ATTENTE_REPONSE) {
 
-                val question = apiGameState.questionCourante
+                    val question = apiGameState.questionCourante
 
-                // add message to discussion
-                synchronized(discussionLock) {
-                    discussion.add(
-                        Message(
-                            question,
-                            false
+                    // add message to discussion
+                    synchronized(discussionLock) {
+                        discussion.add(
+                            Message(
+                                question,
+                                false
+                            )
                         )
-                    )
+                    }
+
+                    // safety : remove all periodic task to be sure
+                    // they don't change state after this change
+                    apiThread.setPeriodicTask(null)
+
+                    // set state
+                    stateChangeHandler.handle(Game(game, Answering(question)))
+
                 }
 
-                // safety : remove all periodic task to be sure
-                // they don't change state after this change
-                apiThread.setPeriodicTask(null)
+                if (apiGameState.etape == ETAPE.ATTENTE_QUESTION) {
+                    // safety : remove all periodic task to be sure
+                    // they don't change state after this change
+                    apiThread.setPeriodicTask(null)
 
-                // set state
-                stateChangeHandler.handle(Game(game, Answering(question)))
+                    // set state
+                    stateChangeHandler.handle(Game(game, UserTurn()))
+                }
 
             }catch (e: Throwable) {
                 stateChangeHandler.handle(game, e)

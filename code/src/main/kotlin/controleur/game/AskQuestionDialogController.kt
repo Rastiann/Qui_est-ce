@@ -4,8 +4,11 @@ import javafx.event.ActionEvent
 import javafx.event.EventHandler
 import javafx.scene.control.ButtonType
 import javafx.scene.control.TextInputDialog
+import state.game.UserTurn
 
-class AskQuestionDialogController() : EventHandler<ActionEvent> {
+class AskQuestionDialogController(
+    val state: UserTurn
+) : EventHandler<ActionEvent> {
 
     override fun  handle(p0: ActionEvent?) {
         val dialog = TextInputDialog("Poser une Question")
@@ -25,12 +28,10 @@ class AskQuestionDialogController() : EventHandler<ActionEvent> {
         okButton.style = buttonStyle
         cancelButton.style = buttonStyle
 
-        val resultat = dialog.showAndWait()
+        val result = dialog.showAndWait()
+        if (!result.isPresent) { return }
 
-        var question: String? = null
-
-        if (resultat.isPresent) {
-            question = resultat.get()
-        }
+        val question = result.get()
+        state.ask(question)
     }
 }
