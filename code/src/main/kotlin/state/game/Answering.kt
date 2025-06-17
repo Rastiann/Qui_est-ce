@@ -1,6 +1,7 @@
 package state.game
 
 import state.Game
+import state.Message
 
 class Answering(
     question: String
@@ -18,6 +19,16 @@ class Answering(
                     game.selfPlayer.key,
                     response
                 )
+
+                // add message to discussion
+                synchronized(discussionLock) {
+                    discussion.add(
+                        Message(
+                            response,
+                            true
+                        )
+                    )
+                }
 
                 stateChangeHandler.handle(Game(game, UserTurn()))
 

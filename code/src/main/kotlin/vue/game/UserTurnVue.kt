@@ -9,19 +9,19 @@ import javafx.scene.layout.VBox
 class UserTurnVue {
 
     val root: VBox
-    val btn = Button("Pass")
-    val btn2 = Button("Guess")
-    val btn3 = Button("Question")
+    val passBtn = Button("Pass")
+    val guessBtn = Button("Guess")
+    val questionBtn = Button("Question")
     var buttonBox : HBox
 
     init {
-        val buttons = listOf(btn, btn2, btn3)
+        val buttons = listOf(passBtn, guessBtn, questionBtn)
         buttons.forEach {
             it.style = "-fx-background-color: orange; -fx-text-fill: black; -fx-font-weight: bold;"
             it.prefWidth = 100.0
         }
 
-        buttonBox = HBox(20.0, btn, btn2, btn3) // 20.0 = espacement horizontal
+        buttonBox = HBox(20.0, passBtn, guessBtn, questionBtn) // 20.0 = espacement horizontal
         buttonBox.alignment = Pos.CENTER
         buttonBox.padding = Insets(10.0)
 

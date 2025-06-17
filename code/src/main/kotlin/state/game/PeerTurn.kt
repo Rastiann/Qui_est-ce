@@ -2,9 +2,9 @@ package state.game
 
 import info.but1.sae2025.data.ETAPE
 import state.Game
+import state.Message
 
 class PeerTurn(
-    val prevResponse: String?,
     val showWrongGuess: Boolean = false
 ): GameState() {
 
@@ -34,6 +34,16 @@ class PeerTurn(
                 }
 
                 val question = apiGameState.questionCourante
+
+                // add message to discussion
+                synchronized(discussionLock) {
+                    discussion.add(
+                        Message(
+                            question,
+                            false
+                        )
+                    )
+                }
 
                 // safety : remove all periodic task to be sure
                 // they don't change state after this change

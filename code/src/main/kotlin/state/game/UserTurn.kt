@@ -2,6 +2,7 @@ package state.game
 
 import grid.Person
 import state.Game
+import state.Message
 
 class UserTurn: GameState() {
 
@@ -18,6 +19,14 @@ class UserTurn: GameState() {
                     game.selfPlayer.key,
                     question
                 )
+
+                // add message to discussion
+                synchronized(discussionLock) {
+                    discussion.add(Message(
+                        question,
+                        true
+                    ))
+                }
 
                 // send new state
                 stateChangeHandler.handle(Game(game, WaitingForResponse()))
@@ -40,7 +49,7 @@ class UserTurn: GameState() {
                 )
 
                 // send new state
-                stateChangeHandler.handle(Game(game, PeerTurn(null)))
+                stateChangeHandler.handle(Game(game, PeerTurn()))
 
             }catch(e: Throwable) {
                 stateChangeHandler.handle(game, e)
@@ -82,7 +91,7 @@ class UserTurn: GameState() {
 
                 val nextState = Game(
                     game,
-                    if (hasWin) { Win() }else { PeerTurn(null, true) }
+                    if (hasWin) { Win() }else { PeerTurn( true) }
                 )
 
                 stateChangeHandler.handle(nextState, null)

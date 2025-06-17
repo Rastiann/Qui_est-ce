@@ -2,17 +2,23 @@ package controleur.game
 
 import javafx.scene.Parent
 import state.game.UserTurn
-import vue.GameVue
+import vue.game.UserTurnVue
 
 class UserTurnController : GameController<UserTurn> {
 
-    private val vue = GameVue()
+    private val vue = UserTurnVue()
 
     override fun getVue(): Parent {
         return vue.root
     }
 
     override fun update(gameInitState: UserTurn) {
-        TODO("Not yet implemented")
+        vue.passBtn.setOnAction {
+            gameInitState.skipTurn()
+        }
+
+        vue.guessBtn.setOnAction {
+
+        }
     }
 }

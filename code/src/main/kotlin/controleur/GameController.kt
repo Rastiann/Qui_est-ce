@@ -32,6 +32,9 @@ class GameController: StateController<Game> {
     }
     
     override fun update(state: Game) {
+
+        vue.root.updateDiscussion(state.discussion)
+
         when (state.gameState){
             is UserTurn -> {
 
