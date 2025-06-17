@@ -10,17 +10,17 @@ class PlayerCreation(
     stateChangeHandler: StateChangeHandler
 ): AppState(apiClient, apiThread, stateChangeHandler) {
 
-    fun tryCreate(player: Player) {
+    fun tryCreate(name: String, firstName: String) {
         apiThread.executeImmediately {
             try {
 
                 // request new player
-                val id = apiClient.requeteCreationJoueur(player.name, player.firstName)
+                val id = apiClient.requeteCreationJoueur(name, firstName)
 
                 // create connected player
                 val connectedPlayer = ConnectedPlayer(
-                    player.firstName,
-                    player.name,
+                    firstName,
+                    name,
                     id.id,
                     id.cle
                 )

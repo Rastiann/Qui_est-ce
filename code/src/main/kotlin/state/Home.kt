@@ -47,7 +47,7 @@ class Home(
             val player = apiClient.requeteJoueur(apiGameState.idJoueur1)
             createdGames.add(CreatedGame(
                 id,
-                Player(player.prenom, player.nom)
+                Player(player.nom, player.prenom, apiGameState.idJoueur1)
             ))
         }
 
@@ -68,7 +68,7 @@ class Home(
             // fetch player
             val apiPlayer = apiClient.requeteJoueur(id)
             connectedPlayers.add(Player(
-                apiPlayer.prenom, apiPlayer.nom
+                apiPlayer.prenom, apiPlayer.nom, id
             ))
         }
 
@@ -139,6 +139,14 @@ class Home(
                     id, selfPlayer.id, selfPlayer.key
                 )
 
+                // fetch other player
+                val otherPlayerApi = apiClient.requeteJoueur(apiState.idJoueur1)
+                val otherPlayer = Player(
+                    otherPlayerApi.nom,
+                    otherPlayerApi.prenom,
+                    apiState.idJoueur2
+                )
+
                 // fetch grids
                 val apiSelfGrid = apiClient.requeteGrilleJoueur(id, selfPlayer.id)
                 val apiOtherGrid = apiClient.requeteGrilleJoueur(id, apiState.idJoueur1)
@@ -171,7 +179,7 @@ class Home(
                         selfIsPlayer1 = false,
                         id,
                         ChoosingCharacter(
-                            apiState.idJoueur1,
+                            otherPlayer,
                             selfGrid,
                             otherGrid
                         )

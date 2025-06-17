@@ -3,6 +3,7 @@ package controleur
 import controleur.game.*
 import vue.GameVue
 import javafx.scene.Parent
+import javafx.scene.control.Label
 import state.Game
 import state.game.*
 
@@ -33,7 +34,10 @@ class GameController: StateController<Game> {
     override fun update(state: Game) {
         when (state.gameState){
             is UserTurn -> {
-                
+
+                // update top label
+                vue.root.topLabel.text = "Partie avec : ${state.otherPlayer.firstName} ${state.otherPlayer.name}"
+
                 // make sure currentVue is gameVue 
                 currentVue = vue.root
                 
@@ -49,7 +53,11 @@ class GameController: StateController<Game> {
             }
             is PeerTurn -> {
 
+                // update top label
+                vue.root.topLabel.text = "Partie avec : ${state.otherPlayer.firstName} ${state.otherPlayer.name}"
+
                 // make sure currentVue is gameVue 
+                vue.title = Label("Tour de l'adversaire")
                 currentVue = vue.root
                 
                 if (peerTurnController == null) { peerTurnController = PeerTurnController() }
@@ -63,6 +71,9 @@ class GameController: StateController<Game> {
                 
             }
             is Answering -> {
+
+                // update top label
+                vue.root.topLabel.text = "Partie avec : ${state.otherPlayer.firstName} ${state.otherPlayer.name}"
 
                 // make sure currentVue is gameVue 
                 currentVue = vue.root
@@ -78,7 +89,10 @@ class GameController: StateController<Game> {
                 
             }
             is WaitingForResponse -> {
-                
+
+                // update top label
+                vue.root.topLabel.text = "Partie avec : ${state.otherPlayer.firstName} ${state.otherPlayer.name}"
+
                 // make sure currentVue is gameVue 
                 currentVue = vue.root
 

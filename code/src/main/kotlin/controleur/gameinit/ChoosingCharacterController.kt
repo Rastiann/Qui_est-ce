@@ -19,6 +19,8 @@ class ChoosingCharacterController: GameInitController<ChoosingCharacter> {
             },
             gameInitState.otherGrid, {_, _ -> }
         )
+
+        vue.root.topLabel.text = "Partie avevc : ${gameInitState.otherPlayer.firstName} ${gameInitState.otherPlayer.name}"
     }
 
 }

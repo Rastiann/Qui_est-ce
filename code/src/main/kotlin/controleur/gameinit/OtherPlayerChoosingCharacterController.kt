@@ -12,5 +12,7 @@ class OtherPlayerChoosingCharacterController: GameInitController<OtherPlayerChoo
         return vue
     }
 
-    override fun update(gameInitState: OtherPlayerChoosingCharacter) { }
+    override fun update(gameInitState: OtherPlayerChoosingCharacter) {
+        vue.title.text = "${gameInitState.otherPlayer.firstName} ${gameInitState.otherPlayer.name} choisit son personnage ..."
+    }
 }

@@ -1,6 +1,7 @@
 package state
 
 import ConnectedPlayer
+import Player
 import grid.Grid
 import grid.Person
 import info.but1.sae2025.QuiEstCeClient
@@ -12,7 +13,7 @@ class Game(
     stateChangeHandler: StateChangeHandler,
     val selfPlayer: ConnectedPlayer,
     val selfIsPlayer1: Boolean,
-    val otherPlayerId: Int,
+    val otherPlayer: Player,
     val gameId: Int,
     val selfGrid: Grid,
     val otherGrid: Grid,
@@ -28,7 +29,7 @@ class Game(
                 game.stateChangeHandler,
                 game.selfPlayer,
                 game.selfIsPlayer1,
-                game.otherPlayerId,
+                game.otherPlayer,
                 game.gameId,
                 game.selfGrid,
                 game.otherGrid,
@@ -40,7 +41,7 @@ class Game(
 
         // to simplify, fill lateinit here
         gameState.attachToGame(
-            this, apiClient, apiThread, stateChangeHandler
+            this, apiClient, apiThread, stateChangeHandler, selfPlayer
         )
     }
 

@@ -7,22 +7,27 @@ import javafx.geometry.Pos
 import javafx.scene.control.Label
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
+import javafx.scene.layout.BorderPane
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
 import javafx.scene.paint.Color
 import javafx.scene.text.Font
+import vue.GamePane
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
 class ChoosingCharacterVue() {
-    val root = VBox(30.0)
+
     private val leftGrid = GridPane()
     private val rightGrid = GridPane()
 
+    val main = VBox()
+    val root = GamePane("Partie avec : ", main)
+
     init {
-        root.padding = Insets(20.0)
-        root.style = "-fx-background-color: #1e1e1e;"
+
+        main.padding = Insets(20.0)
 
         val title = Label("Choisir son personnage")
         title.font = Font.font(50.0)
@@ -38,7 +43,8 @@ class ChoosingCharacterVue() {
         grids.alignment = Pos.CENTER
         grids.maxWidth = Double.MAX_VALUE
 
-        root.children.addAll(titleBox, grids)
+        main.children.addAll(titleBox, grids)
+        root.center = main
     }
 
     fun update(selfGrid: Grid, selfGridHandler: ImgHandler, otherGrid: Grid, otherGridHandler: ImgHandler) {

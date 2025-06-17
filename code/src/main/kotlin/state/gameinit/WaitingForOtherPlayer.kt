@@ -1,5 +1,6 @@
 package state.gameinit
 
+import Player
 import grid.Grid
 import grid.Person
 import grid.PersonItem
@@ -20,6 +21,14 @@ class WaitingForOtherPlayer: GameInitState() {
                 if (apiGameState.etape != ETAPE.INITIALISATION) {
                     return@Runnable
                 }
+
+                // fetch other player
+                val otherPlayerApi = apiClient.requeteJoueur(apiGameState.idJoueur2)
+                val otherPlayer = Player(
+                    otherPlayerApi.nom,
+                    otherPlayerApi.prenom,
+                    apiGameState.idJoueur2
+                )
 
                 // fetch grids
                 val apiSelfGrid = apiClient.requeteGrilleJoueur(gameInit.gameId, apiGameState.idJoueur1)
@@ -49,7 +58,7 @@ class WaitingForOtherPlayer: GameInitState() {
                     GameInit(
                         gameInit,
                         ChoosingCharacter(
-                            apiGameState.idJoueur2,
+                            otherPlayer,
                             selfGrid,
                             otherGrid
                         )
