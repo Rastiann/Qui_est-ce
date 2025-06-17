@@ -2,18 +2,20 @@ package vue.game
 
 import grid.Grid
 import handlers.ImgHandler
-import javafx.geometry.Pos
 import javafx.scene.control.Button
-import javafx.scene.layout.HBox
+import javafx.scene.layout.VBox
 import vue.GridVue
 
 class GuessVue {
 
-    val root = HBox()
+    val root = VBox()
     val okBtn = Button("Ok")
 
     init {
-        okBtn.alignment = Pos.CENTER_RIGHT
+
+        okBtn.style = "-fx-background-color: orange; -fx-text-fill: black; -fx-font-weight: bold;"
+        okBtn.prefWidth = 100.0
+        root.spacing = 10.0
     }
 
     fun update(

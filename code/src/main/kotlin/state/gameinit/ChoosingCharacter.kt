@@ -36,6 +36,8 @@ class ChoosingCharacter(
             throw Exception("Person is not in Grid")
         }
 
+        println("choosing $persX $persY")
+
         apiThread.executeImmediately {
 
             try {

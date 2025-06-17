@@ -26,7 +26,7 @@ class WaitingForResponse: GameState() {
                     discussion.add(
                         Message(
                             response,
-                            true
+                            false
                         )
                     )
                 }

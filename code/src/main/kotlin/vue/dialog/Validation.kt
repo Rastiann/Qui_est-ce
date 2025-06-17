@@ -35,6 +35,6 @@ class Validation() {
 
     fun show(): Boolean {
         val result = alert.showAndWait()
-        return result.get() == ButtonType.OK
+        return result.get().buttonData == ButtonBar.ButtonData.OK_DONE
     }
 }

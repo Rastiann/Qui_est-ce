@@ -17,7 +17,7 @@ class UserTurnVue() {
     init {
         questionBtn.style = "-fx-background-color: orange; -fx-text-fill: black; -fx-font-weight: bold;"
         questionBtn.prefWidth = 100.0
-        questionBtn.padding = Insets(0.0, 0.0, 20.0, 0.0)
+        root.spacing = 10.0
     }
 
     fun update(

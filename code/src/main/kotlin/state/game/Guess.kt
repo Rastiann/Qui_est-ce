@@ -46,6 +46,9 @@ class Guess: GameState() {
             throw Exception("Person is not in Grid")
         }
 
+
+        println("guessing $persX $persY")
+
         apiThread.executeImmediately {
 
             try {
