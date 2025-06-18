@@ -18,4 +18,10 @@ class Grid(
     fun setGrey(x: Int, y: Int, value: Boolean) {
         grid[x][y].isGray = value
     }
+
+    fun copy(): Grid {
+        return Grid(
+            grid.map {array -> array.map {pers -> pers.copy() } }
+        )
+    }
 }

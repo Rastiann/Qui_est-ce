@@ -9,7 +9,7 @@ class MainApp : Application() {
 
         AppController(
             Config.serverAddr,
-            Config.serverHost,
+            Config.serverPort,
             stage
         )
 

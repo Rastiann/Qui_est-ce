@@ -10,6 +10,7 @@ class GuessVue {
 
     val root = VBox()
     val okBtn = Button("Ok")
+    private var gridVue: GridVue? = null
 
     init {
 
@@ -23,7 +24,22 @@ class GuessVue {
         sizeRatio: Double,
         handler: ImgHandler
     ) {
-        val gridVue = GridVue(grid, sizeRatio, handler)
+
+        gridVue?.update(
+            grid,
+            sizeRatio,
+            handler
+        )
+        if (gridVue == null) {
+            gridVue = GridVue(grid, sizeRatio, handler)
+        }else {
+
+        }
+
+
+        val gridVue = gridVue!!
+
+
 
         root.children.clear()
         root.children.addAll(gridVue, okBtn)

@@ -53,7 +53,7 @@ open class GamePane(
 
         val image = ImageView(
             Image(
-                "http://${Config.serverAddr}:${Config.serverHost}/resources/but1/${
+                "http://${Config.serverAddr}:${Config.serverPort}/resources/but1/${
                     URLEncoder.encode(pers.url, StandardCharsets.UTF_8.toString())
                 }"
             )

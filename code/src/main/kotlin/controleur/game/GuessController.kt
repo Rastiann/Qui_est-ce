@@ -18,6 +18,7 @@ class GuessController: GameController<Guess> {
         vue.update(gameInitState.otherGrid, 1.0) { x, y ->
 
             // update vue
+            println("set gray : $x, $y")
             gameInitState.otherGrid.setGrey(x, y, !gameInitState.otherGrid.grid[x][y].isGray)
             update(gameInitState)
 
@@ -43,11 +44,10 @@ class GuessController: GameController<Guess> {
             if (numberOfNonGreyCase == 1) {
                 val trySend = Validation().show()
                 if (trySend) {
-
                     gameInitState.guess(person)
-                    return@setOnAction
-
                 }
+
+                return@setOnAction
             }
 
             gameInitState.pass()
