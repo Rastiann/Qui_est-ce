@@ -1,6 +1,7 @@
 import info.but1.sae2025.QuiEstCeClient
 import info.but1.sae2025.data.ETAPE
 import info.but1.sae2025.data.IdentificationJoueur
+import info.but1.sae2025.exceptions.QuiEstCeException
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
@@ -62,7 +63,7 @@ class TestRequeteChoixPersonnage {
     @ParameterizedTest
     @MethodSource("argumentsQuiEstCeProvider_ChoixPerso")
     fun TestRequeteChoixPersonnage_QuiEstCe(idPartie: Int, idJoueur: Int, cleJoueur: String, ligne : Int, colonne : Int) {
-        assertThrows<IllegalArgumentException> {
+        assertThrows<QuiEstCeException> {
             client.requeteChoixPersonnage(
                 idPartie,
                 idJoueur,
@@ -95,6 +96,11 @@ class TestRequeteChoixPersonnage {
 
         assert(etat.idJoueurQuestionCourante == joueur1.id) {
             "l'idJoueurReponseCourante devrait etre celle correspondant au joueur2 (${joueur2.id}) à la place c'était : ${etat.idJoueurQuestionCourante}"
+        }
+
+        // requete choix au mauvais moment
+        assertThrows<QuiEstCeException> {
+            client.requeteChoixPersonnage(partieId, joueur1.id, joueur1.cle, 3, 2)
         }
     }
 }
