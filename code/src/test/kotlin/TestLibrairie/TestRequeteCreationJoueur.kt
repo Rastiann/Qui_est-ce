@@ -10,7 +10,7 @@ import kotlin.test.assertEquals
 
 class TestRequeteCreationJoueur {
 
-    val client: QuiEstCeClient = QuiEstCeClient("localhost", 8080)
+    val client: QuiEstCeClient = QuiEstCeClient("172.26.69.145", 8080)
 
     companion object {
         @JvmStatic
@@ -48,7 +48,7 @@ class TestRequeteCreationJoueur {
 
     @ParameterizedTest
     @MethodSource("joueurProvider")
-    fun testRequeteCreationJoueur(nom: String, prenom: String) {
+    fun testRequeteCreationJoueur_Success(nom: String, prenom: String) {
         val joueurCree = client.requeteCreationJoueur(nom, prenom)
 
         assert(joueurCree.id > 0) { "L'id du joueur doit être positif" }

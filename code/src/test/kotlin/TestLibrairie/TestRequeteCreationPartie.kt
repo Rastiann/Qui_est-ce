@@ -8,7 +8,7 @@ import kotlin.test.assertEquals
 
 class TestRequeteCreationPartie {
 
-    val client: QuiEstCeClient = QuiEstCeClient("localhost", 8080)
+    val client: QuiEstCeClient = QuiEstCeClient("172.26.69.145", 8080)
     val playerProvider = PlayerProvider(client)
     val joueur : IdentificationJoueur = playerProvider.get()
 
@@ -46,7 +46,6 @@ class TestRequeteCreationPartie {
     @Test
     fun testRequeteCreationPartie_Success() {
 
-        // Opti en mettant un repeat (en vrai nan jvais juste mettre des CT et DT)
 
         // Game 1
 

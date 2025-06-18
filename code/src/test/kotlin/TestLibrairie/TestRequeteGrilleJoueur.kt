@@ -8,11 +8,12 @@ import kotlin.test.assertEquals
 
 class TestRequeteGrilleJoueur {
 
-    val client: QuiEstCeClient = QuiEstCeClient("localhost", 8080)
+    val client: QuiEstCeClient = QuiEstCeClient("172.26.69.145", 8080)
     val playerProvider = PlayerProvider(client)
     val joueur1 : IdentificationJoueur = playerProvider.get()
     val joueur2 : IdentificationJoueur = playerProvider.get()
     val partieId = client.requeteCreationPartie(joueur1.id, joueur1.cle)
+    val etat = client.requeteRejoindrePartie(partieId, joueur2.id, joueur2.cle)
 
 
     @Test

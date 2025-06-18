@@ -12,17 +12,18 @@ class TestRequeteChoixPersonnage {
 
     companion object {
 
-        val client: QuiEstCeClient = QuiEstCeClient("localhost", 8080)
+        val client: QuiEstCeClient = QuiEstCeClient("172.26.69.145", 8080)
         val playerProvider = PlayerProvider(client)
         val joueur1 : IdentificationJoueur = playerProvider.get()
         val partieId = client.requeteCreationPartie(joueur1.id, joueur1.cle)
         val joueur2 : IdentificationJoueur = playerProvider.get()
+        val etat = client.requeteRejoindrePartie(partieId, joueur2.id, joueur2.cle)
 
         @JvmStatic
         fun argumentsInvalidesProvider_requeteChoixPersonnage(): Stream<Arguments> {
             return Stream.of(
-                Arguments.of(-1, joueur1.id, joueur1.cle, 2, 2),               // idPartie invalide
-                Arguments.of(partieId, -1, joueur1.cle, 2, 2),                         // idJoueur invalide
+                Arguments.of(-partieId, joueur1.id, joueur1.cle, 2, 2),               // idPartie invalide
+                Arguments.of(partieId, -joueur1.id, joueur1.cle, 2, 2),                         // idJoueur invalide
                 Arguments.of(partieId, joueur1.id, "a".repeat(33), 2, 2),         // cle trop longue
                 Arguments.of(partieId, joueur1.id, "a".repeat(31), 2, 2),        // cle trop courte
                 Arguments.of(partieId, joueur1.id, joueur1.cle, 2, -1),             // colonne out of range
@@ -48,7 +49,7 @@ class TestRequeteChoixPersonnage {
     }
 
     @Test
-    fun testRequeteChoixPersonnage() {
+    fun testRequeteChoixPersonnage_Success() {
     // Optimiser les tests
 
         var etat = client.requeteChoixPersonnage(partieId, joueur1.id, joueur1.cle, 1, 1)

@@ -9,7 +9,7 @@ class TestRequeteJoueurs {
 
     @Test
     fun testRequeteListePartiesCreees() {
-        val client : QuiEstCeClient = QuiEstCeClient("localhost", 8080)
+        val client : QuiEstCeClient = QuiEstCeClient("172.26.69.145", 8080)
         val playerProvider = PlayerProvider(client)
         val joueursCreees = mutableListOf<IdentificationJoueur>()
 

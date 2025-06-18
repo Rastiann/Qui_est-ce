@@ -6,7 +6,7 @@ import kotlin.test.assertEquals
 
 class TestRequeteListePartiesCreees {
 
-    val client: QuiEstCeClient = QuiEstCeClient("localhost", 8080)
+    val client: QuiEstCeClient = QuiEstCeClient("172.26.69.145", 8080)
     val playerProvider = PlayerProvider(client)
     val joueur1 : IdentificationJoueur = playerProvider.get()
     val joueur2 : IdentificationJoueur = playerProvider.get()
