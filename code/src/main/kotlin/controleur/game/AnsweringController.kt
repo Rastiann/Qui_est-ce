@@ -51,8 +51,8 @@ class AnsweringController: GameController<Answering> {
 
         val réponse =  dialog.showAndWait()
 
-        val question = réponse.get()
-        gameInitState.answer(question.toString())
+        val question = réponse.get().text
+        gameInitState.answer(question)
 
     }
 }
