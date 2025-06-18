@@ -18,6 +18,7 @@ class GuessController: GameController<Guess> {
         vue.update(gameInitState.otherGrid, 1.0) { x, y ->
 
             // update vue
+            println("set gray : $x, $y")
             gameInitState.otherGrid.setGrey(x, y, !gameInitState.otherGrid.grid[x][y].isGray)
             update(gameInitState)
 
