@@ -2,7 +2,7 @@ class Config {
 
     companion object {
         val serverAddr = "localhost"
-        val serverHost = 8080
+        val serverPort = 8080
     }
 
 }

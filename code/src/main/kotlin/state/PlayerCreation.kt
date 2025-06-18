@@ -3,6 +3,8 @@ package state
 import ConnectedPlayer
 import Player
 import info.but1.sae2025.QuiEstCeClient
+import java.nio.file.Files
+import java.nio.file.Paths
 
 class PlayerCreation(
     apiClient: QuiEstCeClient,
@@ -19,8 +21,8 @@ class PlayerCreation(
 
                 // create connected player
                 val connectedPlayer = ConnectedPlayer(
-                    firstName,
                     name,
+                    firstName,
                     id.id,
                     id.cle
                 )
@@ -32,6 +34,18 @@ class PlayerCreation(
                     stateChangeHandler,
                     connectedPlayer
                 )
+
+                // save player
+                val configPath = Paths.get(System.getProperty("user.home"), ".config", "quiestce")
+
+                // create dir
+                if (!Files.exists(configPath)) {
+                    Files.createDirectories(configPath)
+                }
+
+                // save player
+                val playerFilePath =  configPath.resolve("player")
+                ConnectedPlayer.saveTo(connectedPlayer, playerFilePath.toString())
 
                 // send new state
                 stateChangeHandler.handle(homeState)
@@ -60,6 +74,7 @@ class PlayerCreation(
     }
 
     private fun usePlayer(player: ConnectedPlayer) {
+
         // test read player
         val returnedPlayer = apiClient.requeteJoueur(player.id)
 

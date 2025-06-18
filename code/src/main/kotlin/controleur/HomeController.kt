@@ -3,6 +3,7 @@ package controleur
 import javafx.scene.Parent
 import state.Home
 import vue.HomeVue
+import vue.dialog.ErrorDialog
 
 class HomeController: StateController<Home> {
 
@@ -18,7 +19,16 @@ class HomeController: StateController<Home> {
         }
 
         vue.joinBtn.setOnAction {
-            state.joinGame(vue.codeField.text.toInt())
+            try {
+                val id = vue.codeField.text.toInt()
+                state.joinGame(id)
+            }catch (e: Throwable) {
+                ErrorDialog(
+                    "Mauvais format de partie",
+                    "Id incorrect",
+                    "Veuillez uniquement des chiffres"
+                ).showCancelable()
+            }
         }
 
         vue.createBtn.setOnAction {
