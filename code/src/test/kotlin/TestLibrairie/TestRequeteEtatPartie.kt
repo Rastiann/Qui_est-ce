@@ -43,7 +43,7 @@ class TestRequeteEtatPartie {
 
         // Test d'id négatif
         assertThrows<IllegalArgumentException> {
-            client.requeteEtatPartie(-partie_id)
+            client.requeteEtatPartie(-partieId)
         }
 
         // Test d'id conforme mais inexistant
