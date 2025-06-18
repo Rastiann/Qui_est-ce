@@ -3,6 +3,7 @@ package state
 import ConnectedPlayer
 import Player
 import info.but1.sae2025.QuiEstCeClient
+import java.nio.file.Files
 import java.nio.file.Paths
 
 class PlayerCreation(
@@ -36,6 +37,13 @@ class PlayerCreation(
 
                 // save player
                 val configPath = Paths.get(System.getProperty("user.home"), ".config", "quiestce")
+
+                // create dir
+                if (!Files.exists(configPath)) {
+                    Files.createDirectories(configPath)
+                }
+
+                // save player
                 val playerFilePath =  configPath.resolve("player")
                 ConnectedPlayer.saveTo(connectedPlayer, playerFilePath.toString())
 
