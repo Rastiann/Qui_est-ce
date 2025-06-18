@@ -19,6 +19,7 @@ class TestRequeteChoixPersonnage {
         val joueur2 : IdentificationJoueur = playerProvider.get()
         val etat = client.requeteRejoindrePartie(partieId, joueur2.id, joueur2.cle)
 
+
         @JvmStatic
         fun argumentsIllegalProvider_ChoixPerso(): Stream<Arguments> {
             return Stream.of(
@@ -36,14 +37,9 @@ class TestRequeteChoixPersonnage {
         @JvmStatic
         fun argumentsQuiEstCeProvider_ChoixPerso(): Stream<Arguments> {
             return Stream.of(
-                Arguments.of(-partieId, joueur1.id, joueur1.cle, 2, 2),       // idPartie invalide
-                Arguments.of(partieId, -joueur1.id, joueur1.cle, 2, 2),                // idJoueur invalide
-                Arguments.of(partieId, joueur1.id, "a".repeat(33), 2, 2),         // cle trop longue
-                Arguments.of(partieId, joueur1.id, "a".repeat(31), 2, 2),        // cle trop courte
-                Arguments.of(partieId, joueur1.id, joueur1.cle, 2, -1),             // colonne out of range
-                Arguments.of(partieId, joueur1.id, joueur1.cle, 2, 6),             // colonne out of range
-                Arguments.of(partieId, joueur1.id, joueur1.cle, -1, 2),           // ligne out of range
-                Arguments.of(partieId, joueur1.id, joueur1.cle, 4, 2)            // cle trop courte
+                Arguments.of(123, TestRequeteChercherEncore.Companion.joueur1.id, TestRequeteChercherEncore.Companion.joueur1.cle, 2, 1),              // idPartie valide mais inexistant
+                Arguments.of(TestRequeteChercherEncore.Companion.partieId, 123, TestRequeteChercherEncore.Companion.joueur1.cle, 3, 1),                        // idJoueur valide mais inexistant
+                Arguments.of(TestRequeteChercherEncore.Companion.partieId, TestRequeteChercherEncore.Companion.joueur1.id, "a".repeat(32), 2, 3),            // cle trop courte
             )
         }
     }
