@@ -15,30 +15,33 @@ class TestRequeteListePartiesTerminees {
     @Test
     fun testRequeteListePartiesTerminees() {
 
-
         val partiesTermineesIds = mutableListOf<Int>()
 
+        // Création de parties et passage à l'étape "TERMINEE"
         repeat(3) {
             val partieId = client.requeteCreationPartie(joueur1.id, joueur1.cle)
-            val etatFin = gameTestHelper.advanceGameTo(joueur1, joueur2, partieId, GameStateHelper.GameStep.END)
+            gameTestHelper.advanceGameTo(joueur1, joueur2, partieId, GameStateHelper.GameStep.END)
             partiesTermineesIds.add(partieId)
         }
 
+        // Récupération des parties terminées depuis le serveur
         val partiesTermineesServeur = client.requeteListePartiesTerminees()
 
-        // Je vérifie que les parties que j'ai terminées sont bien présent dans la liste
-
+        // Vérification que chaque partie terminée est bien présente dans la liste des parties terminées
         for (idPartie in partiesTermineesIds) {
             assert(partiesTermineesServeur.contains(idPartie)) {
-                "La partie $idPartie devrait apparaître dans la liste des parties terminées"
+                "La partie $idPartie ne figure pas dans la liste des parties terminées renvoyée par le serveur."
             }
         }
 
-        // Je vérifie que la liste de parties renvoyées par le serveur sont tous terminés.
-
+        // Vérification que l'étape de chaque partie renvoyée par le serveur est bien "TERMINEE"
         for (idPartie in partiesTermineesServeur) {
             val etat = client.requeteEtatPartie(idPartie)
-            assertEquals(ETAPE.TERMINEE, etat.etape, "L'étape de la partie $idPartie devrait être TERMINEE")
+            assertEquals(
+                ETAPE.TERMINEE,
+                etat.etape,
+                "L'étape de la partie $idPartie devrait être TERMINEE, mais l'étape actuelle est ${etat.etape}."
+            )
         }
     }
 }

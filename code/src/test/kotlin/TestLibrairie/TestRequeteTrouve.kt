@@ -15,29 +15,30 @@ class TestRequeteTrouve {
 
         val client: QuiEstCeClient = QuiEstCeClient("172.26.69.145", 8080)
         val playerProvider = PlayerProvider(client)
-        val joueur1 : IdentificationJoueur = playerProvider.get()
+        val joueur1: IdentificationJoueur = playerProvider.get()
         val partieId = client.requeteCreationPartie(joueur1.id, joueur1.cle)
-        val joueur2 : IdentificationJoueur = playerProvider.get()
+        val joueur2: IdentificationJoueur = playerProvider.get()
         val gameTestHelper = GameStateHelper(client)
 
         @JvmStatic
         fun argumentsInvalidesProvider_requeteChoixPersonnage(): Stream<Arguments> {
             return Stream.of(
                 Arguments.of(-1, joueur1.id, joueur1.cle, 2, 2),               // idPartie invalide
-                Arguments.of(partieId, -1, joueur1.cle, 2, 2),                         // idJoueur invalide
+                Arguments.of(partieId, -1, joueur1.cle, 2, 2),                  // idJoueur invalide
                 Arguments.of(partieId, joueur1.id, "a".repeat(33), 2, 2),         // cle trop longue
-                Arguments.of(partieId, joueur1.id, "a".repeat(31), 2, 2),        // cle trop courte
-                Arguments.of(partieId, joueur1.id, joueur1.cle, 2, -1),             // colonne negatif
-                Arguments.of(partieId, joueur1.id, joueur1.cle, 2, 6),             // colonne out of range
-                Arguments.of(partieId, joueur1.id, joueur1.cle, -1, 2),           // ligne negatif
-                Arguments.of(partieId, joueur1.id, joueur1.cle, 4, 2)            // ligne out of range
+                Arguments.of(partieId, joueur1.id, "a".repeat(31), 2, 2),         // cle trop courte
+                Arguments.of(partieId, joueur1.id, joueur1.cle, 2, -1),           // colonne négatif
+                Arguments.of(partieId, joueur1.id, joueur1.cle, 2, 6),            // colonne out of range
+                Arguments.of(partieId, joueur1.id, joueur1.cle, -1, 2),           // ligne négatif
+                Arguments.of(partieId, joueur1.id, joueur1.cle, 4, 2)             // ligne out of range
             )
         }
     }
 
     @ParameterizedTest
     @MethodSource("argumentsInvalidesProvider_requeteChoixPersonnage")
-    fun testRequeteChoixPersonnage_Exception(idPartie: Int, idJoueur: Int, cleJoueur: String, ligne : Int, colonne : Int) {
+    fun testRequeteTrouve_Exception(idPartie: Int, idJoueur: Int, cleJoueur: String, ligne: Int, colonne: Int) {
+        // Vérification que les exceptions sont bien lancées pour les entrées invalides
         assertThrows<IllegalArgumentException> {
             client.requeteTrouve(
                 idPartie,
@@ -52,31 +53,29 @@ class TestRequeteTrouve {
     @Test
     fun testRequeteTrouve() {
 
-        // La réponse ici est toujours 2 2
+        // La réponse correcte ici est toujours (2, 2)
 
-        // Bon guess
+        // **Bon guess**
         var partieId = client.requeteCreationPartie(joueur1.id, joueur1.cle)
         gameTestHelper.advanceGameTo(joueur1, joueur2, partieId, GameStateHelper.GameStep.WAIT_REFLEXION)
         var trouve = client.requeteTrouve(partieId, joueur1.id, joueur1.cle, 2, 2)
 
-        assertEquals(true, trouve, "la fonction devrait renvoyer true car le guess est bon")
+        assertEquals(true, trouve, "La fonction devrait renvoyer true car le guess est bon")
 
-        // Mauvais guess
+        // **Mauvais guess**
         partieId = client.requeteCreationPartie(joueur1.id, joueur1.cle)
         gameTestHelper.advanceGameTo(joueur1, joueur2, partieId, GameStateHelper.GameStep.WAIT_REFLEXION)
         trouve = client.requeteTrouve(partieId, joueur1.id, joueur1.cle, 1, 2)
 
-        assertEquals(false, trouve, "la fonction devrait renvoyer true car le guess est bon")
+        assertEquals(false, trouve, "La fonction devrait renvoyer false car le guess est mauvais")
 
+        // **Guess au mauvais moment**
         partieId = client.requeteCreationPartie(joueur1.id, joueur1.cle)
         gameTestHelper.advanceGameTo(joueur1, joueur2, partieId, GameStateHelper.GameStep.INITIALISATION)
 
-        // Guess au mauvais moment
+        // Vérifie qu'une exception est lancée lorsqu'on essaie de faire un guess au mauvais moment
         assertThrows<QuiEstCeException> {
             client.requeteTrouve(partieId, joueur1.id, joueur1.cle, 2, 2)
-
         }
-
     }
-
 }

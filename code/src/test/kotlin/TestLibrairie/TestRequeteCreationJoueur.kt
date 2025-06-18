@@ -10,7 +10,7 @@ import kotlin.test.assertEquals
 
 class TestRequeteCreationJoueur {
 
-    val client: QuiEstCeClient = QuiEstCeClient("172.26.69.145", 8080)
+    val client: QuiEstCeClient = QuiEstCeClient("localhost", 8080)
 
     companion object {
         @JvmStatic
@@ -25,6 +25,7 @@ class TestRequeteCreationJoueur {
         }
     }
 
+    // Tests d'exception lors de la création du joueur
     @Test
     fun testRequeteCreationJoueur_Exceptions() {
 
@@ -46,17 +47,21 @@ class TestRequeteCreationJoueur {
         }
     }
 
+    // Test réussi pour la création d'un joueur avec des noms et prénoms valides
     @ParameterizedTest
     @MethodSource("joueurProvider")
     fun testRequeteCreationJoueur_Success(nom: String, prenom: String) {
         val joueurCree = client.requeteCreationJoueur(nom, prenom)
 
-        assert(joueurCree.id > 0) { "L'id du joueur doit être positif" }
-        assert(joueurCree.cle.length == 32) { "La clé doit faire 32 caractères" }
+        assert(joueurCree.id > 0) {
+            "Erreur : L'id du joueur créé doit être positif, mais c'était : ${joueurCree.id}"
+        }
+        assert(joueurCree.cle.length == 32) {
+            "Erreur : La clé du joueur créé doit faire 32 caractères, mais elle fait ${joueurCree.cle.length}"
+        }
 
         val joueurRecupere = client.requeteJoueur(joueurCree.id)
-        assertEquals(nom, joueurRecupere.nom, "Le nom n'est pas le bon")
-        assertEquals(prenom, joueurRecupere.prenom, "Le prénom n'est pas le meme")
+        assertEquals(nom, joueurRecupere.nom, "Erreur : Le nom récupéré ne correspond pas au nom attendu.")
+        assertEquals(prenom, joueurRecupere.prenom, "Erreur : Le prénom récupéré ne correspond pas au prénom attendu.")
     }
-
 }

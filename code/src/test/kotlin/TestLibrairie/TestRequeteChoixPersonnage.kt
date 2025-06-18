@@ -15,39 +15,39 @@ class TestRequeteChoixPersonnage {
 
         val client: QuiEstCeClient = QuiEstCeClient("172.26.69.145", 8080)
         val playerProvider = PlayerProvider(client)
-        val joueur1 : IdentificationJoueur = playerProvider.get()
+        val joueur1: IdentificationJoueur = playerProvider.get()
         val partieId = client.requeteCreationPartie(joueur1.id, joueur1.cle)
-        val joueur2 : IdentificationJoueur = playerProvider.get()
+        val joueur2: IdentificationJoueur = playerProvider.get()
         val etat = client.requeteRejoindrePartie(partieId, joueur2.id, joueur2.cle)
-
 
         @JvmStatic
         fun argumentsIllegalProvider_ChoixPerso(): Stream<Arguments> {
             return Stream.of(
                 Arguments.of(-partieId, joueur1.id, joueur1.cle, 2, 2),               // idPartie invalide
-                Arguments.of(partieId, -joueur1.id, joueur1.cle, 2, 2),                         // idJoueur invalide
-                Arguments.of(partieId, joueur1.id, "a".repeat(33), 2, 2),         // cle trop longue
-                Arguments.of(partieId, joueur1.id, "a".repeat(31), 2, 2),        // cle trop courte
-                Arguments.of(partieId, joueur1.id, joueur1.cle, 2, -1),             // colonne out of range
-                Arguments.of(partieId, joueur1.id, joueur1.cle, 2, 6),             // colonne out of range
-                Arguments.of(partieId, joueur1.id, joueur1.cle, -1, 2),           // ligne out of range
-                Arguments.of(partieId, joueur1.id, joueur1.cle, 4, 2)            // cle trop courte
+                Arguments.of(partieId, -joueur1.id, joueur1.cle, 2, 2),               // idJoueur invalide
+                Arguments.of(partieId, joueur1.id, "a".repeat(33), 2, 2),             // cle trop longue
+                Arguments.of(partieId, joueur1.id, "a".repeat(31), 2, 2),             // cle trop courte
+                Arguments.of(partieId, joueur1.id, joueur1.cle, 2, -1),               // colonne out of range
+                Arguments.of(partieId, joueur1.id, joueur1.cle, 2, 6),                // colonne out of range
+                Arguments.of(partieId, joueur1.id, joueur1.cle, -1, 2),               // ligne out of range
+                Arguments.of(partieId, joueur1.id, joueur1.cle, 4, 2)                 // ligne out of range
             )
         }
 
         @JvmStatic
         fun argumentsQuiEstCeProvider_ChoixPerso(): Stream<Arguments> {
             return Stream.of(
-                Arguments.of(123, TestRequeteChercherEncore.Companion.joueur1.id, TestRequeteChercherEncore.Companion.joueur1.cle, 2, 1),              // idPartie valide mais inexistant
-                Arguments.of(TestRequeteChercherEncore.Companion.partieId, 123, TestRequeteChercherEncore.Companion.joueur1.cle, 3, 1),                        // idJoueur valide mais inexistant
-                Arguments.of(TestRequeteChercherEncore.Companion.partieId, TestRequeteChercherEncore.Companion.joueur1.id, "a".repeat(32), 2, 3),            // cle trop courte
+                Arguments.of(123, joueur1.id, joueur1.cle, 2, 1),              // idPartie valide mais inexistant
+                Arguments.of(partieId, 123, joueur1.cle, 3, 1),                        // idJoueur valide mais inexistant
+                Arguments.of(partieId, joueur1.id, "a".repeat(32), 2, 3),            // cle trop courte
             )
         }
     }
 
+    // Test de cas invalides
     @ParameterizedTest
     @MethodSource("argumentsIllegalProvider_ChoixPerso")
-    fun TestRequeteChoixPersonnage_Illegal(idPartie: Int, idJoueur: Int, cleJoueur: String, ligne : Int, colonne : Int) {
+    fun TestRequeteChoixPersonnage_Illegal(idPartie: Int, idJoueur: Int, cleJoueur: String, ligne: Int, colonne: Int) {
         assertThrows<IllegalArgumentException> {
             client.requeteChoixPersonnage(
                 idPartie,
@@ -59,10 +59,10 @@ class TestRequeteChoixPersonnage {
         }
     }
 
-    // Tout est valide mais inexistant
+    // Test pour vérifier l'absence de joueur ou de partie valide
     @ParameterizedTest
     @MethodSource("argumentsQuiEstCeProvider_ChoixPerso")
-    fun TestRequeteChoixPersonnage_QuiEstCe(idPartie: Int, idJoueur: Int, cleJoueur: String, ligne : Int, colonne : Int) {
+    fun testRequeteChoixPersonnage_QuiEstCe(idPartie: Int, idJoueur: Int, cleJoueur: String, ligne: Int, colonne: Int) {
         assertThrows<QuiEstCeException> {
             client.requeteChoixPersonnage(
                 idPartie,
@@ -74,31 +74,31 @@ class TestRequeteChoixPersonnage {
         }
     }
 
+    // Test de réussite
     @Test
     fun testRequeteChoixPersonnage_Success() {
-    // Optimiser les tests
 
+        // Requête de choix pour le joueur 1
         var etat = client.requeteChoixPersonnage(partieId, joueur1.id, joueur1.cle, 1, 1)
-
         assert(etat.etape == ETAPE.INITIALISATION) {
-            "L'étape de la partie devrait être 'INITIALISATION', trouvée: ${etat.etape}"
+            "Erreur : l'étape de la partie devrait être 'INITIALISATION' pour la partie $partieId, trouvée: ${etat.etape}"
         }
 
+        // Requête de choix pour le joueur 2
         etat = client.requeteChoixPersonnage(partieId, joueur2.id, joueur2.cle, 3, 4)
-
         assert(etat.idJoueurReponseCourante == joueur2.id) {
-            "l'idJoueurReponseCourante devrait etre celle correspondant au joueur1 (${joueur1.id}) à la place c'était : ${etat.idJoueurReponseCourante}"
+            "Erreur : l'idJoueurReponseCourante devrait être celui du joueur 2 (${joueur2.id}), mais c'est ${etat.idJoueurReponseCourante} dans la partie $partieId"
         }
 
         assert(etat.etape == ETAPE.ATTENTE_QUESTION) {
-            "L'étape de la partie devrait être 'ATTENTE_QUESTION', trouvée: ${etat.etape}"
+            "Erreur : l'étape de la partie devrait être 'ATTENTE_QUESTION' pour la partie $partieId, trouvée: ${etat.etape}"
         }
 
         assert(etat.idJoueurQuestionCourante == joueur1.id) {
-            "l'idJoueurReponseCourante devrait etre celle correspondant au joueur2 (${joueur2.id}) à la place c'était : ${etat.idJoueurQuestionCourante}"
+            "Erreur : l'idJoueurQuestionCourante devrait être celui du joueur 1 (${joueur1.id}), mais c'est ${etat.idJoueurQuestionCourante} dans la partie $partieId"
         }
 
-        // requete choix au mauvais moment
+        // Requête choix au mauvais moment
         assertThrows<QuiEstCeException> {
             client.requeteChoixPersonnage(partieId, joueur1.id, joueur1.cle, 3, 2)
         }
