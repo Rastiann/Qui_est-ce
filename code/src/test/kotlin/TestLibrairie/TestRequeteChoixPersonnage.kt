@@ -20,7 +20,7 @@ class TestRequeteChoixPersonnage {
         val etat = client.requeteRejoindrePartie(partieId, joueur2.id, joueur2.cle)
 
         @JvmStatic
-        fun argumentsInvalidesProvider_requeteChoixPersonnage(): Stream<Arguments> {
+        fun argumentsIllegalProvider_ChoixPerso(): Stream<Arguments> {
             return Stream.of(
                 Arguments.of(-partieId, joueur1.id, joueur1.cle, 2, 2),               // idPartie invalide
                 Arguments.of(partieId, -joueur1.id, joueur1.cle, 2, 2),                         // idJoueur invalide
@@ -32,11 +32,40 @@ class TestRequeteChoixPersonnage {
                 Arguments.of(partieId, joueur1.id, joueur1.cle, 4, 2)            // cle trop courte
             )
         }
+
+        @JvmStatic
+        fun argumentsQuiEstCeProvider_ChoixPerso(): Stream<Arguments> {
+            return Stream.of(
+                Arguments.of(-partieId, joueur1.id, joueur1.cle, 2, 2),       // idPartie invalide
+                Arguments.of(partieId, -joueur1.id, joueur1.cle, 2, 2),                // idJoueur invalide
+                Arguments.of(partieId, joueur1.id, "a".repeat(33), 2, 2),         // cle trop longue
+                Arguments.of(partieId, joueur1.id, "a".repeat(31), 2, 2),        // cle trop courte
+                Arguments.of(partieId, joueur1.id, joueur1.cle, 2, -1),             // colonne out of range
+                Arguments.of(partieId, joueur1.id, joueur1.cle, 2, 6),             // colonne out of range
+                Arguments.of(partieId, joueur1.id, joueur1.cle, -1, 2),           // ligne out of range
+                Arguments.of(partieId, joueur1.id, joueur1.cle, 4, 2)            // cle trop courte
+            )
+        }
     }
 
     @ParameterizedTest
-    @MethodSource("argumentsInvalidesProvider_requeteChoixPersonnage")
-    fun testRequeteChoixPersonnage_Exception(idPartie: Int, idJoueur: Int, cleJoueur: String, ligne : Int, colonne : Int) {
+    @MethodSource("argumentsIllegalProvider_ChoixPerso")
+    fun TestRequeteChoixPersonnage_Illegal(idPartie: Int, idJoueur: Int, cleJoueur: String, ligne : Int, colonne : Int) {
+        assertThrows<IllegalArgumentException> {
+            client.requeteChoixPersonnage(
+                idPartie,
+                idJoueur,
+                cleJoueur,
+                ligne,
+                colonne
+            )
+        }
+    }
+
+    // Tout est valide mais inexistant
+    @ParameterizedTest
+    @MethodSource("argumentsQuiEstCeProvider_ChoixPerso")
+    fun TestRequeteChoixPersonnage_QuiEstCe(idPartie: Int, idJoueur: Int, cleJoueur: String, ligne : Int, colonne : Int) {
         assertThrows<IllegalArgumentException> {
             client.requeteChoixPersonnage(
                 idPartie,
