@@ -52,4 +52,8 @@ class ErrorDialog(
             throw error
         }
     }
+
+    fun showCancelable() {
+        alert.showAndWait()
+    }
 }

@@ -1,6 +1,7 @@
 package controleur
 
 import ConnectedPlayer
+import info.but1.sae2025.exceptions.QuiEstCeException
 import javafx.application.Platform
 import javafx.scene.Scene
 import javafx.stage.Stage
@@ -80,6 +81,17 @@ class AppController(
         Platform.runLater {
 
             if (error != null) {
+
+                if (error is QuiEstCeException && error.message == "Erreur lors de la création du joueur : 400 Bad Request") {
+                    ErrorDialog(
+                        "Erreur",
+                        "Ce joueur existe déjà",
+                        "Veuillez créer un joueur avec un autre nom/prénom",
+                        error
+                    ).showCancelable()
+                    return@runLater
+                }
+
                 ErrorDialog(
                     "Erreur",
                     "Un erreur est survenu, veuillez réessayer plus tard",
