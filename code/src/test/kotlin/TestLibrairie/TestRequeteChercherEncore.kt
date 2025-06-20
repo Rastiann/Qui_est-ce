@@ -13,12 +13,11 @@ import kotlin.test.assertEquals
 class TestRequeteChercherEncore {
 
     companion object {
-        val client: QuiEstCeClient = QuiEstCeClient("172.26.69.145", 8080)
-        val playerProvider = PlayerProvider(client)
-        val joueur1: IdentificationJoueur = playerProvider.get()
-        val joueur2: IdentificationJoueur = playerProvider.get()
+        val client: QuiEstCeClient = ConfigTest.client
+        val joueur1 = ConfigTest.joueur1
+        val joueur2 = ConfigTest.joueur2
         val partieId = client.requeteCreationPartie(joueur1.id, joueur1.cle)
-        val gameTestHelper = GameStateHelper(client)
+        val gameTestHelper = ConfigTest.gameTestHelper
 
         @JvmStatic
         fun argumentsIllegalProvider_ChercherEncore(): Stream<Arguments> {
@@ -33,7 +32,7 @@ class TestRequeteChercherEncore {
         @JvmStatic
         fun argumentsQuiEstCeProvider_ChercherEncore(): Stream<Arguments> {
             return Stream.of(
-                Arguments.of(123, joueur1.id, joueur1.cle),              // idPartie valide mais inexistant
+                Arguments.of(123, joueur1.id, joueur1.cle),             // idPartie valide mais inexistant
                 Arguments.of(partieId, 123, joueur1.cle),                        // idJoueur valide mais inexistant
                 Arguments.of(partieId, joueur1.id, "a".repeat(32)),         // cle valide mais inexistante
             )

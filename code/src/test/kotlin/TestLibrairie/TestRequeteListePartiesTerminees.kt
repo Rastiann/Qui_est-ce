@@ -1,46 +1,73 @@
 import info.but1.sae2025.QuiEstCeClient
 import info.but1.sae2025.data.ETAPE
-import info.but1.sae2025.data.IdentificationJoueur
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
 class TestRequeteListePartiesTerminees {
 
-    val client: QuiEstCeClient = QuiEstCeClient("172.26.69.145", 8080)
-    val playerProvider = PlayerProvider(client)
-    val gameTestHelper = GameStateHelper(client)
-    val joueur1 : IdentificationJoueur = playerProvider.get()
-    val joueur2 : IdentificationJoueur = playerProvider.get()
+    val client: QuiEstCeClient = ConfigTest.client
+    val gameTestHelper =ConfigTest.gameTestHelper
+    val joueur1 = ConfigTest.joueur1
+    val joueur2 = ConfigTest.joueur2
 
     @Test
-    fun testRequeteListePartiesTerminees() {
+    fun testPartieTerminee1EstDansListeEtapeCorrecte() {
+        val partieId = client.requeteCreationPartie(joueur1.id, joueur1.cle)
+        gameTestHelper.advanceGameTo(joueur1, joueur2, partieId, GameStateHelper.GameStep.END)
 
-        val partiesTermineesIds = mutableListOf<Int>()
+        val partiesTerminees = client.requeteListePartiesTerminees()
+        val etat = client.requeteEtatPartie(partieId)
 
-        // Création de parties et passage à l'étape "TERMINEE"
-        repeat(3) {
-            val partieId = client.requeteCreationPartie(joueur1.id, joueur1.cle)
-            gameTestHelper.advanceGameTo(joueur1, joueur2, partieId, GameStateHelper.GameStep.END)
-            partiesTermineesIds.add(partieId)
+        assert(partiesTerminees.contains(partieId)) {
+            "La partie $partieId ne figure pas dans la liste des parties terminées renvoyée par le serveur."
         }
+        assertEquals(ETAPE.TERMINEE, etat.etape,
+            "La partie $partieId devrait être à l'étape TERMINEE, mais est à l'étape ${etat.etape}."
+        )
+    }
 
-        // Récupération des parties terminées depuis le serveur
-        val partiesTermineesServeur = client.requeteListePartiesTerminees()
+    @Test
+    fun testPartieTerminee2EstDansListeEtapeCorrecte() {
+        val partieId = client.requeteCreationPartie(joueur1.id, joueur1.cle)
+        gameTestHelper.advanceGameTo(joueur1, joueur2, partieId, GameStateHelper.GameStep.END)
 
-        // Vérification que chaque partie terminée est bien présente dans la liste des parties terminées
-        for (idPartie in partiesTermineesIds) {
-            assert(partiesTermineesServeur.contains(idPartie)) {
-                "La partie $idPartie ne figure pas dans la liste des parties terminées renvoyée par le serveur."
-            }
+        val partiesTerminees = client.requeteListePartiesTerminees()
+        val etat = client.requeteEtatPartie(partieId)
+
+        assert(partiesTerminees.contains(partieId)) {
+            "La partie $partieId ne figure pas dans la liste des parties terminées renvoyée par le serveur."
         }
+        assertEquals(ETAPE.TERMINEE, etat.etape,
+            "La partie $partieId devrait être à l'étape TERMINEE, mais est à l'étape ${etat.etape}."
+        )
+    }
 
-        // Vérification que l'étape de chaque partie renvoyée par le serveur est bien "TERMINEE"
-        for (idPartie in partiesTermineesServeur) {
-            val etat = client.requeteEtatPartie(idPartie)
+    @Test
+    fun testPartieTerminee3EstDansListeEtapeCorrecte() {
+        val partieId = client.requeteCreationPartie(joueur1.id, joueur1.cle)
+        gameTestHelper.advanceGameTo(joueur1, joueur2, partieId, GameStateHelper.GameStep.END)
+
+        val partiesTerminees = client.requeteListePartiesTerminees()
+        val etat = client.requeteEtatPartie(partieId)
+
+        assert(partiesTerminees.contains(partieId)) {
+            "La partie $partieId ne figure pas dans la liste des parties terminées renvoyée par le serveur."
+        }
+        assertEquals(ETAPE.TERMINEE, etat.etape,
+            "La partie $partieId devrait être à l'étape TERMINEE, mais est à l'étape ${etat.etape}."
+        )
+    }
+
+    @Test
+    fun testToutesLesPartiesTermineesSontEnEtatTERMINEE() {
+        val partiesTerminees = client.requeteListePartiesTerminees()
+
+        for (partieId in partiesTerminees) {
+            val etat = client.requeteEtatPartie(partieId)
             assertEquals(
                 ETAPE.TERMINEE,
                 etat.etape,
-                "L'étape de la partie $idPartie devrait être TERMINEE, mais l'étape actuelle est ${etat.etape}."
+                "L'étape de la partie $partieId devrait être TERMINEE, mais l'étape actuelle est ${etat.etape}."
             )
         }
     }

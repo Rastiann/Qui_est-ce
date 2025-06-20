@@ -1,27 +1,30 @@
 import info.but1.sae2025.QuiEstCeClient
 import info.but1.sae2025.data.ETAPE
 import info.but1.sae2025.data.EtatPartie
-import info.but1.sae2025.data.IdentificationJoueur
 import info.but1.sae2025.exceptions.QuiEstCeException
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import kotlin.test.assertEquals
 
 class TestRequeteEtatPartie {
-    private val client: QuiEstCeClient = QuiEstCeClient("172.26.69.145", 8080)
-    private val playerProvider = PlayerProvider(client)
-    private val gameTestHelper = GameStateHelper(client)
-    private val joueur1 = playerProvider.get()
-    private val joueur2 = playerProvider.get()
+    val client: QuiEstCeClient = ConfigTest.client
+    val gameTestHelper = ConfigTest.gameTestHelper
+    val joueur1 = ConfigTest.joueur1
+    val joueur2 = ConfigTest.joueur2
+    var partieId = client.requeteCreationPartie(joueur1.id, joueur1.cle)
+    var etat = client.requeteEtatPartie(partieId)
 
 
     @Test
-    fun testRequeteEtatPartie() {
+    fun testRequeteEtatPartie_CREE() {
+
         // Création + état initial
-        var partieId = client.requeteCreationPartie(joueur1.id, joueur1.cle)
-        var etat = client.requeteEtatPartie(partieId)
         assertEtatInitial(etat)
+
+    }
+
+    @Test
+    fun testRequeteEtatPartie_INIT() {
 
         // Initialisation
         partieId = client.requeteCreationPartie(joueur1.id, joueur1.cle)
@@ -29,17 +32,32 @@ class TestRequeteEtatPartie {
         etat = client.requeteEtatPartie(partieId)
         assertEtatInitialisation(etat)
 
+    }
+
+    @Test
+    fun testRequeteEtatPartie_WAITING_RESPONSE() {
+
         // Attente question
         partieId = client.requeteCreationPartie(joueur1.id, joueur1.cle)
         gameTestHelper.advanceGameTo(joueur1, joueur2, partieId, GameStateHelper.GameStep.WAIT_QUESTION)
         etat = client.requeteEtatPartie(partieId)
         assertEtatAttenteQuestion(etat)
 
+    }
+
+    @Test
+    fun testRequeteEtatPartie_WAITING_QUESTION() {
+
         // Attente réponse
         partieId = client.requeteCreationPartie(joueur1.id, joueur1.cle)
         gameTestHelper.advanceGameTo(joueur1, joueur2, partieId, GameStateHelper.GameStep.WAIT_RESPONSE)
         etat = client.requeteEtatPartie(partieId)
         assertEtatAttenteReponse(etat)
+
+    }
+
+    @Test
+    fun testRequeteEtatPartie_Exceptions() {
 
         // Test d'id négatif
         assertThrows<IllegalArgumentException> {
@@ -50,6 +68,7 @@ class TestRequeteEtatPartie {
         assertThrows<QuiEstCeException> {
             client.requeteEtatPartie(1234)
         }
+
     }
 
     private fun assertEtatInitial(etat: EtatPartie) {

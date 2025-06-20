@@ -1,5 +1,4 @@
 import info.but1.sae2025.QuiEstCeClient
-import info.but1.sae2025.data.EtatPartie
 import info.but1.sae2025.data.IdentificationJoueur
 import info.but1.sae2025.exceptions.QuiEstCeException
 import org.junit.jupiter.api.Test
@@ -8,10 +7,9 @@ import kotlin.test.assertEquals
 
 class TestRequeteGrilleJoueur {
 
-    val client: QuiEstCeClient = QuiEstCeClient("172.26.69.145", 8080)
-    val playerProvider = PlayerProvider(client)
-    val joueur1 : IdentificationJoueur = playerProvider.get()
-    val joueur2 : IdentificationJoueur = playerProvider.get()
+    val client: QuiEstCeClient = ConfigTest.client
+    val joueur1 = ConfigTest.joueur1
+    val joueur2 = ConfigTest.joueur2
     val partieId = client.requeteCreationPartie(joueur1.id, joueur1.cle)
     val etat = client.requeteRejoindrePartie(partieId, joueur2.id, joueur2.cle)
 
@@ -36,14 +34,14 @@ class TestRequeteGrilleJoueur {
 
         // Test avec des parties et joueurs inexistants
         assertThrows<QuiEstCeException> {
-            val id_partie_inexistant = 123
-            client.requeteGrilleJoueur(id_partie_inexistant, joueur1.id)
+            val idPartieInexistant = 123
+            client.requeteGrilleJoueur(idPartieInexistant, joueur1.id)
         }
         println("Test: Partie inexistante")
 
         assertThrows<QuiEstCeException> {
-            val id_joueur_inexistant = 123
-            client.requeteGrilleJoueur(partieId, id_joueur_inexistant)
+            val idPartieInexistant = 123
+            client.requeteGrilleJoueur(partieId, idPartieInexistant)
         }
         println("Test: Joueur inexistant")
     }

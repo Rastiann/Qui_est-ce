@@ -10,13 +10,14 @@ import kotlin.test.assertEquals
 
 class TestRequeteCreationJoueur {
 
-    val client: QuiEstCeClient = QuiEstCeClient("localhost", 8080)
+    val client: QuiEstCeClient = ConfigTest.client
+
 
     companion object {
         @JvmStatic
         fun joueurProvider(): Stream<Arguments?>? {
             return Stream.of(
-                Arguments.of("Bastian", "COCHARD"),
+                Arguments.of("Bastien", "COCHARD"),
                 Arguments.of("Enzo", "CHELLI"),
                 Arguments.of("Matheo", "GRANDI"),
                 Arguments.of("Victor", "BACHELIER"),

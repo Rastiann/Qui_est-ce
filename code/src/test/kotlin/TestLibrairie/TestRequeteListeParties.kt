@@ -1,52 +1,72 @@
 import info.but1.sae2025.QuiEstCeClient
 import info.but1.sae2025.data.IdentificationJoueur
 import org.junit.jupiter.api.Test
-import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class TestRequeteListeParties {
 
-    val client: QuiEstCeClient = QuiEstCeClient("172.26.69.145", 8080)
-    val playerProvider = PlayerProvider(client)
-    val gameTestHelper = GameStateHelper(client)
-    val joueur1: IdentificationJoueur = playerProvider.get()
-    val joueur2: IdentificationJoueur = playerProvider.get()
+    val client = ConfigTest.client
+    val gameTestHelper = ConfigTest.gameTestHelper
+    val joueur1 = ConfigTest.joueur1
+    val joueur2 = ConfigTest.joueur2
+    val partiesIdsServer = client.requeteListeParties()
 
     @Test
-    fun testRequeteChoixPersonnage() {
-
-        val partiesIds = mutableListOf<Int>()
-
-        // Création
-        var partieId = client.requeteCreationPartie(joueur1.id, joueur1.cle)
-        partiesIds.add(partieId)
-
-        // Initialisation
-        partieId = client.requeteCreationPartie(joueur1.id, joueur1.cle)
-        gameTestHelper.advanceGameTo(joueur1, joueur2, partieId, GameStateHelper.GameStep.INITIALISATION)
-        partiesIds.add(partieId)
-
-        // Attente question
-        partieId = client.requeteCreationPartie(joueur1.id, joueur1.cle)
-        gameTestHelper.advanceGameTo(joueur1, joueur2, partieId, GameStateHelper.GameStep.WAIT_QUESTION)
-        partiesIds.add(partieId)
-
-        // Attente réponse
-        partieId = client.requeteCreationPartie(joueur1.id, joueur1.cle)
-        gameTestHelper.advanceGameTo(joueur1, joueur2, partieId, GameStateHelper.GameStep.WAIT_RESPONSE)
-        partiesIds.add(partieId)
-
-        // Fin
-        partieId = client.requeteCreationPartie(joueur1.id, joueur1.cle)
-        gameTestHelper.advanceGameTo(joueur1, joueur2, partieId, GameStateHelper.GameStep.END)
-        partiesIds.add(partieId)
+    fun testPartieCreeeEstDansListe() {
+        val partieId = client.requeteCreationPartie(joueur1.id, joueur1.cle)
 
         val partiesIdsServer = client.requeteListeParties()
 
-        // Vérification que chaque partie créée apparaît dans la liste récupérée du serveur
-        for (idPartie in partiesIds) {
-            assert(partiesIdsServer.contains(idPartie)) {
-                "La partie $idPartie ne figure pas dans la liste des parties récupérées"
-            }
+        assert(partiesIdsServer.contains(partieId)) {
+            "La partie $partieId (état création) ne figure pas dans la liste récupérée"
+        }
+    }
+
+    @Test
+    fun testPartieInitialisationEstDansListe() {
+        val partieId = client.requeteCreationPartie(joueur1.id, joueur1.cle)
+        gameTestHelper.advanceGameTo(joueur1, joueur2, partieId, GameStateHelper.GameStep.INITIALISATION)
+
+        val partiesIdsServer = client.requeteListeParties()
+
+        assert(partiesIdsServer.contains(partieId)) {
+            "La partie $partieId (état initialisation) ne figure pas dans la liste récupérée"
+        }
+    }
+
+    @Test
+    fun testPartieWaitQuestionEstDansListe() {
+        val partieId = client.requeteCreationPartie(joueur1.id, joueur1.cle)
+        gameTestHelper.advanceGameTo(joueur1, joueur2, partieId, GameStateHelper.GameStep.WAIT_QUESTION)
+
+        val partiesIdsServer = client.requeteListeParties()
+
+        assert(partiesIdsServer.contains(partieId)) {
+            "La partie $partieId (état attente question) ne figure pas dans la liste récupérée"
+        }
+    }
+
+    @Test
+    fun testPartieWaitResponseEstDansListe() {
+        val partieId = client.requeteCreationPartie(joueur1.id, joueur1.cle)
+        gameTestHelper.advanceGameTo(joueur1, joueur2, partieId, GameStateHelper.GameStep.WAIT_RESPONSE)
+
+        val partiesIdsServer = client.requeteListeParties()
+
+        assert(partiesIdsServer.contains(partieId)) {
+            "La partie $partieId (état attente réponse) ne figure pas dans la liste récupérée"
+        }
+    }
+
+    @Test
+    fun testPartieTermineeEstDansListe() {
+        val partieId = client.requeteCreationPartie(joueur1.id, joueur1.cle)
+        gameTestHelper.advanceGameTo(joueur1, joueur2, partieId, GameStateHelper.GameStep.END)
+
+        val partiesIdsServer = client.requeteListeParties()
+
+        assert(partiesIdsServer.contains(partieId)) {
+            "La partie $partieId (état terminée) ne figure pas dans la liste récupérée"
         }
     }
 }

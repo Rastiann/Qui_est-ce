@@ -1,5 +1,4 @@
 import info.but1.sae2025.QuiEstCeClient
-import info.but1.sae2025.data.ETAPE
 import info.but1.sae2025.data.IdentificationJoueur
 import info.but1.sae2025.exceptions.QuiEstCeException
 import org.junit.jupiter.api.Test
@@ -8,9 +7,8 @@ import kotlin.test.assertEquals
 
 class TestRequeteCreationPartie {
 
-    val client: QuiEstCeClient = QuiEstCeClient("172.26.69.145", 8080)
-    val playerProvider = PlayerProvider(client)
-    val joueur: IdentificationJoueur = playerProvider.get()
+    val client: QuiEstCeClient = ConfigTest.client
+    val joueur = ConfigTest.joueur1
 
     // Teste les exceptions lors de la création de partie
     @Test

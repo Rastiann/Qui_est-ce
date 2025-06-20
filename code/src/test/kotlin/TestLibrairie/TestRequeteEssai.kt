@@ -4,7 +4,7 @@ import kotlin.test.assertEquals
 
 class TestRequeteEssai {
 
-    val client: QuiEstCeClient = QuiEstCeClient("172.26.69.145", 8080)
+    val client: QuiEstCeClient = ConfigTest.client
 
     @Test
     fun testRequeteEssai() {
