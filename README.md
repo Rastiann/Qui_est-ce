@@ -16,3 +16,4 @@ Pour compiler sur les PC de l'IUT il faut décommanter les lignes dans gradle.pr
 
 
 La configuration du serveur se fait dans la classe Config.
+

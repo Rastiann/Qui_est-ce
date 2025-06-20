@@ -1,4 +1,4 @@
-# Fichiers de configuration IntelliJ IDEA pour le projet racine
+    # Fichiers de configuration IntelliJ IDEA pour le projet racine
 .idea/
 *.iml
 *.ipr
