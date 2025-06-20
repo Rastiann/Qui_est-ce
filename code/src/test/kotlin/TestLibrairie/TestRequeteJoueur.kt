@@ -1,5 +1,4 @@
 import info.but1.sae2025.QuiEstCeClient
-import info.but1.sae2025.data.IdentificationJoueur
 import info.but1.sae2025.exceptions.QuiEstCeException
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -20,11 +19,11 @@ class TestRequeteJoueur {
         @JvmStatic
         fun joueurProvider(): Stream<Arguments?>? {
             return Stream.of(
-                Arguments.of("COCHARD", "Bastian"),
-                Arguments.of("CHELLI", "Enzo"),
-                Arguments.of("GRANDI", "Matheo"),
-                Arguments.of("BACHELIER", "Victor"),
-                Arguments.of("LOPEZ", "Elwan")
+                Arguments.of("COCHARDE", "Bastian"),
+                Arguments.of("CHELLIE", "Enzo"),
+                Arguments.of("GRANDIE", "Matheo"),
+                Arguments.of("BACHELIERE", "Victor"),
+                Arguments.of("LOPEZE", "Elwan")
             )
         }
     }

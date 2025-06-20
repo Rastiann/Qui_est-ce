@@ -1,6 +1,4 @@
-import info.but1.sae2025.QuiEstCeClient
 import info.but1.sae2025.data.ETAPE
-import info.but1.sae2025.data.IdentificationJoueur
 import info.but1.sae2025.exceptions.QuiEstCeException
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -13,7 +11,7 @@ import kotlin.test.assertEquals
 class TestRequeteChercherEncore {
 
     companion object {
-        val client: QuiEstCeClient = ConfigTest.client
+        val client = ConfigTest.client
         val joueur1 = ConfigTest.joueur1
         val joueur2 = ConfigTest.joueur2
         val partieId = client.requeteCreationPartie(joueur1.id, joueur1.cle)

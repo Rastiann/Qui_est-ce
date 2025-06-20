@@ -1,58 +1,64 @@
-import info.but1.sae2025.QuiEstCeClient
 import info.but1.sae2025.exceptions.QuiEstCeException
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
+import java.util.UUID
 import java.util.stream.Stream
 import kotlin.test.assertEquals
 
 class TestRequeteCreationJoueur {
 
-    val client: QuiEstCeClient = ConfigTest.client
-
+    val client = ConfigTest.client
 
     companion object {
         @JvmStatic
-        fun joueurProvider(): Stream<Arguments?>? {
-            return Stream.of(
-                Arguments.of("Bastien", "COCHARD"),
-                Arguments.of("Enzo", "CHELLI"),
-                Arguments.of("Matheo", "GRANDI"),
-                Arguments.of("Victor", "BACHELIER"),
-                Arguments.of("Elwan", "LOPEZ"),
-            )
+        fun joueurProvider(): Stream<Arguments> = Stream.of(
+            Arguments.of("Bastien", "COCHARD"),
+            Arguments.of("Enzo", "CHELLI"),
+            Arguments.of("Matheo", "GRANDI"),
+            Arguments.of("Victor", "BACHELIER"),
+            Arguments.of("Elwan", "LOPEZ"),
+        )
+
+        @JvmStatic
+        fun illegalProvider(): Stream<Arguments> = Stream.of(
+            Arguments.of("", ""),
+            Arguments.of("Bastian", ""),
+            Arguments.of("", "COCHARD")
+        )
+    }
+
+    // Test des valeurs illégales (paramétré)
+    @ParameterizedTest
+    @MethodSource("illegalProvider")
+    fun testRequeteCreationJoueur_Illegal(prenom: String, nom: String) {
+        assertThrows<IllegalArgumentException> {
+            client.requeteCreationJoueur(prenom, nom)
         }
     }
 
-    // Tests d'exception lors de la création du joueur
+    // Test d'exception pour un joueur déjà existant
     @Test
-    fun testRequeteCreationJoueur_Exceptions() {
-
-        assertThrows<IllegalArgumentException> {
-            client.requeteCreationJoueur("", "")
-        }
-
-        assertThrows<IllegalArgumentException> {
-            client.requeteCreationJoueur("Bastian", "")
-        }
-
-        assertThrows<IllegalArgumentException> {
-            client.requeteCreationJoueur("", "COCHARD")
-        }
-
+    fun testRequeteCreationJoueur_QuiEstCe() {
+        val prenom = "Noan"
+        val nom = "MAHE"
+        client.requeteCreationJoueur(prenom, nom) // création initiale
         assertThrows<QuiEstCeException> {
-            client.requeteCreationJoueur("Bastian", "COCHARD")
-            client.requeteCreationJoueur("Bastian", "COCHARD")
+            client.requeteCreationJoueur(prenom, nom) // tentative de recréation
         }
     }
 
-    // Test réussi pour la création d'un joueur avec des noms et prénoms valides
+    // Test succès : on ajoute un identifiant unique pour éviter les doublons
     @ParameterizedTest
     @MethodSource("joueurProvider")
     fun testRequeteCreationJoueur_Success(nom: String, prenom: String) {
-        val joueurCree = client.requeteCreationJoueur(nom, prenom)
+        // On ajoute un UUID pour rendre chaque nom/prénom unique à chaque exécution
+        val uniquePrenom = "${prenom}_${UUID.randomUUID()}"
+        val uniqueNom = "${nom}_${UUID.randomUUID()}"
+
+        val joueurCree = client.requeteCreationJoueur(uniquePrenom, uniqueNom)
 
         assert(joueurCree.id > 0) {
             "Erreur : L'id du joueur créé doit être positif, mais c'était : ${joueurCree.id}"
@@ -62,7 +68,7 @@ class TestRequeteCreationJoueur {
         }
 
         val joueurRecupere = client.requeteJoueur(joueurCree.id)
-        assertEquals(nom, joueurRecupere.nom, "Erreur : Le nom récupéré ne correspond pas au nom attendu.")
-        assertEquals(prenom, joueurRecupere.prenom, "Erreur : Le prénom récupéré ne correspond pas au prénom attendu.")
+        assertEquals(uniquePrenom, joueurRecupere.nom, "Erreur : Le nom récupéré ne correspond pas.")
+        assertEquals(uniqueNom, joueurRecupere.prenom, "Erreur : Le prénom récupéré ne correspond pas.")
     }
 }

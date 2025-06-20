@@ -9,7 +9,6 @@ class TestRequeteListeParties {
     val gameTestHelper = ConfigTest.gameTestHelper
     val joueur1 = ConfigTest.joueur1
     val joueur2 = ConfigTest.joueur2
-    val partiesIdsServer = client.requeteListeParties()
 
     @Test
     fun testPartieCreeeEstDansListe() {

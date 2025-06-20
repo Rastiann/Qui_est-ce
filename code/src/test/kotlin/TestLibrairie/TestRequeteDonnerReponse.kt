@@ -1,5 +1,4 @@
 import info.but1.sae2025.QuiEstCeClient
-import info.but1.sae2025.data.IdentificationJoueur
 import info.but1.sae2025.exceptions.QuiEstCeException
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows

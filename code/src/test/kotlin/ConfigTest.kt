@@ -7,7 +7,7 @@ class ConfigTest {
         val playerProvider = PlayerProvider(client)
         val joueur1 = playerProvider.get()
         val joueur2 = playerProvider.get()
-        val gameTestHelper = GameStateHelper(TestRequeteChercherEncore.Companion.client)
+        val gameTestHelper = GameStateHelper(client)
     }
 
 }
