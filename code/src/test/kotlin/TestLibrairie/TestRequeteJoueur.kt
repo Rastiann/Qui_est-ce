@@ -1,5 +1,4 @@
 import info.but1.sae2025.QuiEstCeClient
-import info.but1.sae2025.data.IdentificationJoueur
 import info.but1.sae2025.exceptions.QuiEstCeException
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -11,22 +10,20 @@ import kotlin.test.assertEquals
 
 class TestRequeteJoueur {
 
-    val client: QuiEstCeClient = QuiEstCeClient("localhost", 8080)
-    val playerProvider = PlayerProvider(client)
-    val joueur1: IdentificationJoueur = playerProvider.get()
+    val client: QuiEstCeClient = ConfigTest.client
+    val joueur1 = ConfigTest.joueur1
     val partieId = client.requeteCreationPartie(joueur1.id, joueur1.cle)
-    val joueur2: IdentificationJoueur = playerProvider.get()
-    val gameTestHelper = GameStateHelper(client)
+    val joueur2 = ConfigTest.joueur2
 
     companion object {
         @JvmStatic
         fun joueurProvider(): Stream<Arguments?>? {
             return Stream.of(
-                Arguments.of("COCHARD", "Bastian"),
-                Arguments.of("CHELLI", "Enzo"),
-                Arguments.of("GRANDI", "Matheo"),
-                Arguments.of("BACHELIER", "Victor"),
-                Arguments.of("LOPEZ", "Elwan")
+                Arguments.of("COCHARDE", "Bastian"),
+                Arguments.of("CHELLIE", "Enzo"),
+                Arguments.of("GRANDIE", "Matheo"),
+                Arguments.of("BACHELIERE", "Victor"),
+                Arguments.of("LOPEZE", "Elwan")
             )
         }
     }

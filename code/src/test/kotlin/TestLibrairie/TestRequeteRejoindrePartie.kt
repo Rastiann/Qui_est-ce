@@ -8,14 +8,13 @@ import kotlin.test.assertEquals
 
 class TestRequeteRejoindrePartie {
 
-    val client: QuiEstCeClient = QuiEstCeClient("172.26.69.145", 8080)
-    val playerProvider = PlayerProvider(client)
-    val joueur1 : IdentificationJoueur = playerProvider.get()
+    val client: QuiEstCeClient = ConfigTest.client
+    val joueur1 = ConfigTest.joueur1
     val partieId = client.requeteCreationPartie(joueur1.id, joueur1.cle)
-    val joueur2 : IdentificationJoueur = playerProvider.get()
+    val joueur2 = ConfigTest.joueur2
 
     @Test
-    fun testRequeteRejoindrePartie_Exceptions() {
+    fun testRequeteRejoindrePartie_Illegal() {
 
         // Test de l'exception pour un ID de partie invalide
         assertThrows<IllegalArgumentException> {
@@ -39,6 +38,11 @@ class TestRequeteRejoindrePartie {
             client.requeteRejoindrePartie(partieId, joueur2.id, longKey)
         }
 
+    }
+
+    @Test
+    fun testRequeteRejoindrePartie_QuiEstCe() {
+
         // Test de la clé inexistante
         assertThrows<QuiEstCeException> {
             val cleInexistante = "a".repeat(32)
@@ -54,8 +58,8 @@ class TestRequeteRejoindrePartie {
         assertThrows<QuiEstCeException> {
             client.requeteRejoindrePartie(partieId, 123456, joueur2.cle)
         }
-    }
 
+    }
 
     @Test
     fun testRequeteRejoindrePartie_EtatValide() {
