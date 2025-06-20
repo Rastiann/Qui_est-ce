@@ -1,11 +1,13 @@
-package state
+package statetest
 
+import ConnectedPlayer
 import info.but1.sae2025.QuiEstCeClient
 import info.but1.sae2025.data.IdentificationJoueur
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import state.*
 import java.util.concurrent.ArrayBlockingQueue
 import java.util.concurrent.TimeUnit
 import kotlin.test.assertNotNull
@@ -24,10 +26,17 @@ class PlayerCreationTest {
 
     @BeforeEach
     fun setup() {
-        Provider.setup()
+        apiClient = mockk()
+        apiThread.setPeriodicTask(null)
+        newStateQueue = ArrayBlockingQueue<NewState>(1)
+        stateChangeHandler = object : StateChangeHandler {
+            override fun handle(newState: AppState, error: Throwable?) {
+                newStateQueue.put(NewState(newState, error))
+            }
+        }
     }
 
-    @Test
+        @Test
     fun testPlayerCreation() {
 
         every { apiClient.requeteCreationJoueur("Name", "Firstname") } returns

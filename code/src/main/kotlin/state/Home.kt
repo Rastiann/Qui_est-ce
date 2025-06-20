@@ -79,6 +79,8 @@ class Home(
         apiThread.setPeriodicTask({
             try {
 
+                println("heyyy")
+
                 val games = refreshGames()
                 registeredGames = games
 

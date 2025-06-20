@@ -1,47 +1,70 @@
-package state
+package statetest
 
+import ConnectedPlayer
+import Player
+import info.but1.sae2025.QuiEstCeClient
 import info.but1.sae2025.data.ETAPE
 import info.but1.sae2025.data.EtatPartie
 import info.but1.sae2025.data.Joueur
 import info.but1.sae2025.data.Personnage
 import io.mockk.every
+import io.mockk.mockk
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import state.*
+import java.util.concurrent.ArrayBlockingQueue
 import java.util.concurrent.TimeUnit
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 
 class HomeTest {
 
+    private lateinit var apiClient: QuiEstCeClient
+    private val apiThread = ApiThread()
+    private lateinit var newStateQueue: ArrayBlockingQueue<NewState>
+    private lateinit var stateChangeHandler: StateChangeHandler
+
+    init {
+        apiThread.start()
+    }
+
     @BeforeEach
     fun setup() {
-        Provider.setup()
+        apiClient = mockk()
+        apiThread.setPeriodicTask(null)
+        newStateQueue = ArrayBlockingQueue<NewState>(1)
+        stateChangeHandler = object : StateChangeHandler {
+            override fun handle(newState: AppState, error: Throwable?) {
+                newStateQueue.put(NewState(newState, error))
+            }
+        }
+
+        every {
+            apiClient.requeteJoueurs()
+        } returns listOf(2, 3)
+
+        every { apiClient.requeteJoueur(2) } returns Joueur("2", "2")
+        every { apiClient.requeteJoueur(3) } returns Joueur("3", "3")
+
+        every { apiClient.requeteListePartiesCreees() } returns listOf(10)
+        every { apiClient.requeteEtatPartie(10) } returns EtatPartie(
+            2, -1, ETAPE.CREEE, 2, "", -1, ""
+        )
     }
 
     @Test
     fun testHomeCreateGame() {
-        every {
-            Provider.apiClient.requeteJoueurs()
-        } returns listOf(2, 3)
-
-        every { Provider.apiClient.requeteJoueur(2) } returns Joueur("2", "2")
-        every { Provider.apiClient.requeteJoueur(3) } returns Joueur("3", "3")
-
-        every { Provider.apiClient.requeteListePartiesCreees() } returns listOf(10)
-        every { Provider.apiClient.requeteEtatPartie(10) } returns EtatPartie(
-            2, -1, ETAPE.CREEE, 2, "", -1, ""
-        )
 
         // create state
         val prevState = Home(
-            Provider.apiClient,
-            Provider.apiThread,
-            Provider.stateChangeHandler,
+            apiClient,
+            apiThread,
+            stateChangeHandler,
             ConnectedPlayer("Dujardin", "Jean", 1, "cle")
         )
 
         // wait for new state to arrive (periodic tasks)
-        var newState = Provider.newStateQueue.poll(10, TimeUnit.SECONDS)
+        var newState = newStateQueue.poll(10, TimeUnit.SECONDS)
 
         assertNotNull(newState) { "newsState must not be null" }
         assert(newState.state is Home) { "after creating home, newState must be of type Home" }
@@ -59,12 +82,11 @@ class HomeTest {
         )) { "wrong value of registeredPlayers : ${newHome.registeredPlayers}" }
 
         // create new game
-
-        every { Provider.apiClient.requeteCreationPartie(1, "cle") } returns 11
+        every { apiClient.requeteCreationPartie(1, "cle") } returns 11
         prevState.createNewGame()
 
         // wait for new state to arrive (new game)
-        newState = Provider.newStateQueue.poll(10, TimeUnit.SECONDS)
+        newState = newStateQueue.poll(10, TimeUnit.SECONDS)
 
         assertNotNull(newState) { "newsState must not be null" }
         assert(newState.state is GameInit) { "after creating home, newState must be of type GameInit" }
@@ -75,24 +97,15 @@ class HomeTest {
 
     @Test
     fun testHomeGameJoin() {
-        every {
-            Provider.apiClient.requeteJoueurs()
-        } returns listOf(2, 3)
 
-        every { Provider.apiClient.requeteJoueur(2) } returns Joueur("2", "2")
-        every { Provider.apiClient.requeteJoueur(3) } returns Joueur("3", "3")
-
-        every { Provider.apiClient.requeteListePartiesCreees() } returns listOf(10)
-        every { Provider.apiClient.requeteEtatPartie(10) } returns EtatPartie(
-            2, -1, ETAPE.CREEE, 2, "", -1, ""
-        )
+        println("heuu ok ? ")
 
         // join game
-        every { Provider.apiClient.requeteRejoindrePartie(10, 1, "cle") } returns EtatPartie(
+        every { apiClient.requeteRejoindrePartie(10, 1, "cle") } returns EtatPartie(
             2, 1, ETAPE.CREEE, 2, "", 1, ""
         )
 
-        every { Provider.apiClient.requeteEtatPartie(11) } returns EtatPartie(
+        every { apiClient.requeteEtatPartie(11) } returns EtatPartie(
             2, -1, ETAPE.CREEE, 2, "", -1, ""
         )
 
@@ -104,28 +117,26 @@ class HomeTest {
             listOf(pers, pers, pers, pers, pers, pers),
         )
 
-        every { Provider.apiClient.requeteGrilleJoueur(10, 1) } returns grid
-        every { Provider.apiClient.requeteGrilleJoueur(10, 2) } returns grid
-
-
+        every { apiClient.requeteGrilleJoueur(10, 1) } returns grid
+        every { apiClient.requeteGrilleJoueur(10, 2) } returns grid
 
         // create state
         Home(
-            Provider.apiClient,
-            Provider.apiThread,
-            Provider.stateChangeHandler,
+            apiClient,
+            apiThread,
+            stateChangeHandler,
             ConnectedPlayer("Dujardin", "Jean", 1, "cle")
         )
 
         // wait for new state to arrive (periodic tasks)
-        var newState = Provider.newStateQueue.poll(10, TimeUnit.SECONDS)
+        var newState = newStateQueue.poll(10, TimeUnit.SECONDS)
         assertNotNull(newState, "newState must not be null")
 
         // join game
         (newState.state as Home).joinGame(10)
 
         // wait for new state to arrive (new game)
-        newState = Provider.newStateQueue.poll(10, TimeUnit.SECONDS)
+        newState = newStateQueue.poll(10, TimeUnit.SECONDS)
 
         assertNotNull(newState) { "newsState must not be null" }
         assert(newState.state is GameInit) { "after creating home, newState must be of type GameInit" }
